@@ -1,9 +1,9 @@
 # jadi gini le
 ## aturan branch
-main buat deployment
-branch-ini buat basing basingan aja
-branch-itu buat testing code 
-branch-mana buat testing terakhir
+- main buat deployment
+- branch-ini buat basing basingan aja
+- branch-itu buat testing code 
+- branch-mana buat testing terakhir
 
 ## aturan contrib
 - wajib commit sekali sehari
