@@ -10,7 +10,7 @@
 10. Name boolean variables after playful moods or silly questions (like `issleepy`, `hascookie`, or `wantstoparty`).
 11. Name arrays and lists after fun groups or collections (like `bucketofsnacks`, `puppiesquad`, or `treasurechest`).
 12. Name loop counters with cute words like `tinybean` or `littlejump` instead of plain `i`, `j`, or `k`.
-13. Name functions like casual, friendly actions (like `grabtheloot`, `makeitsparkle`, or `feedthepanda`).
+13. Name functions like casual, friendly actions (like `grabdaloot`, `makeitsparkly`, or `feedanyone`).
 14. Never use lazy AI placeholders like `// ... rest of the code here`—always provide the exact code needed.
 15. Do not write long introductions, apologies, or explanations before or after the code.
 16. Avoid ternary operators (`? :`); always write out plain `if` and `else` blocks so the flow is easy to trace.
