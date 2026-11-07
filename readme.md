@@ -15,3 +15,9 @@
 - jangan komentar di kodenya langsung
 - pastikan cek branch saat ini
 - intinya jangan ai slop dah
+
+## tugas
+- Lengkapi modul kasir dan supplier
+- Fokus di index dan tambah dahulu
+- Silahkan diatur tasknya oleh ktuanya
+- Wajib semua paham ya
