@@ -1,0 +1,43 @@
+name: Deploy to InfinityFree
+
+on:
+  push:
+    branches:
+      - main
+
+# Menghindari bentrok jika ada beberapa deploy yang jalan bersamaan
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+jobs:
+  web-deploy:
+    name: 🚀 Sync to Hosting via FTPS
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚚 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2 # Membantu action mendeteksi file yang hanya berubah saja
+
+      - name: 📤 Upload Files to InfinityFree
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          # Ganti ke /htdocs/ atau /triofonder.fun/htdocs/ sesuai path di File Manager InfinityFree
+          server-dir: /htdocs/
+          dangerous-clean-slate: true
+          exclude: |
+            **/.git*
+            **/.git*/**
+            .github/**
+            preview.sh
+            package.json
+            package-lock.json
+            node_modules/**
+            README.md
+            public/**
