@@ -1,3 +1,3 @@
-001. darkmode masih kasar (mungkin hilangkan?) status : ongoing
+001. darkmode masih kasar (benarkan): ongoing
 002. barang2 irrelevant (hilangkan) status : fixed 
 003. kategori2 irrelevant (hilangkan) status : fixed 
