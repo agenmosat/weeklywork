@@ -93,10 +93,6 @@ if ($sort === "low") {
         <div class="sidebar">
             <div class="sidetitle">categories</div>
             <a href="dashboard.php" class="sidelink">all items</a>
-            <a href="dashboard.php?cat=weapons" class="sidelink">weapons (firearms)</a>
-            <a href="dashboard.php?cat=electronics" class="sidelink">electronics</a>
-            <a href="dashboard.php?cat=collectibles" class="sidelink">collectibles</a>
-            <a href="dashboard.php?cat=homegoods" class="sidelink">homegoods</a>
 
             <div class="sidetitle">sort by</div>
             <a href="dashboard.php?sort=low<?php echo $category != "" ? "&cat=" . urlencode($category) : ""; ?>" class="sidelink">price: low to high</a>
