@@ -1,3 +1,5 @@
 001. darkmode masih kasar (benarkan): ongoing
 002. barang2 irrelevant (hilangkan) status : fixed 
 003. kategori2 irrelevant (hilangkan) status : fixed 
+004. gambar2 masih kosong (tambahkan) status : issued
+005. dasbor admin belum ada/berfungsi (tambahkan) status : issued
