@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   web-deploy:
-    name: 🚀 Sync to Hosting via FTPS
+    name: 🚀 Sync to Hosting via FTP
     runs-on: ubuntu-latest
     steps:
       - name: 🚚 Checkout Repository
@@ -26,7 +26,7 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps
+          protocol: ftp
           port: 21
           # Ganti ke /htdocs/ atau /triofonder.fun/htdocs/ sesuai path di File Manager InfinityFree
           server-dir: /htdocs/

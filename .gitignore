@@ -1,9 +1,21 @@
-# build output
-public/
+# koneksi database, dibuat dari db.example.php per lingkungan
+db.php
 
-# wrangler files
-.wrangler
-.dev.vars*
-!.dev.vars.example
+# file sensitif dan sampah lokal
+cookies.txt
 .env*
-!.env.example
+
+# hasil export database
+*.sql
+!schema.sql
+
+# file editor dan sistem operasi
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# log dan backup
+*.log
+error_log
+*.bak
