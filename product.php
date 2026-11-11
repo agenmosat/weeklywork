@@ -72,7 +72,9 @@ $product = $products[$id];
             <a href="dashboard.php" class="backlink">&laquo; back to items</a>
 
             <div class="detailbox">
-                <div class="detailimage">[item #0<?php echo $product['id']; ?>]</div>
+                <div class="detailimage">
+                    <img src="<?php echo htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" class="productimage">
+                </div>
                 <div class="detailinfo">
                     <span class="tagitem"><?php echo htmlspecialchars($product['category']); ?></span>
                     <div class="detailtitle"><?php echo htmlspecialchars($product['name']); ?></div>
