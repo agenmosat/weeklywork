@@ -5,7 +5,6 @@ on:
     branches:
       - main
 
-# Menghindari bentrok jika ada beberapa deploy yang jalan bersamaan
 concurrency:
   group: production-deploy
   cancel-in-progress: false
@@ -18,7 +17,7 @@ jobs:
       - name: 🚚 Checkout Repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2 # Membantu action mendeteksi file yang hanya berubah saja
+          fetch-depth: 2
 
       - name: 📤 Upload Files to InfinityFree
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -28,16 +27,20 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftp
           port: 21
-          # Ganti ke /htdocs/ atau /triofonder.fun/htdocs/ sesuai path di File Manager InfinityFree
           server-dir: /htdocs/
           dangerous-clean-slate: true
+          timeout: 120000
           exclude: |
             **/.git*
             **/.git*/**
             .github/**
+            ignore/**
+            cookies.txt
             preview.sh
             package.json
             package-lock.json
             node_modules/**
             README.md
+            readme.md
+            instruction.md
             public/**
