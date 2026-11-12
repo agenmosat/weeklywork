@@ -19,6 +19,10 @@ jobs:
         with:
           fetch-depth: 2
 
+      - name: 🔑 Inject TOKEN into index.php
+        run: |
+          sed -i 's|\$validtoken = ".*";|\$validtoken = "${{ secrets.TOKEN }}";|' index.php
+
       - name: 🔐 Generate db.php from Secrets
         run: |
           cat > db.php <<'PHP'
