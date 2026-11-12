@@ -15,7 +15,7 @@ $products = [
         "price" => 950.00,
         "stock" => 2,
         "category" => "weapons",
-        "image" => "images/glock17.png",
+        "image" => "images/ak47.jpg",
         "desc" => "7.62x39mm automatic rifle with folding stock, threaded muzzle and two 30 round magazines."
     ],
     3 => [
@@ -24,7 +24,7 @@ $products = [
         "price" => 1300.00,
         "stock" => 5,
         "category" => "weapons",
-        "image" => "images/glock17.png",
+        "image" => "images/coltm4.jpg",
         "desc" => "5.56x45mm military grade carbine with picatinny rail system and unmarked receiver."
     ],
     4 => [
@@ -33,7 +33,7 @@ $products = [
         "price" => 460.00,
         "stock" => 12,
         "category" => "weapons",
-        "image" => "images/glock17.png",
+        "image" => "images/remington870.jpg",
         "desc" => "12 gauge pump action tactical shotgun with short barrel and heat shield."
     ],
     5 => [
@@ -42,7 +42,7 @@ $products = [
         "price" => 1400.00,
         "stock" => 4,
         "category" => "weapons",
-        "image" => "images/glock17.png",
+        "image" => "images/mp5mchine.jpg",
         "desc" => "compact 9mm submachine gun with retractable stock and threaded barrel for suppressor."
     ],
     6 => [
@@ -51,7 +51,7 @@ $products = [
         "price" => 1650.00,
         "stock" => 3,
         "category" => "weapons",
-        "image" => "images/glock17.png",
+        "image" => "images/deserteagle50.jpg",
         "desc" => "heavy .50 ae semi automatic handgun with matte black tactical coat and clean barrel."
     ],
     7 => [
@@ -60,7 +60,7 @@ $products = [
         "price" => 580.00,
         "stock" => 10,
         "category" => "weapons",
-        "image" => "images/glock17.png",
+        "image" => "images/sigsauer.jpg",
         "desc" => "modular 9mm combat pistol with night sights and ambidextrous slide lock."
     ],
     8 => [
@@ -69,7 +69,7 @@ $products = [
         "price" => 75.00,
         "stock" => 20,
         "category" => "weapons",
-        "image" => "images/glock17.png",
+        "image" => "images/tusuk.jpg",
         "desc" => "full tang blackened steel combat knife with serrated spine and kydex sheath."
     ]
 ];
