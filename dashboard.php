@@ -86,6 +86,9 @@ if ($category != "") {
         </div>
         <div class="topnav">
             <a href="dashboard.php" class="navlink">home</a>
+            <?php if (isset($_SESSION['role']) && $_SESSION['role'] === "admin"): ?>
+                <a href="admin.php" class="navlink">admin</a>
+            <?php endif; ?>
             <a href="cart.php" class="navlink">cart (<?php echo $cartcount; ?>)</a>
             <a href="dashboard.php?logout=1" class="navlink">logout</a>
         </div>

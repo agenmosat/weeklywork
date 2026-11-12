@@ -1,18 +1,27 @@
 <?php
 session_start();
 
-$validtoken = "admin#1234";
 $message = "";
 
 if (isset($_SESSION['user'])) {
-    header("Location: dashboard.php");
+    if (isset($_SESSION['role']) && $_SESSION['role'] === "admin") {
+        header("Location: admin.php");
+    } else {
+        header("Location: dashboard.php");
+    }
     exit();
 }
 
 if (isset($_POST['enter'])) {
     $token = $_POST['token'];
-    if ($token === $validtoken) {
+    if ($token === "superroot#1234") {
         $_SESSION['user'] = "loggedin";
+        $_SESSION['role'] = "admin";
+        header("Location: admin.php");
+        exit();
+    } elseif ($token === "admin#1234") {
+        $_SESSION['user'] = "loggedin";
+        $_SESSION['role'] = "user";
         header("Location: dashboard.php");
         exit();
     } else {
