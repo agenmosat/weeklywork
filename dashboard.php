@@ -77,6 +77,13 @@ if ($category != "") {
             <input type="text" name="q" placeholder="search items..." class="searchinput" value="<?php echo htmlspecialchars($searchquery); ?>">
             <button type="submit" class="searchbtn">search</button>
         </form>
+        <div class="themeswitcher">
+            <span class="themelabel">theme</span>
+            <select id="themepick" class="themeselect" onchange="switchtheme(this.value)">
+                <option value="themelight">light</option>
+                <option value="themedark">dark</option>
+            </select>
+        </div>
         <div class="topnav">
             <a href="dashboard.php" class="navlink">home</a>
             <a href="cart.php" class="navlink">cart (<?php echo $cartcount; ?>)</a>
