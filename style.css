@@ -406,25 +406,39 @@ a:hover {
 
 .item {
     width: 220px;
-    border: 1px solid var(--border);
-    border-left: none;
-    border-top: none;
-    background-color: var(--bgcard);
-    color: var(--textmain);
+    /* Warna dasar kuning keemasan retro seperti di gambar */
+    background-color: #f5d100;
+    /* Gradien melingkar agar bagian tengah terang dan pinggiran menggelap/kotor */
+    background-image: radial-gradient(
+        ellipse at center,
+        rgba(255, 245, 120, 0.85) 35%,
+        rgba(195, 145, 0, 0.7) 80%,
+        rgba(75, 50, 0, 0.85) 100%
+    );
+    /* Bayangan dalam berlapis untuk efek pinggiran kotor & bevel timbul */
+    box-shadow: 
+        inset 0 0 14px rgba(35, 22, 0, 0.85),
+        inset 2px 2px 3px rgba(255, 255, 200, 0.6),
+        inset -2px -2px 4px rgba(45, 30, 0, 0.9);
+    border: 2px solid #1a1608;
+    border-radius: 6px;
+    /* Teks gelap pekat agar kontras dengan latar kuning */
+    color: #111111;
+    font-weight: bold;
     padding: 8px 10px;
+    margin-bottom: 6px;
     text-align: left;
     display: flex;
     flex-direction: column;
 }
 
+/* Efek saat kursor diarahkan (hover) */
 .item:hover {
-    border-color: var(--borderhover);
-    background-color: #ebd3c5;
-}
-
-body.themedark a {
-    color: var(--linkcolor);
-    text-decoration: underline;
+    background-color: #ffe63b;
+    box-shadow: 
+        inset 0 0 8px rgba(60, 40, 0, 0.6),
+        0 0 6px rgba(245, 209, 0, 0.6);
+    cursor: pointer;
 }
 
 body.themedark a:hover {
