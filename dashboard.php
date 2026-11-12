@@ -46,17 +46,19 @@ if ($category != "") {
 }
 
 if ($sort === "low") {
-    uasort($filtered, function ($a, $b) {
-        return $a['price'] <=> $b['price'];
-    });
+    $prices = array_column($filtered, 'price');
+    array_multisort($prices, SORT_ASC, $filtered);
 } elseif ($sort === "high") {
-    uasort($filtered, function ($a, $b) {
-        return $b['price'] <=> $a['price'];
-    });
+    $prices = array_column($filtered, 'price');
+    array_multisort($prices, SORT_DESC, $filtered);
 } elseif ($sort === "name") {
-    uasort($filtered, function ($a, $b) {
-        return strcmp($a['name'], $b['name']);
-    });
+    $names = array_column($filtered, 'name');
+    array_multisort($names, SORT_ASC, $filtered);
+}
+
+$catparam = "";
+if ($category != "") {
+    $catparam = "&cat=" . urlencode($category);
 }
 ?>
 <!DOCTYPE html>
@@ -75,13 +77,6 @@ if ($sort === "low") {
             <input type="text" name="q" placeholder="search items..." class="searchinput" value="<?php echo htmlspecialchars($searchquery); ?>">
             <button type="submit" class="searchbtn">search</button>
         </form>
-        <!-- <div class="themeswitcher">
-            <span class="themelabel">theme</span>
-            <select id="themepick" class="themeselect" onchange="switchtheme(this.value)">
-                <option value="themelight">light</option>
-                <option value="themedark">dark</option>
-            </select>
-        </div> -->
         <div class="topnav">
             <a href="dashboard.php" class="navlink">home</a>
             <a href="cart.php" class="navlink">cart (<?php echo $cartcount; ?>)</a>
@@ -95,9 +90,9 @@ if ($sort === "low") {
             <a href="dashboard.php" class="sidelink">all items</a>
 
             <div class="sidetitle">sort by</div>
-            <a href="dashboard.php?sort=low<?php echo $category != "" ? "&cat=" . urlencode($category) : ""; ?>" class="sidelink">price: low to high</a>
-            <a href="dashboard.php?sort=high<?php echo $category != "" ? "&cat=" . urlencode($category) : ""; ?>" class="sidelink">price: high to low</a>
-            <a href="dashboard.php?sort=name<?php echo $category != "" ? "&cat=" . urlencode($category) : ""; ?>" class="sidelink">name: a to z</a>
+            <a href="dashboard.php?sort=low<?php echo $catparam; ?>" class="sidelink">price: low to high</a>
+            <a href="dashboard.php?sort=high<?php echo $catparam; ?>" class="sidelink">price: high to low</a>
+            <a href="dashboard.php?sort=name<?php echo $catparam; ?>" class="sidelink">name: a to z</a>
 
 
         </div>
