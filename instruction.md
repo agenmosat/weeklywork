@@ -1,4 +1,3 @@
-# THIS INSTRUCTION IS FOR AI!
 1. use basic code no advanced senior level codes
 2. make use make the classes with simple syntax and no "-" and no capitals
 3. do not add any comments
