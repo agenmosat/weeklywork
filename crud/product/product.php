@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "items.php";
+require_once __DIR__ . "/../../items.php";
 
 if (!isset($_SESSION['user'])) {
     header("Location: index.php");
