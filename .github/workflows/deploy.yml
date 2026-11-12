@@ -19,6 +19,24 @@ jobs:
         with:
           fetch-depth: 2
 
+      - name: 🔑 Inject TOKEN into index.php
+        run: |
+          sed -i 's|\$validtoken = ".*";|\$validtoken = "${{ secrets.TOKEN }}";|' index.php
+      - name: 🔐 Generate db.php from Secrets
+        run: |
+          cat > db.php <<'PHP'
+          <?php
+          mysqli_report(MYSQLI_REPORT_OFF);
+          const DB_HOST = '${{ secrets.DB_HOST }}';
+          const DB_USER = '${{ secrets.DB_USER }}';
+          const DB_PASS = '${{ secrets.DB_PASS }}';
+          const DB_NAME = '${{ secrets.DB_NAME }}';
+          $koneksi = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+          if (!$koneksi) {
+              die('koneksi database gagal: ' . mysqli_connect_error());
+          }
+          PHP
+
       - name: 📤 Upload Files to InfinityFree
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -36,6 +54,8 @@ jobs:
             .github/**
             ignore/**
             cookies.txt
+            db.example.php
+            *.sql
             preview.sh
             package.json
             package-lock.json
