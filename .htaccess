@@ -7,5 +7,3 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 # Nonaktifkan directory browsing (opsional, untuk keamanan)
 Options -Indexes
-
-ErrorDocument 404 /404error.php

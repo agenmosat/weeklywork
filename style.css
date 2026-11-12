@@ -96,13 +96,6 @@ a:hover {
     min-height: 100vh;
 }
 
-.notfound {
-    font-size: 14px;
-    font-weight: bold;
-    color: var(--textmain);
-    text-align: center;
-}
-
 .card {
     background-color: var(--bgcard);
     color: var(--textmain);
