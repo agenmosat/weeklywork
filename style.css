@@ -330,7 +330,15 @@ a:hover {
 
 .sidebar {
     width: 200px;
-    background-color: var(--bgpanel);
+    background-image: repeating-linear-gradient(
+        -45deg,
+        #f4ebd040,
+        #05050540 20px,
+        #250f0140 30px,
+        #79272740 35px,
+        #190a0440 40px
+
+    );
     border-right: 1px solid var(--border);
     padding: 8px;
     flex-shrink: 0;
