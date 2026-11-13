@@ -1,7 +1,7 @@
 1. darkmode masih kasar (benarkan) status : issued
 2. barang-barang irrelevant (hilangkan) status : fixed
 3. kategori-kategori irrelevant (hilangkan) status : fixed
-4. gambar-gambar masih kosong (tambahkan) status : issued
+4. gambar-gambar masih kosong (tambahkan) status : fixed
 5. dasbor admin belum ada/berfungsi (tambahkan) status : issued
 6. data produk masih hardcoded (koneksikan ke database) status : issued
 7. validasi stok di server kurang ketat (validasi ulang sisi backend) status : issued

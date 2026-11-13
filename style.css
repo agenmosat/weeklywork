@@ -303,6 +303,13 @@ a:hover {
     gap: 4px;
 }
 
+body, 
+div, 
+nav, 
+footer {
+    transition: background-color 0.4s ease, color 0.4s ease, border-color 0.5s ease;
+}
+
 .themelabel {
     font-size: 11px;
     color: var(--textdim);
