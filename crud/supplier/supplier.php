@@ -2,7 +2,16 @@
 require_once __DIR__ . '/../guard.php';
 require_once __DIR__ . '/../../config/database.php';
 
-$result = mysqli_query($koneksi, 'SELECT id_supplier, nama_supplier, kota FROM supplier ORDER BY id_supplier');
+$cari = trim($_GET['cari'] ?? '');
+if ($cari !== '') {
+    $like = '%' . $cari . '%';
+    $stmt = mysqli_prepare($koneksi, 'SELECT id_supplier, nama_supplier, kota FROM supplier WHERE nama_supplier LIKE ? OR kota LIKE ? ORDER BY id_supplier');
+    mysqli_stmt_bind_param($stmt, 'ss', $like, $like);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+} else {
+    $result = mysqli_query($koneksi, 'SELECT id_supplier, nama_supplier, kota FROM supplier ORDER BY id_supplier');
+}
 
 $pesan = ['tambah' => 'supplier berhasil ditambahkan.', 'edit' => 'supplier berhasil diubah.', 'hapus' => 'supplier berhasil dihapus.'][$_GET['status'] ?? ''] ?? '';
 ?>
@@ -52,6 +61,10 @@ $pesan = ['tambah' => 'supplier berhasil ditambahkan.', 'edit' => 'supplier berh
                 <?php endif; ?>
 
                 <div class="actionrow">
+                    <form method="get" action="supplier.php" class="form" style="margin:0">
+                        <input type="text" name="cari" class="forminput" placeholder="cari supplier..." value="<?= htmlspecialchars($cari) ?>">
+                        <button type="submit" class="enterbtn">cari</button>
+                    </form>
                     <a href="addsupplier.php" class="sidelink">+ add supplier</a>
                 </div>
 
