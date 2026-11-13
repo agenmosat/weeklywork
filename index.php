@@ -20,19 +20,37 @@ if (isset($_SESSION['user'])) {
     exit();
 }
 
-if (isset($_POST['enter'])) {
+// Rate limit login attempts
+$ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+$attempts_key = "login_attempts_$ip";
+if (!isset($_SESSION[$attempts_key])) {
+    $_SESSION[$attempts_key] = ['count' => 0, 'last' => 0];
+}
+$now = time();
+if ($now - $_SESSION[$attempts_key]['last'] > 900) {
+    $_SESSION[$attempts_key]['count'] = 0;
+}
+if ($_SESSION[$attempts_key]['count'] >= 5) {
+    $wait = 900 - ($now - $_SESSION[$attempts_key]['last']);
+    $mins = ceil($wait / 60);
+    $message = "too many attempts, try again in $mins minutes";
+} elseif (isset($_POST['enter'])) {
     $token = $_POST['token'];
     if (ADMIN_TOKEN !== "" && hash_equals(ADMIN_TOKEN, $token)) {
         $_SESSION['user'] = "loggedin";
         $_SESSION['role'] = "admin";
+        unset($_SESSION[$attempts_key]);
         header("Location: admin.php");
         exit();
     } elseif (USER_TOKEN !== "" && hash_equals(USER_TOKEN, $token)) {
         $_SESSION['user'] = "loggedin";
         $_SESSION['role'] = "user";
+        unset($_SESSION[$attempts_key]);
         header("Location: dashboard.php");
         exit();
     } else {
+        $_SESSION[$attempts_key]['count']++;
+        $_SESSION[$attempts_key]['last'] = $now;
         $message = "invalid token";
     }
 }
