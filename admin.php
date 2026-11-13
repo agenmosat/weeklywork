@@ -53,17 +53,5 @@ if (isset($_GET['logout'])) {
             </div>
         </div>
     </div>
-
-<script>
-function switchtheme(theme) {
-    document.body.className = "marketpage " + theme;
-    localStorage.setItem("theme", theme);
-}
-var savedtheme = localStorage.getItem("theme");
-if (savedtheme) {
-    document.body.className = "marketpage " + savedtheme;
-}
-</script>
-
 </body>
 </html>
