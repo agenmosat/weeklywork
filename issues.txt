@@ -26,3 +26,4 @@
 26. tidak adanya batas kedaluwarsa sesi pengguna (tambahkan mekanisme session timeout otomatis) status : fixed
 
 #note : yeah i kinda asked ai what's missing so i think i'll be doing ts till midnight *sob*
+#YEAH YOU KNOW WHAT? I FINISHED IT LMAO AT 12AM
