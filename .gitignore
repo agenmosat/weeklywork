@@ -11,7 +11,7 @@ cookies.txt
 # hasil export database
 *.sql
 !schema.sql
-toko.sql
+!toko.sql
 
 # file editor dan sistem operasi
 .vscode/
@@ -24,3 +24,6 @@ Thumbs.db
 error_log
 *.bak
 VARIABEL.md
+
+PANDUAN_CRUD.md
+PANDUAN_SQL.md
