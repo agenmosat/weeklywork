@@ -19,19 +19,33 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: 🔑 Inject TOKEN into index.php
+      - name: 🔑 Generate token.php from Secrets
         run: |
-          sed -i 's|\$validtoken = ".*";|\$validtoken = "${{ secrets.TOKEN }}";|' index.php
-      - name: 🔐 Generate db.php from Secrets
-        run: |
-          cat > db.php <<'PHP'
+          cat > token.php <<'PHP'
           <?php
-          mysqli_report(MYSQLI_REPORT_OFF);
+          const ADMIN_TOKEN = '${{ secrets.TOKEN }}';
+          const USER_TOKEN = '${{ secrets.USER_TOKEN }}';
+          PHP
+
+      - name: 🔐 Generate config/database.php from Secrets
+        run: |
+          cat > config/database.php <<'PHP'
+          <?php
+          if (function_exists('mysqli_report')) {
+              mysqli_report(MYSQLI_REPORT_OFF);
+          }
+
           const DB_HOST = '${{ secrets.DB_HOST }}';
           const DB_USER = '${{ secrets.DB_USER }}';
           const DB_PASS = '${{ secrets.DB_PASS }}';
           const DB_NAME = '${{ secrets.DB_NAME }}';
+
+          if (!function_exists('mysqli_connect')) {
+              die('ekstensi mysqli belum aktif di php. aktifkan extension=mysqli di php.ini atau jalankan server dengan: php -d extension=mysqli -S localhost:8000');
+          }
+
           $koneksi = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+
           if (!$koneksi) {
               die('koneksi database gagal: ' . mysqli_connect_error());
           }
@@ -54,7 +68,8 @@ jobs:
             .github/**
             ignore/**
             cookies.txt
-            db.example.php
+            config/database.example.php
+            token.example.php
             *.sql
             preview.sh
             package.json
