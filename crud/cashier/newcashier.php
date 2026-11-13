@@ -18,10 +18,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'status harus aktif atau nonaktif.';
     } else {
         $stmt = mysqli_prepare($koneksi, 'INSERT INTO kasir (nama_kasir, status) VALUES (?, ?)');
-        mysqli_stmt_bind_param($stmt, 'ss', $nama_kasir, $status);
-        if (mysqli_stmt_execute($stmt)) {
-            header('Location: cashier.php?status=tambah');
-            exit;
+        if ($stmt) {
+            mysqli_stmt_bind_param($stmt, 'ss', $nama_kasir, $status);
+            if (mysqli_stmt_execute($stmt)) {
+                header('Location: cashier.php?status=tambah');
+                exit;
+            }
         }
         $error = 'gagal menyimpan kasir.';
     }
@@ -59,8 +61,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="sidetitle">admin menu</div>
             <a href="../../admin.php" class="sidelink">dashboard</a>
             <a href="../product/product.php" class="sidelink">product</a>
-            <a href="../supplier/supplier.php" class="sidelink">supplier</a>
             <a href="cashier.php" class="sidelink">cashier</a>
+            <a href="../supplier/supplier.php" class="sidelink">supplier</a>
         </div>
 
         <div class="content">
@@ -92,20 +94,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
     </div>
-<script>
-function switchtheme(theme) {
-    document.body.className = "marketpage " + theme;
-    localStorage.setItem("theme", theme);
-}
-var savedtheme = localStorage.getItem("theme");
-if (savedtheme) {
-    document.body.className = "marketpage " + savedtheme;
-    var sel = document.getElementById("themepick");
-    if (sel) {
-        sel.value = savedtheme;
-    }
-}
-</script>
+
+<script src="../../main.js"></script>
 
 </body>
 </html>

@@ -8,6 +8,7 @@ $price = '';
 $stock = '';
 $category = '';
 $description = '';
+$image = 'images/glock17.png';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['name'] ?? '');
@@ -15,6 +16,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stock = trim((string) ($_POST['stock'] ?? ''));
     $category = trim($_POST['category'] ?? '');
     $description = trim($_POST['description'] ?? '');
+    $image = trim($_POST['image'] ?? '');
+
+    if (isset($_FILES['imagefile']) && $_FILES['imagefile']['error'] === UPLOAD_ERR_OK) {
+        $filename = basename($_FILES['imagefile']['name']);
+        $targetdir = __DIR__ . '/../../images/';
+        $targetfile = $targetdir . $filename;
+        if (move_uploaded_file($_FILES['imagefile']['tmp_name'], $targetfile)) {
+            $image = 'images/' . $filename;
+        }
+    }
+
+    if ($image === '') {
+        $image = 'images/glock17.png';
+    } elseif (strpos($image, 'images/') !== 0 && !preg_match('#^https?://#', $image)) {
+        $image = 'images/' . $image;
+    }
 
     if ($name === '') {
         $error = 'nama produk wajib diisi.';
@@ -25,12 +42,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($stock === '' || !ctype_digit($stock)) {
         $error = 'stok wajib angka bulat >= 0.';
     } else {
-        $stmt = mysqli_prepare($koneksi, 'INSERT INTO products (name, price, stock, category, description) VALUES (?, ?, ?, ?, ?)');
-        mysqli_stmt_bind_param($stmt, 'sdiss', $name, $price, $stock, $category, $description);
-        $ok = mysqli_stmt_execute($stmt);
-        if ($ok) {
-            header('Location: product.php?status=tambah');
-            exit;
+        $colcheck = mysqli_query($koneksi, "SHOW COLUMNS FROM products LIKE 'image'");
+        if ($colcheck && mysqli_num_rows($colcheck) === 0) {
+            mysqli_query($koneksi, "ALTER TABLE products ADD COLUMN image VARCHAR(255) DEFAULT 'images/glock17.png'");
+        }
+
+        $stmt = mysqli_prepare($koneksi, 'INSERT INTO products (name, price, stock, category, description, image) VALUES (?, ?, ?, ?, ?, ?)');
+        if ($stmt) {
+            mysqli_stmt_bind_param($stmt, 'sdisss', $name, $price, $stock, $category, $description, $image);
+            $ok = mysqli_stmt_execute($stmt);
+            if ($ok) {
+                header('Location: product.php?status=tambah');
+                exit;
+            }
         }
         $error = 'gagal menyimpan produk.';
     }
@@ -81,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="error"><?= htmlspecialchars($error) ?></div>
                 <?php endif; ?>
 
-                <form method="post" action="addproduct.php" class="form">
+                <form method="post" action="addproduct.php" class="form" enctype="multipart/form-data">
                     <div class="formrow">
                         <label class="formlabel" for="name">nama produk</label>
                         <input class="forminput" type="text" id="name" name="name" maxlength="100" value="<?= htmlspecialchars($name) ?>" required>
@@ -102,6 +126,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label class="formlabel" for="description">deskripsi</label>
                         <textarea class="forminput" id="description" name="description" rows="3"><?= htmlspecialchars($description) ?></textarea>
                     </div>
+                    <div class="formrow">
+                        <label class="formlabel" for="image">nama / path gambar</label>
+                        <input class="forminput" type="text" id="image" name="image" placeholder="images/glock17.png" value="<?= htmlspecialchars($image) ?>">
+                    </div>
+                    <div class="formrow">
+                        <label class="formlabel" for="imagefile">unggah gambar</label>
+                        <input class="forminput" type="file" id="imagefile" name="imagefile">
+                    </div>
                     <div class="btnwrap">
                         <a href="product.php" class="sidelink">batal</a>
                         <button type="submit" class="enterbtn">simpan</button>
@@ -110,20 +142,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
     </div>
-<script>
-function switchtheme(theme) {
-    document.body.className = "marketpage " + theme;
-    localStorage.setItem("theme", theme);
-}
-var savedtheme = localStorage.getItem("theme");
-if (savedtheme) {
-    document.body.className = "marketpage " + savedtheme;
-    var sel = document.getElementById("themepick");
-    if (sel) {
-        sel.value = savedtheme;
-    }
-}
-</script>
+
+<script src="../../main.js"></script>
 
 </body>
 </html>

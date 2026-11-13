@@ -4,12 +4,16 @@ require_once __DIR__ . '/../../config/database.php';
 
 $cari = trim($_GET['cari'] ?? '');
 if ($cari !== '') {
-    $stmt = mysqli_prepare($koneksi, 'SELECT id, name, price, stock, category, description FROM products WHERE name LIKE CONCAT("%", ?, "%") OR category LIKE CONCAT("%", ?, "%") OR description LIKE CONCAT("%", ?, "%") ORDER BY id');
-    mysqli_stmt_bind_param($stmt, 'sss', $cari, $cari, $cari);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
+    $stmt = mysqli_prepare($koneksi, 'SELECT * FROM products WHERE name LIKE CONCAT("%", ?, "%") OR category LIKE CONCAT("%", ?, "%") OR description LIKE CONCAT("%", ?, "%") ORDER BY id');
+    if ($stmt) {
+        mysqli_stmt_bind_param($stmt, 'sss', $cari, $cari, $cari);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+    } else {
+        $result = mysqli_query($koneksi, 'SELECT * FROM products ORDER BY id');
+    }
 } else {
-    $result = mysqli_query($koneksi, 'SELECT id, name, price, stock, category, description FROM products ORDER BY id');
+    $result = mysqli_query($koneksi, 'SELECT * FROM products ORDER BY id');
 }
 
 $pesan = ['tambah' => 'produk berhasil ditambahkan.', 'edit' => 'produk berhasil diubah.', 'hapus' => 'produk berhasil dihapus.'][$_GET['status'] ?? ''] ?? '';
@@ -70,6 +74,7 @@ $pesan = ['tambah' => 'produk berhasil ditambahkan.', 'edit' => 'produk berhasil
                 <table class="carttable">
                     <tr class="cartheader">
                         <th class="cartcell">id</th>
+                        <th class="cartcell">image</th>
                         <th class="cartcell">name</th>
                         <th class="cartcell">price</th>
                         <th class="cartcell">stock</th>
@@ -79,6 +84,10 @@ $pesan = ['tambah' => 'produk berhasil ditambahkan.', 'edit' => 'produk berhasil
                     <?php while ($p = mysqli_fetch_assoc($result)): ?>
                     <tr class="cartrow">
                         <td class="cartcell"><?= (int) $p['id'] ?></td>
+                        <td class="cartcell">
+                            <?php $imgpath = !empty($p['image']) ? $p['image'] : 'images/glock17.png'; ?>
+                            <img src="../../<?= htmlspecialchars($imgpath) ?>" alt="<?= htmlspecialchars($p['name']) ?>" style="width:40px;height:40px;object-fit:cover;">
+                        </td>
                         <td class="cartcell"><?= htmlspecialchars($p['name']) ?></td>
                         <td class="cartcell"><?= htmlspecialchars(number_format((float) $p['price'], 2)) ?></td>
                         <td class="cartcell"><?= (int) $p['stock'] ?></td>
@@ -86,7 +95,7 @@ $pesan = ['tambah' => 'produk berhasil ditambahkan.', 'edit' => 'produk berhasil
                         <td class="cartcell">
                             <div class="actionrow">
                                 <a href="editproduct.php?id=<?= (int) $p['id'] ?>" class="sidelink">edit</a>
-                                <form method="post" action="delproduct.php" style="display:inline">
+                                <form method="post" action="delproduct.php" style="display:inline" onsubmit="return confirmdelete();">
                                     <input type="hidden" name="id" value="<?= (int) $p['id'] ?>">
                                     <button type="submit" class="enterbtn">del</button>
                                 </form>
@@ -101,16 +110,7 @@ $pesan = ['tambah' => 'produk berhasil ditambahkan.', 'edit' => 'produk berhasil
         </div>
     </div>
 
-<script>
-function switchtheme(theme) {
-    document.body.className = "marketpage " + theme;
-    localStorage.setItem("theme", theme);
-}
-var savedtheme = localStorage.getItem("theme");
-if (savedtheme) {
-    document.body.className = "marketpage " + savedtheme;
-}
-</script>
+<script src="../../main.js"></script>
 
 </body>
 </html>
