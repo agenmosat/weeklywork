@@ -1,6 +1,12 @@
 <?php
 session_start();
 
+session_set_cookie_params([
+    'httponly' => true,
+    'secure' => isset($_SERVER['HTTPS']),
+    'samesite' => 'Lax'
+]);
+
 require_once __DIR__ . '/token.php';
 
 $message = "";
@@ -16,12 +22,12 @@ if (isset($_SESSION['user'])) {
 
 if (isset($_POST['enter'])) {
     $token = $_POST['token'];
-    if (ADMIN_TOKEN !== "" && $token === ADMIN_TOKEN) {
+    if (ADMIN_TOKEN !== "" && hash_equals(ADMIN_TOKEN, $token)) {
         $_SESSION['user'] = "loggedin";
         $_SESSION['role'] = "admin";
         header("Location: admin.php");
         exit();
-    } elseif (USER_TOKEN !== "" && $token === USER_TOKEN) {
+    } elseif (USER_TOKEN !== "" && hash_equals(USER_TOKEN, $token)) {
         $_SESSION['user'] = "loggedin";
         $_SESSION['role'] = "user";
         header("Location: dashboard.php");

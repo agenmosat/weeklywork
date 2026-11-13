@@ -1,6 +1,14 @@
 <?php
 session_start();
 
+session_set_cookie_params([
+    'httponly' => true,
+    'secure' => isset($_SERVER['HTTPS']),
+    'samesite' => 'Lax'
+]);
+
+require_once "items.php";
+
 if (!isset($_SESSION['user'])) {
     header("Location: index.php");
     exit();
@@ -15,16 +23,40 @@ if (isset($_GET['logout'])) {
 $name = isset($_POST['name']) ? htmlspecialchars($_POST['name']) : "john doe";
 $address = isset($_POST['address']) ? htmlspecialchars($_POST['address']) : "123 market street";
 $city = isset($_POST['city']) ? htmlspecialchars($_POST['city']) : "springfield 97477";
-$subtotal = isset($_POST['subtotal']) ? htmlspecialchars($_POST['subtotal']) : "25.00";
-$shipping = isset($_POST['shipping']) ? htmlspecialchars($_POST['shipping']) : "5.00";
-$total = isset($_POST['total']) ? htmlspecialchars($_POST['total']) : "30.00";
 $method = isset($_POST['method']) ? htmlspecialchars($_POST['method']) : "crypto escrow";
+
+$checkoutitems = [];
+$subtotal = 0.0;
+$shipping = 5.00;
+
+if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
+    foreach ($_SESSION['cart'] as $cid => $qty) {
+        if (isset($products[$cid]) && $products[$cid]['stock'] >= $qty) {
+            $p = $products[$cid];
+            $itemtotal = $p['price'] * $qty;
+            $subtotal += $itemtotal;
+            $checkoutitems[] = [
+                "name" => $p['name'],
+                "qty" => $qty,
+                "price" => $p['price'],
+                "total" => $itemtotal
+            ];
+        }
+    }
+}
+
+if (empty($checkoutitems)) {
+    header("Location: cart.php");
+    exit();
+}
+
+$total = $subtotal + $shipping;
 
 if (isset($_SESSION['cart'])) {
     unset($_SESSION['cart']);
 }
 
-$ordernumber = "onion" . rand(10000, 99999);
+$ordernumber = "onion" . bin2hex(random_bytes(8));
 $ispaid = ($method !== "cash on delivery");
 ?>
 <!DOCTYPE html>
