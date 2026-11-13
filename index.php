@@ -1,15 +1,19 @@
 <?php
-session_start();
+require_once __DIR__ . '/session.php';
 
-session_set_cookie_params([
-    'httponly' => true,
-    'secure' => isset($_SERVER['HTTPS']),
-    'samesite' => 'Lax'
-]);
+if (file_exists(__DIR__ . '/token.php')) {
+    require_once __DIR__ . '/token.php';
+} else {
+    require_once __DIR__ . '/token.example.php';
+}
 
-require_once __DIR__ . '/token.php';
+require_once __DIR__ . '/config/database.php';
 
 $message = "";
+
+if (isset($_GET['timeout'])) {
+    $message = "session expired, please login again";
+}
 
 if (isset($_SESSION['user'])) {
     if (isset($_SESSION['role']) && $_SESSION['role'] === "admin") {
@@ -20,34 +24,35 @@ if (isset($_SESSION['user'])) {
     exit();
 }
 
-// Rate limit login attempts
-$ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
-$attempts_key = "login_attempts_$ip";
-if (!isset($_SESSION[$attempts_key])) {
-    $_SESSION[$attempts_key] = ['count' => 0, 'last' => 0];
-}
-$now = time();
-if ($now - $_SESSION[$attempts_key]['last'] > 900) {
-    $_SESSION[$attempts_key]['count'] = 0;
-}
-if ($_SESSION[$attempts_key]['count'] >= 5) {
-    $wait = 900 - ($now - $_SESSION[$attempts_key]['last']);
-    $mins = ceil($wait / 60);
-    $message = "too many attempts, try again in $mins minutes";
-} elseif (isset($_POST['enter'])) {
-    $token = $_POST['token'];
-    if (ADMIN_TOKEN !== "" && hash_equals(ADMIN_TOKEN, $token)) {
-        $_SESSION['user'] = "loggedin";
+if (isset($_POST['enter'])) {
+    $token = trim($_POST['token'] ?? '');
+    if (defined('ADMIN_TOKEN') && ADMIN_TOKEN !== "" && $token === ADMIN_TOKEN) {
+        $_SESSION['user'] = "superroot";
         $_SESSION['role'] = "admin";
         unset($_SESSION[$attempts_key]);
         header("Location: admin.php");
         exit();
-    } elseif (USER_TOKEN !== "" && hash_equals(USER_TOKEN, $token)) {
-        $_SESSION['user'] = "loggedin";
+    } elseif (defined('USER_TOKEN') && USER_TOKEN !== "" && $token === USER_TOKEN) {
+        $_SESSION['user'] = "user";
         $_SESSION['role'] = "user";
         unset($_SESSION[$attempts_key]);
         header("Location: dashboard.php");
         exit();
+    } elseif (isset($koneksi) && $koneksi) {
+        $stmt = mysqli_prepare($koneksi, "SELECT id_kasir, nama_kasir FROM kasir WHERE nama_kasir = ? AND status = 'aktif' LIMIT 1");
+        if ($stmt) {
+            mysqli_stmt_bind_param($stmt, "s", $token);
+            mysqli_stmt_execute($stmt);
+            $res = mysqli_stmt_get_result($stmt);
+            if ($row = mysqli_fetch_assoc($res)) {
+                $_SESSION['user'] = $row['nama_kasir'];
+                $_SESSION['role'] = "cashier";
+                $_SESSION['id_kasir'] = (int)$row['id_kasir'];
+                header("Location: dashboard.php");
+                exit();
+            }
+        }
+        $message = "invalid token";
     } else {
         $_SESSION[$attempts_key]['count']++;
         $_SESSION[$attempts_key]['last'] = $now;
@@ -76,7 +81,7 @@ if (isset($_GET['logout'])) {
         <div class="subtitle">input token to decrypt session</div>
 
         <?php if ($message != ""): ?>
-            <div class="error"><?php echo $message; ?></div>
+            <div class="error"><?php echo htmlspecialchars($message); ?></div>
         <?php endif; ?>
 
         <form action="" method="post" class="form">
@@ -96,28 +101,7 @@ if (isset($_GET['logout'])) {
             </div>
     </div>
 
-<script>
-function toggleshow() {
-    var field = document.getElementById("token");
-    if (field.type === "password") {
-        field.type = "text";
-    } else {
-        field.type = "password";
-    }
-}
-function switchtheme(theme) {
-    document.body.className = "page " + theme;
-    localStorage.setItem("theme", theme);
-}
-var savedtheme = localStorage.getItem("theme");
-if (savedtheme) {
-    document.body.className = "page " + savedtheme;
-    var sel = document.getElementById("themepick");
-    if (sel) {
-        sel.value = savedtheme;
-    }
-}
-</script>
+<script src="main.js"></script>
 
 </body>
 </html>

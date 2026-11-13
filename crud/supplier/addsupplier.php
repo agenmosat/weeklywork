@@ -18,10 +18,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'kota maksimal 30 karakter.';
     } else {
         $stmt = mysqli_prepare($koneksi, 'INSERT INTO supplier (nama_supplier, kota) VALUES (?, ?)');
-        mysqli_stmt_bind_param($stmt, 'ss', $nama_supplier, $kota);
-        if (mysqli_stmt_execute($stmt)) {
-            header('Location: supplier.php?status=tambah');
-            exit;
+        if ($stmt) {
+            mysqli_stmt_bind_param($stmt, 'ss', $nama_supplier, $kota);
+            if (mysqli_stmt_execute($stmt)) {
+                header('Location: supplier.php?status=tambah');
+                exit;
+            }
         }
         $error = 'gagal menyimpan supplier.';
     }
@@ -89,20 +91,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
     </div>
-<script>
-function switchtheme(theme) {
-    document.body.className = "marketpage " + theme;
-    localStorage.setItem("theme", theme);
-}
-var savedtheme = localStorage.getItem("theme");
-if (savedtheme) {
-    document.body.className = "marketpage " + savedtheme;
-    var sel = document.getElementById("themepick");
-    if (sel) {
-        sel.value = savedtheme;
-    }
-}
-</script>
+
+<script src="../../main.js"></script>
 
 </body>
 </html>

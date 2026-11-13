@@ -1,5 +1,7 @@
 <?php
-session_start();
+require_once __DIR__ . '/session.php';
+require_once __DIR__ . '/items.php';
+require_once __DIR__ . '/gateway.php';
 
 session_set_cookie_params([
     'httponly' => true,
@@ -20,44 +22,97 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
-$name = isset($_POST['name']) ? htmlspecialchars($_POST['name']) : "john doe";
-$address = isset($_POST['address']) ? htmlspecialchars($_POST['address']) : "123 market street";
-$city = isset($_POST['city']) ? htmlspecialchars($_POST['city']) : "springfield 97477";
-$method = isset($_POST['method']) ? htmlspecialchars($_POST['method']) : "crypto escrow";
+$name = isset($_POST['name']) ? trim($_POST['name']) : "john doe";
+$address = isset($_POST['address']) ? trim($_POST['address']) : "123 market street";
+$city = isset($_POST['city']) ? trim($_POST['city']) : "springfield 97477";
+$method = isset($_POST['method']) ? trim($_POST['method']) : "crypto escrow";
+$source = isset($_POST['source']) ? trim($_POST['source']) : "cart";
 
-$checkoutitems = [];
+$purchaseditems = [];
 $subtotal = 0.0;
 $shipping = 5.00;
 
-if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
-    foreach ($_SESSION['cart'] as $cid => $qty) {
-        if (isset($products[$cid]) && $products[$cid]['stock'] >= $qty) {
-            $p = $products[$cid];
-            $itemtotal = $p['price'] * $qty;
+if ($source === "direct") {
+    $directid = (int)($_POST['direct_id'] ?? 0);
+    $directqty = max(1, (int)($_POST['direct_qty'] ?? 1));
+    if (isset($products[$directid])) {
+        $p = $products[$directid];
+        $realqty = min($directqty, $p['stock']);
+        if ($realqty > 0) {
+            $itemtotal = $p['price'] * $realqty;
             $subtotal += $itemtotal;
-            $checkoutitems[] = [
+            $purchaseditems[] = [
+                "id" => $p['id'],
                 "name" => $p['name'],
-                "qty" => $qty,
+                "qty" => $realqty,
                 "price" => $p['price'],
                 "total" => $itemtotal
             ];
         }
     }
+} elseif (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
+    foreach ($_SESSION['cart'] as $cid => $qty) {
+        if (isset($products[$cid])) {
+            $p = $products[$cid];
+            $realqty = min((int)$qty, $p['stock']);
+            if ($realqty > 0) {
+                $itemtotal = $p['price'] * $realqty;
+                $subtotal += $itemtotal;
+                $purchaseditems[] = [
+                    "id" => $p['id'],
+                    "name" => $p['name'],
+                    "qty" => $realqty,
+                    "price" => $p['price'],
+                    "total" => $itemtotal
+                ];
+            }
+        }
+    }
 }
 
-if (empty($checkoutitems)) {
+if (empty($purchaseditems)) {
     header("Location: cart.php");
     exit();
 }
 
 $total = $subtotal + $shipping;
+$ordernumber = "onion" . rand(10000, 99999);
+$gatewayres = processgatewaypayment($ordernumber, $total, $method, $name);
+$txnid = $gatewayres['transaction_id'] ?? ("TXN" . rand(10000, 99999));
+$escrowhash = $gatewayres['escrow_hash'] ?? "";
+$gatewaysuccess = $gatewayres['success'] ?? false;
+$ispaid = ($method !== "cash on delivery" && $gatewaysuccess);
+$statuspembayaran = $ispaid ? "paid (escrow)" : ($method === "cash on delivery" ? "pending" : "failed");
 
-if (isset($_SESSION['cart'])) {
-    unset($_SESSION['cart']);
+foreach ($purchaseditems as $item) {
+    $stmtstock = mysqli_prepare($koneksi, "UPDATE products SET stock = GREATEST(0, stock - ?) WHERE id = ?");
+    if ($stmtstock) {
+        mysqli_stmt_bind_param($stmtstock, "ii", $item['qty'], $item['id']);
+        mysqli_stmt_execute($stmtstock);
+    }
 }
 
-$ordernumber = "onion" . bin2hex(random_bytes(8));
-$ispaid = ($method !== "cash on delivery");
+mysqli_query($koneksi, "CREATE TABLE IF NOT EXISTS pesanan (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nomor_pesanan VARCHAR(50) NOT NULL,
+    nama_pembeli VARCHAR(100) NOT NULL,
+    alamat TEXT NOT NULL,
+    total DECIMAL(10,2) NOT NULL,
+    metode_pembayaran VARCHAR(50) NOT NULL,
+    status_pembayaran VARCHAR(50) NOT NULL,
+    tanggal DATETIME DEFAULT CURRENT_TIMESTAMP
+)");
+
+$fulladdress = $address . ", " . $city;
+$stmtpesanan = mysqli_prepare($koneksi, "INSERT INTO pesanan (nomor_pesanan, nama_pembeli, alamat, total, metode_pembayaran, status_pembayaran) VALUES (?, ?, ?, ?, ?, ?)");
+if ($stmtpesanan) {
+    mysqli_stmt_bind_param($stmtpesanan, "sssdss", $ordernumber, $name, $fulladdress, $total, $method, $statuspembayaran);
+    mysqli_stmt_execute($stmtpesanan);
+}
+
+if ($source === "cart") {
+    unset($_SESSION['cart']);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -69,37 +124,10 @@ $ispaid = ($method !== "cash on delivery");
 </head>
 <body class="marketpage themelight">
 
-    <div class="topbar">
-        <div class="brand">darkfonder.net</div>
-        <form action="dashboard.php" method="get" class="searchbox">
-            <input type="text" name="q" placeholder="search items..." class="searchinput">
-            <button type="submit" class="searchbtn">search</button>
-        </form>
-        <div class="themeswitcher">
-            <span class="themelabel">theme</span>
-            <select id="themepick" class="themeselect" onchange="switchtheme(this.value)">
-                <option value="themelight">light</option>
-                <option value="themedark">dark</option>
-            </select>
-        </div>
-        <div class="topnav">
-            <a href="dashboard.php" class="navlink">home</a>
-            <a href="cart.php" class="navlink">cart (0)</a>
-            <a href="dashboard.php?logout=1" class="navlink">logout</a>
-        </div>
-    </div>
+    <?php require __DIR__ . '/topbar.php'; ?>
 
     <div class="layout">
-        <div class="sidebar">
-            <div class="sidetitle">categories</div>
-            <a href="dashboard.php" class="sidelink">all items</a>
-            <a href="dashboard.php?cat=weapons" class="sidelink">weapons (firearms)</a>
-            <a href="dashboard.php?cat=electronics" class="sidelink">electronics</a>
-            <a href="dashboard.php?cat=collectibles" class="sidelink">collectibles</a>
-            <a href="dashboard.php?cat=homegoods" class="sidelink">homegoods</a>
-
-
-        </div>
+        <?php require __DIR__ . '/sidebar.php'; ?>
 
         <div class="content">
             <div class="receiptbox">
@@ -110,31 +138,53 @@ $ispaid = ($method !== "cash on delivery");
 
                 <div class="receiptrow">
                     <span class="detaildesc">order identifier</span>
-                    <span class="itemname">#<?php echo $ordernumber; ?></span>
+                    <span class="itemname">#<?php echo htmlspecialchars($ordernumber); ?></span>
                 </div>
                 <div class="receiptrow">
+                    <span class="detaildesc">gateway transaction id</span>
+                    <span class="itemname"><?php echo htmlspecialchars($txnid); ?></span>
+                </div>
+                <?php if ($escrowhash !== ""): ?>
+                    <div class="receiptrow">
+                        <span class="detaildesc">escrow hash</span>
+                        <span class="detaildesc"><?php echo htmlspecialchars($escrowhash); ?></span>
+                    </div>
+                <?php endif; ?>
+                <div class="receiptrow">
                     <span class="detaildesc">receiver handle</span>
-                    <span class="detaildesc"><?php echo $name; ?></span>
+                    <span class="detaildesc"><?php echo htmlspecialchars($name); ?></span>
                 </div>
                 <div class="receiptrow">
                     <span class="detaildesc">drop coordinates</span>
-                    <span class="detaildesc"><?php echo $address . ", " . $city; ?></span>
+                    <span class="detaildesc"><?php echo htmlspecialchars($fulladdress); ?></span>
+                </div>
+                <div class="receiptrow">
+                    <span class="detaildesc">purchased items</span>
+                    <span class="detaildesc">
+                        <?php
+                        $itemnames = [];
+                        foreach ($purchaseditems as $pi) {
+                            $itemnames[] = htmlspecialchars($pi['name']) . " (x" . $pi['qty'] . ")";
+                        }
+                        echo implode(", ", $itemnames);
+                        ?>
+                    </span>
                 </div>
                 <div class="receiptrow">
                     <span class="detaildesc">subtotal</span>
-                    <span class="detaildesc">$<?php echo $subtotal; ?></span>
+                    <span class="detaildesc">$<?php echo number_format($subtotal, 2); ?></span>
                 </div>
                 <div class="receiptrow">
                     <span class="detaildesc">stealth shipping</span>
-                    <span class="detaildesc">$<?php echo $shipping; ?></span>
+                    <span class="detaildesc">$<?php echo number_format($shipping, 2); ?></span>
                 </div>
                 <div class="receiptrow">
                     <span class="itemname">total</span>
-                    <span class="detailprice">$<?php echo $total; ?></span>
+                    <span class="detailprice">$<?php echo number_format($total, 2); ?></span>
                 </div>
                 <div class="receiptrow">
                     <span class="detaildesc">payment method</span>
-                    <span class="detaildesc"><?php echo $method; ?></span>
+                    <span class="detaildesc"><?php echo htmlspecialchars($method); ?></span>
                 </div>
                 <div class="receiptrow">
                     <span class="detaildesc">escrow status</span>
@@ -145,25 +195,13 @@ $ispaid = ($method !== "cash on delivery");
 
                 <div class="actionrow">
                     <a href="dashboard.php" class="buybtn">continue shopping</a>
+                    <button type="button" onclick="window.print()" class="cartbtn">print invoice</button>
                 </div>
             </div>
         </div>
     </div>
 
-<script>
-function switchtheme(theme) {
-    document.body.className = "marketpage " + theme;
-    localStorage.setItem("theme", theme);
-}
-var savedtheme = localStorage.getItem("theme");
-if (savedtheme) {
-    document.body.className = "marketpage " + savedtheme;
-    var sel = document.getElementById("themepick");
-    if (sel) {
-        sel.value = savedtheme;
-    }
-}
-</script>
+<script src="main.js"></script>
 
 </body>
 </html>

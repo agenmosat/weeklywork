@@ -1,5 +1,6 @@
 <?php
-session_start();
+require_once __DIR__ . '/session.php';
+require_once __DIR__ . '/items.php';
 
 session_set_cookie_params([
     'httponly' => true,
@@ -20,45 +21,35 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
-if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
-    header("Location: cart.php");
-    exit();
-}
+$name = isset($_POST['name']) ? trim($_POST['name']) : "john doe";
+$address = isset($_POST['address']) ? trim($_POST['address']) : "123 market street";
+$city = isset($_POST['city']) ? trim($_POST['city']) : "springfield 97477";
+$source = isset($_POST['source']) ? $_POST['source'] : "cart";
+$directid = isset($_POST['direct_id']) ? (int)$_POST['direct_id'] : 0;
+$directqty = isset($_POST['direct_qty']) ? max(1, (int)$_POST['direct_qty']) : 1;
 
-$checkoutitems = [];
 $subtotal = 0.0;
 $shipping = 5.00;
 
-foreach ($_SESSION['cart'] as $cid => $qty) {
-    if (isset($products[$cid]) && $products[$cid]['stock'] >= $qty) {
-        $p = $products[$cid];
-        $itemtotal = $p['price'] * $qty;
-        $subtotal += $itemtotal;
-        $checkoutitems[] = [
-            "name" => $p['name'],
-            "qty" => $qty,
-            "price" => $p['price'],
-            "total" => $itemtotal
-        ];
+if ($source === "direct" && $directid > 0 && isset($products[$directid])) {
+    $p = $products[$directid];
+    $directqty = min($directqty, $p['stock']);
+    $subtotal = $p['price'] * $directqty;
+} elseif (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
+    foreach ($_SESSION['cart'] as $cid => $qty) {
+        if (isset($products[$cid])) {
+            $p = $products[$cid];
+            $realqty = min((int)$qty, $p['stock']);
+            $subtotal += $p['price'] * $realqty;
+        }
     }
-}
-
-if (empty($checkoutitems)) {
-    header("Location: cart.php");
-    exit();
 }
 
 $total = $subtotal + $shipping;
 
-$name = isset($_POST['name']) ? htmlspecialchars($_POST['name']) : "john doe";
-$address = isset($_POST['address']) ? htmlspecialchars($_POST['address']) : "123 market street";
-$city = isset($_POST['city']) ? htmlspecialchars($_POST['city']) : "springfield 97477";
-
-$cartcount = 0;
-if (isset($_SESSION['cart'])) {
-    foreach ($_SESSION['cart'] as $qty) {
-        $cartcount += $qty;
-    }
+if ($subtotal <= 0) {
+    header("Location: cart.php");
+    exit();
 }
 ?>
 <!DOCTYPE html>
@@ -71,37 +62,10 @@ if (isset($_SESSION['cart'])) {
 </head>
 <body class="marketpage themelight">
 
-    <div class="topbar">
-        <div class="brand">darkfonder.net</div>
-        <form action="dashboard.php" method="get" class="searchbox">
-            <input type="text" name="q" placeholder="search items..." class="searchinput">
-            <button type="submit" class="searchbtn">search</button>
-        </form>
-        <div class="themeswitcher">
-            <span class="themelabel">theme</span>
-            <select id="themepick" class="themeselect" onchange="switchtheme(this.value)">
-                <option value="themelight">light</option>
-                <option value="themedark">dark</option>
-            </select>
-        </div>
-        <div class="topnav">
-            <a href="dashboard.php" class="navlink">home</a>
-            <a href="cart.php" class="navlink">cart (<?php echo $cartcount; ?>)</a>
-            <a href="dashboard.php?logout=1" class="navlink">logout</a>
-        </div>
-    </div>
+    <?php require __DIR__ . '/topbar.php'; ?>
 
     <div class="layout">
-        <div class="sidebar">
-            <div class="sidetitle">categories</div>
-            <a href="dashboard.php" class="sidelink">all items</a>
-            <a href="dashboard.php?cat=weapons" class="sidelink">weapons (firearms)</a>
-            <a href="dashboard.php?cat=electronics" class="sidelink">electronics</a>
-            <a href="dashboard.php?cat=collectibles" class="sidelink">collectibles</a>
-            <a href="dashboard.php?cat=homegoods" class="sidelink">homegoods</a>
-
-
-        </div>
+        <?php require __DIR__ . '/sidebar.php'; ?>
 
         <div class="content">
             <a href="checkout.php" class="backlink">&laquo; back to checkout</a>
@@ -111,9 +75,11 @@ if (isset($_SESSION['cart'])) {
                 <input type="hidden" name="name" value="<?php echo htmlspecialchars($name); ?>">
                 <input type="hidden" name="address" value="<?php echo htmlspecialchars($address); ?>">
                 <input type="hidden" name="city" value="<?php echo htmlspecialchars($city); ?>">
-                <input type="hidden" name="subtotal" value="<?php echo htmlspecialchars($subtotal); ?>">
-                <input type="hidden" name="shipping" value="<?php echo htmlspecialchars($shipping); ?>">
-                <input type="hidden" name="total" value="<?php echo htmlspecialchars($total); ?>">
+                <input type="hidden" name="source" value="<?php echo htmlspecialchars($source); ?>">
+                <?php if ($source === "direct"): ?>
+                    <input type="hidden" name="direct_id" value="<?php echo $directid; ?>">
+                    <input type="hidden" name="direct_qty" value="<?php echo $directqty; ?>">
+                <?php endif; ?>
 
                 <div class="paybox">
                     <div class="receiptnotice">
@@ -160,28 +126,15 @@ if (isset($_SESSION['cart'])) {
                         </label>
                     </div>
 
-                    <div class="summarytotal">amount to pay: $<?php echo htmlspecialchars($total); ?></div>
+                    <div class="summarytotal">amount to pay: $<?php echo number_format($total, 2); ?></div>
 
-                    <button type="submit" class="buybtn">confirm and pay $<?php echo htmlspecialchars($total); ?></button>
+                    <button type="submit" class="buybtn">confirm and pay $<?php echo number_format($total, 2); ?></button>
                 </div>
             </form>
         </div>
     </div>
 
-<script>
-function switchtheme(theme) {
-    document.body.className = "marketpage " + theme;
-    localStorage.setItem("theme", theme);
-}
-var savedtheme = localStorage.getItem("theme");
-if (savedtheme) {
-    document.body.className = "marketpage " + savedtheme;
-    var sel = document.getElementById("themepick");
-    if (sel) {
-        sel.value = savedtheme;
-    }
-}
-</script>
+<script src="main.js"></script>
 
 </body>
 </html>

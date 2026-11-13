@@ -1,13 +1,6 @@
 <?php
-session_start();
-
-session_set_cookie_params([
-    'httponly' => true,
-    'secure' => isset($_SERVER['HTTPS']),
-    'samesite' => 'Lax'
-]);
-
-require_once "items.php";
+require_once __DIR__ . '/session.php';
+require_once __DIR__ . '/items.php';
 
 if (!isset($_SESSION['user'])) {
     header("Location: index.php");
@@ -20,52 +13,108 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
-$cartcount = 0;
-if (isset($_SESSION['cart'])) {
-    foreach ($_SESSION['cart'] as $qty) {
-        $cartcount += $qty;
-    }
-}
-
-$filtered = $products;
 $searchquery = isset($_GET['q']) ? trim($_GET['q']) : "";
 $category = isset($_GET['cat']) ? trim($_GET['cat']) : "";
-$sort = isset($_GET['sort']) ? $_GET['sort'] : "";
+$sort = isset($_GET['sort']) ? trim($_GET['sort']) : "";
+$page = max(1, (int)($_GET['page'] ?? 1));
+$perpage = 6;
+$offset = ($page - 1) * $perpage;
 
-if ($searchquery != "") {
-    $temp = [];
-    foreach ($filtered as $id => $p) {
-        if (stripos($p['name'], $searchquery) !== false || stripos($p['desc'], $searchquery) !== false) {
-            $temp[$id] = $p;
-        }
-    }
-    $filtered = $temp;
+$whereclauses = [];
+$params = [];
+$types = "";
+
+if ($searchquery !== "") {
+    $whereclauses[] = "(name LIKE ? OR description LIKE ?)";
+    $searchterm = "%" . $searchquery . "%";
+    $params[] = $searchterm;
+    $params[] = $searchterm;
+    $types .= "ss";
 }
 
-if ($category != "") {
-    $temp = [];
-    foreach ($filtered as $id => $p) {
-        if (isset($p['category']) && $p['category'] === $category) {
-            $temp[$id] = $p;
-        }
-    }
-    $filtered = $temp;
+if ($category !== "") {
+    $whereclauses[] = "category = ?";
+    $params[] = $category;
+    $types .= "s";
 }
 
+$wherestr = "";
+if (!empty($whereclauses)) {
+    $wherestr = " WHERE " . implode(" AND ", $whereclauses);
+}
+
+$orderstr = " ORDER BY id";
 if ($sort === "low") {
-    $prices = array_column($filtered, 'price');
-    array_multisort($prices, SORT_ASC, $filtered);
+    $orderstr = " ORDER BY price ASC";
 } elseif ($sort === "high") {
-    $prices = array_column($filtered, 'price');
-    array_multisort($prices, SORT_DESC, $filtered);
+    $orderstr = " ORDER BY price DESC";
 } elseif ($sort === "name") {
-    $names = array_column($filtered, 'name');
-    array_multisort($names, SORT_ASC, $filtered);
+    $orderstr = " ORDER BY name ASC";
 }
 
-$catparam = "";
-if ($category != "") {
-    $catparam = "&cat=" . urlencode($category);
+$countsql = "SELECT COUNT(*) AS total FROM products" . $wherestr;
+$totalitems = 0;
+if (empty($params)) {
+    $countres = mysqli_query($koneksi, $countsql);
+    if ($countres) {
+        $totalrow = mysqli_fetch_assoc($countres);
+        $totalitems = (int) $totalrow['total'];
+    }
+} else {
+    $stmt = mysqli_prepare($koneksi, $countsql);
+    if ($stmt) {
+        mysqli_stmt_bind_param($stmt, $types, ...$params);
+        mysqli_stmt_execute($stmt);
+        $countres = mysqli_stmt_get_result($stmt);
+        if ($countres) {
+            $totalrow = mysqli_fetch_assoc($countres);
+            $totalitems = (int) $totalrow['total'];
+        }
+    }
+}
+
+$totalpages = max(1, (int)ceil($totalitems / $perpage));
+if ($page > $totalpages) {
+    $page = $totalpages;
+    $offset = ($page - 1) * $perpage;
+}
+
+$datasql = "SELECT * FROM products" . $wherestr . $orderstr . " LIMIT " . (int)$perpage . " OFFSET " . (int)$offset;
+if (empty($params)) {
+    $result = mysqli_query($koneksi, $datasql);
+} else {
+    $stmt = mysqli_prepare($koneksi, $datasql);
+    if ($stmt) {
+        mysqli_stmt_bind_param($stmt, $types, ...$params);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+    } else {
+        $result = false;
+    }
+}
+
+$filtered = [];
+if ($result) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $id = (int)$row['id'];
+        $name = strtolower(trim($row['name']));
+        $img = !empty($row['image']) ? $row['image'] : ($images[$name] ?? "images/glock17.png");
+        $filtered[] = [
+            "id" => $id,
+            "name" => $row['name'],
+            "price" => (float)$row['price'],
+            "stock" => (int)$row['stock'],
+            "category" => $row['category'],
+            "image" => $img,
+            "desc" => $row['description']
+        ];
+    }
+}
+
+function pageurl($p) {
+    $query = $_GET;
+    $query['page'] = $p;
+    return 'dashboard.php?' . http_build_query($query);
 }
 ?>
 <!DOCTYPE html>
@@ -78,41 +127,10 @@ if ($category != "") {
 </head>
 <body class="marketpage themelight">
 
-    <div class="topbar">
-        <div class="brand">darkfonder.net</div>
-        <form action="dashboard.php" method="get" class="searchbox">
-            <input type="text" name="q" placeholder="search items..." class="searchinput" value="<?php echo htmlspecialchars($searchquery); ?>">
-            <button type="submit" class="searchbtn">search</button>
-        </form>
-        <div class="themeswitcher">
-            <span class="themelabel">theme</span>
-            <select id="themepick" class="themeselect" onchange="switchtheme(this.value)">
-                <option value="themelight">light</option>
-                <option value="themedark">dark</option>
-            </select>
-        </div>
-        <div class="topnav">
-            <a href="dashboard.php" class="navlink">home</a>
-            <?php if (isset($_SESSION['role']) && $_SESSION['role'] === "admin"): ?>
-                <a href="admin.php" class="navlink">admin</a>
-            <?php endif; ?>
-            <a href="cart.php" class="navlink">cart (<?php echo $cartcount; ?>)</a>
-            <a href="dashboard.php?logout=1" class="navlink">logout</a>
-        </div>
-    </div>
+    <?php require __DIR__ . '/topbar.php'; ?>
 
     <div class="layout">
-        <div class="sidebar">
-            <div class="sidetitle">categories</div>
-            <a href="dashboard.php" class="sidelink">all items</a>
-
-            <div class="sidetitle">sort by</div>
-            <a href="dashboard.php?sort=low<?php echo $catparam; ?>" class="sidelink">price: low to high</a>
-            <a href="dashboard.php?sort=high<?php echo $catparam; ?>" class="sidelink">price: high to low</a>
-            <a href="dashboard.php?sort=name<?php echo $catparam; ?>" class="sidelink">name: a to z</a>
-
-
-        </div>
+        <?php require __DIR__ . '/sidebar.php'; ?>
 
         <div class="content">
             <div class="heading">
@@ -151,24 +169,29 @@ if ($category != "") {
                         </div>
                     <?php endforeach; ?>
                 </div>
+
+                <?php if ($totalpages > 1): ?>
+                    <div class="pagination">
+                        <?php if ($page > 1): ?>
+                            <a href="<?php echo htmlspecialchars(pageurl($page - 1)); ?>" class="pagelink">&laquo; prev</a>
+                        <?php endif; ?>
+                        <?php for ($i = 1; $i <= $totalpages; $i++): ?>
+                            <?php if ($i === $page): ?>
+                                <span class="pageactive"><?php echo $i; ?></span>
+                            <?php else: ?>
+                                <a href="<?php echo htmlspecialchars(pageurl($i)); ?>" class="pagelink"><?php echo $i; ?></a>
+                            <?php endif; ?>
+                        <?php endfor; ?>
+                        <?php if ($page < $totalpages): ?>
+                            <a href="<?php echo htmlspecialchars(pageurl($page + 1)); ?>" class="pagelink">next &raquo;</a>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
             <?php endif; ?>
         </div>
     </div>
 
-<script>
-function switchtheme(theme) {
-    document.body.className = "marketpage " + theme;
-    localStorage.setItem("theme", theme);
-}
-var savedtheme = localStorage.getItem("theme");
-if (savedtheme) {
-    document.body.className = "marketpage " + savedtheme;
-    var sel = document.getElementById("themepick");
-    if (sel) {
-        sel.value = savedtheme;
-    }
-}
-</script>
+<script src="main.js"></script>
 
 </body>
 </html>

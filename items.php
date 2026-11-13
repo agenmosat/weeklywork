@@ -13,18 +13,19 @@ $images = [
     "tactical combat knife" => "images/tusuk.jpg",
 ];
 
-$result = mysqli_query($koneksi, "SELECT id, name, price, stock, category, description FROM products ORDER BY id");
+$result = mysqli_query($koneksi, "SELECT * FROM products ORDER BY id");
 if ($result) {
     while ($row = mysqli_fetch_assoc($result)) {
         $id = (int) $row['id'];
         $name = strtolower(trim($row['name']));
+        $img = !empty($row['image']) ? $row['image'] : ($images[$name] ?? "images/glock17.png");
         $products[$id] = [
             "id" => $id,
             "name" => $row['name'],
             "price" => (float) $row['price'],
             "stock" => (int) $row['stock'],
             "category" => $row['category'],
-            "image" => $images[$name] ?? "images/glock17.png",
+            "image" => $img,
             "desc" => $row['description'],
         ];
     }

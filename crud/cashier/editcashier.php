@@ -2,51 +2,61 @@
 require_once __DIR__ . '/../guard.php';
 require_once __DIR__ . '/../../config/database.php';
 
-$id = (int) ($_GET['id_kasir'] ?? 0);
+$id_kasir = (int) ($_GET['id_kasir'] ?? 0);
 $error = '';
 $nama_kasir = '';
 $status = '';
-$tanggal_keluar = '';
+$tanggal_keluar = null;
 
-if ($id <= 0) {
+if ($id_kasir <= 0) {
     header('Location: cashier.php');
     exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id = (int) ($_POST['id_kasir'] ?? 0);
+    $id_kasir = (int) ($_POST['id_kasir'] ?? 0);
     $nama_kasir = trim($_POST['nama_kasir'] ?? '');
     $status = trim($_POST['status'] ?? '');
     $tanggal_keluar = trim($_POST['tanggal_keluar'] ?? '');
+    if ($tanggal_keluar === '') {
+        $tanggal_keluar = null;
+    }
 
-    if ($id <= 0 || $nama_kasir === '') {
+    if ($id_kasir <= 0 || $nama_kasir === '') {
         $error = 'nama kasir wajib diisi.';
     } elseif (mb_strlen($nama_kasir) > 50) {
         $error = 'nama kasir maksimal 50 karakter.';
     } elseif (!in_array($status, ['aktif', 'nonaktif'], true)) {
         $error = 'status harus aktif atau nonaktif.';
     } else {
-        $tgl = ($tanggal_keluar === '') ? null : $tanggal_keluar;
         $stmt = mysqli_prepare($koneksi, 'UPDATE kasir SET nama_kasir = ?, status = ?, tanggal_keluar = ? WHERE id_kasir = ?');
-        mysqli_stmt_bind_param($stmt, 'sssi', $nama_kasir, $status, $tgl, $id);
-        if (mysqli_stmt_execute($stmt)) {
-            header('Location: cashier.php?status=edit');
-            exit;
+        if ($stmt) {
+            mysqli_stmt_bind_param($stmt, 'sssi', $nama_kasir, $status, $tanggal_keluar, $id_kasir);
+            if (mysqli_stmt_execute($stmt)) {
+                header('Location: cashier.php?status=edit');
+                exit;
+            }
         }
         $error = 'gagal mengubah kasir.';
     }
 } else {
     $stmt = mysqli_prepare($koneksi, 'SELECT id_kasir, nama_kasir, status, tanggal_keluar FROM kasir WHERE id_kasir = ?');
-    mysqli_stmt_bind_param($stmt, 'i', $id);
-    mysqli_stmt_execute($stmt);
-    $row = mysqli_stmt_get_result($stmt)->fetch_assoc();
+    $row = null;
+    if ($stmt) {
+        mysqli_stmt_bind_param($stmt, 'i', $id_kasir);
+        mysqli_stmt_execute($stmt);
+        $res = mysqli_stmt_get_result($stmt);
+        if ($res) {
+            $row = mysqli_fetch_assoc($res);
+        }
+    }
     if (!$row) {
         header('Location: cashier.php');
         exit;
     }
     $nama_kasir = $row['nama_kasir'];
     $status = $row['status'];
-    $tanggal_keluar = $row['tanggal_keluar'] ?? '';
+    $tanggal_keluar = $row['tanggal_keluar'];
 }
 ?>
 <!DOCTYPE html>
@@ -81,12 +91,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="sidetitle">admin menu</div>
             <a href="../../admin.php" class="sidelink">dashboard</a>
             <a href="../product/product.php" class="sidelink">product</a>
-            <a href="../supplier/supplier.php" class="sidelink">supplier</a>
             <a href="cashier.php" class="sidelink">cashier</a>
+            <a href="../supplier/supplier.php" class="sidelink">supplier</a>
         </div>
 
         <div class="content">
-            <div class="heading">crud cashier - edit #<?= (int) $id ?></div>
+            <div class="heading">crud cashier - edit #<?= (int) $id_kasir ?></div>
             <div class="emptybox formbox">
                 <div class="sidetitle">form edit kasir</div>
 
@@ -94,8 +104,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="error"><?= htmlspecialchars($error) ?></div>
                 <?php endif; ?>
 
-                <form method="post" action="editcashier.php?id_kasir=<?= (int) $id ?>" class="form">
-                    <input type="hidden" name="id_kasir" value="<?= (int) $id ?>">
+                <form method="post" action="editcashier.php?id_kasir=<?= (int) $id_kasir ?>" class="form">
+                    <input type="hidden" name="id_kasir" value="<?= (int) $id_kasir ?>">
                     <div class="formrow">
                         <label class="formlabel" for="nama_kasir">nama kasir</label>
                         <input class="forminput" type="text" id="nama_kasir" name="nama_kasir" maxlength="50" value="<?= htmlspecialchars($nama_kasir) ?>" required>
@@ -108,8 +118,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </select>
                     </div>
                     <div class="formrow">
-                        <label class="formlabel" for="tanggal_keluar">tanggal keluar</label>
-                        <input class="forminput" type="date" id="tanggal_keluar" name="tanggal_keluar" value="<?= htmlspecialchars($tanggal_keluar) ?>">
+                        <label class="formlabel" for="tanggal_keluar">tgl keluar (opsional)</label>
+                        <input class="forminput" type="date" id="tanggal_keluar" name="tanggal_keluar" value="<?= htmlspecialchars($tanggal_keluar ?? '') ?>">
                     </div>
                     <div class="btnwrap">
                         <a href="cashier.php" class="sidelink">batal</a>
@@ -119,20 +129,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
     </div>
-<script>
-function switchtheme(theme) {
-    document.body.className = "marketpage " + theme;
-    localStorage.setItem("theme", theme);
-}
-var savedtheme = localStorage.getItem("theme");
-if (savedtheme) {
-    document.body.className = "marketpage " + savedtheme;
-    var sel = document.getElementById("themepick");
-    if (sel) {
-        sel.value = savedtheme;
-    }
-}
-</script>
+
+<script src="../../main.js"></script>
 
 </body>
 </html>

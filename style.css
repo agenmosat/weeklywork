@@ -918,3 +918,91 @@ body.themedark .imagebox {
     font-size: 11px;
     text-align: center;
 }
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    margin-top: 16px;
+}
+
+.pagelink {
+    display: inline-block;
+    padding: 3px 8px;
+    border: 1px solid var(--border);
+    background-color: var(--btnbg);
+    color: var(--btntext);
+    font-size: 11px;
+}
+
+.pagelink:hover {
+    border-color: var(--borderhover);
+}
+
+.pageactive {
+    display: inline-block;
+    padding: 3px 8px;
+    border: 1px solid var(--brand);
+    background-color: var(--brand);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .layout {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+    .topbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        height: auto;
+    }
+    .searchbox {
+        width: 100%;
+    }
+    .topnav {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    .grid {
+        justify-content: center;
+    }
+    .item {
+        width: 100%;
+        max-width: 100%;
+    }
+    .carttable {
+        display: block;
+        overflow-x: auto;
+    }
+    .detailbox {
+        flex-direction: column;
+    }
+    .detailimage {
+        width: 100%;
+    }
+}
+
+@media print {
+    .topbar, .sidebar, .actionrow, .themeswitcher, .backlink, .cornerlink {
+        display: none !important;
+    }
+    .layout {
+        border: none !important;
+    }
+    .content {
+        padding: 0 !important;
+    }
+    .receiptbox {
+        max-width: 100% !important;
+        border: 1px solid #000000 !important;
+    }
+}

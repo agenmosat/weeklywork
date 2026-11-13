@@ -2,22 +2,22 @@
 require_once __DIR__ . '/../guard.php';
 require_once __DIR__ . '/../../config/database.php';
 
-$id = (int) ($_GET['id_supplier'] ?? 0);
+$id_supplier = (int) ($_GET['id_supplier'] ?? 0);
 $error = '';
 $nama_supplier = '';
 $kota = '';
 
-if ($id <= 0) {
+if ($id_supplier <= 0) {
     header('Location: supplier.php');
     exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id = (int) ($_POST['id_supplier'] ?? 0);
+    $id_supplier = (int) ($_POST['id_supplier'] ?? 0);
     $nama_supplier = trim($_POST['nama_supplier'] ?? '');
     $kota = trim($_POST['kota'] ?? '');
 
-    if ($id <= 0 || $nama_supplier === '') {
+    if ($id_supplier <= 0 || $nama_supplier === '') {
         $error = 'nama supplier wajib diisi.';
     } elseif (mb_strlen($nama_supplier) > 50) {
         $error = 'nama supplier maksimal 50 karakter.';
@@ -25,18 +25,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'kota maksimal 30 karakter.';
     } else {
         $stmt = mysqli_prepare($koneksi, 'UPDATE supplier SET nama_supplier = ?, kota = ? WHERE id_supplier = ?');
-        mysqli_stmt_bind_param($stmt, 'ssi', $nama_supplier, $kota, $id);
-        if (mysqli_stmt_execute($stmt)) {
-            header('Location: supplier.php?status=edit');
-            exit;
+        if ($stmt) {
+            mysqli_stmt_bind_param($stmt, 'ssi', $nama_supplier, $kota, $id_supplier);
+            if (mysqli_stmt_execute($stmt)) {
+                header('Location: supplier.php?status=edit');
+                exit;
+            }
         }
         $error = 'gagal mengubah supplier.';
     }
 } else {
     $stmt = mysqli_prepare($koneksi, 'SELECT id_supplier, nama_supplier, kota FROM supplier WHERE id_supplier = ?');
-    mysqli_stmt_bind_param($stmt, 'i', $id);
-    mysqli_stmt_execute($stmt);
-    $row = mysqli_stmt_get_result($stmt)->fetch_assoc();
+    $row = null;
+    if ($stmt) {
+        mysqli_stmt_bind_param($stmt, 'i', $id_supplier);
+        mysqli_stmt_execute($stmt);
+        $res = mysqli_stmt_get_result($stmt);
+        if ($res) {
+            $row = mysqli_fetch_assoc($res);
+        }
+    }
     if (!$row) {
         header('Location: supplier.php');
         exit;
@@ -82,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <div class="content">
-            <div class="heading">crud supplier - edit #<?= (int) $id ?></div>
+            <div class="heading">crud supplier - edit #<?= (int) $id_supplier ?></div>
             <div class="emptybox formbox">
                 <div class="sidetitle">form edit supplier</div>
 
@@ -90,8 +98,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="error"><?= htmlspecialchars($error) ?></div>
                 <?php endif; ?>
 
-                <form method="post" action="editsupplier.php?id_supplier=<?= (int) $id ?>" class="form">
-                    <input type="hidden" name="id_supplier" value="<?= (int) $id ?>">
+                <form method="post" action="editsupplier.php?id_supplier=<?= (int) $id_supplier ?>" class="form">
+                    <input type="hidden" name="id_supplier" value="<?= (int) $id_supplier ?>">
                     <div class="formrow">
                         <label class="formlabel" for="nama_supplier">nama supplier</label>
                         <input class="forminput" type="text" id="nama_supplier" name="nama_supplier" maxlength="50" value="<?= htmlspecialchars($nama_supplier) ?>" required>
@@ -108,20 +116,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
     </div>
-<script>
-function switchtheme(theme) {
-    document.body.className = "marketpage " + theme;
-    localStorage.setItem("theme", theme);
-}
-var savedtheme = localStorage.getItem("theme");
-if (savedtheme) {
-    document.body.className = "marketpage " + savedtheme;
-    var sel = document.getElementById("themepick");
-    if (sel) {
-        sel.value = savedtheme;
-    }
-}
-</script>
+
+<script src="../../main.js"></script>
 
 </body>
 </html>
