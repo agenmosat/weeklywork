@@ -1,5 +1,13 @@
 <?php
 session_start();
+
+// Secure session cookies
+session_set_cookie_params([
+    'httponly' => true,
+    'secure' => isset($_SERVER['HTTPS']),
+    'samesite' => 'Lax'
+]);
+
 require_once "items.php";
 
 if (!isset($_SESSION['user'])) {
@@ -20,7 +28,7 @@ $shipping = 5.00;
 if (isset($_GET['id'])) {
     $directid = (int)$_GET['id'];
     $directqty = isset($_GET['qty']) ? max(1, (int)$_GET['qty']) : 1;
-    if (isset($products[$directid])) {
+    if (isset($products[$directid]) && $products[$directid]['stock'] >= $directqty) {
         $p = $products[$directid];
         $itemtotal = $p['price'] * $directqty;
         $checkoutitems[] = [
@@ -33,7 +41,7 @@ if (isset($_GET['id'])) {
     }
 } elseif (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
     foreach ($_SESSION['cart'] as $cid => $qty) {
-        if (isset($products[$cid])) {
+        if (isset($products[$cid]) && $products[$cid]['stock'] >= $qty) {
             $p = $products[$cid];
             $itemtotal = $p['price'] * $qty;
             $subtotal += $itemtotal;
