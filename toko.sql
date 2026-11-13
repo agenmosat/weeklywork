@@ -1,9 +1,3 @@
--- toko.sql
--- ekstraksi database toko untuk import ulang di project lain
-
-CREATE DATABASE IF NOT EXISTS toko CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE toko;
-
 CREATE TABLE IF NOT EXISTS products (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,

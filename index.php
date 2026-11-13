@@ -64,10 +64,6 @@ if (isset($_GET['logout'])) {
         </form>
     </div>
 
-    <a href="https://id.pinterest.com/pin/1027102258785807962/" target="_blank" class="cornerlink">
-        <img src="https://id.pinterest.com/pin/1027102258785807962/" alt="ref" class="cornerimage">
-    </a>
-
 <script>
 function toggleshow() {
     var field = document.getElementById("token");
