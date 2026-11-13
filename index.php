@@ -69,7 +69,7 @@ if (isset($_GET['logout'])) {
     <title>secret</title>
     <link rel="stylesheet" href="style.css?v=3">
 </head>
-<body class="page">
+<body class="page themelight">
 
     <div class="card">
         <div class="title">access restricted</div>
@@ -86,8 +86,14 @@ if (isset($_GET['logout'])) {
             </div>
             <div class="btnwrap">
                 <button type="submit" name="enter" class="enterbtn">enter</button>
+                <div class="themeswitcher">
+                    <span class="themelabel">theme</span>
+                    <select id="themepick" class="themeselect" onchange="switchtheme(this.value)">
+                        <option value="themelight">light</option>
+                        <option value="themedark">dark</option>
+                    </select>
+                </div>
             </div>
-        </form>
     </div>
 
 <script>
@@ -97,6 +103,18 @@ function toggleshow() {
         field.type = "text";
     } else {
         field.type = "password";
+    }
+}
+function switchtheme(theme) {
+    document.body.className = "page " + theme;
+    localStorage.setItem("theme", theme);
+}
+var savedtheme = localStorage.getItem("theme");
+if (savedtheme) {
+    document.body.className = "page " + savedtheme;
+    var sel = document.getElementById("themepick");
+    if (sel) {
+        sel.value = savedtheme;
     }
 }
 </script>
