@@ -1,4 +1,4 @@
-1. darkmode masih kasar (benarkan) status : issued
+1. darkmode masih kasar (benarkan) status : fixed
 2. barang-barang irrelevant (hilangkan) status : fixed
 3. kategori-kategori irrelevant (hilangkan) status : fixed
 4. gambar-gambar masih kosong (tambahkan) status : fixed
