@@ -1,9 +1,19 @@
 <?php
-session_start();
+require_once __DIR__ . '/session.php';
 
-require_once __DIR__ . '/token.php';
+if (file_exists(__DIR__ . '/token.php')) {
+    require_once __DIR__ . '/token.php';
+} else {
+    require_once __DIR__ . '/token.example.php';
+}
+
+require_once __DIR__ . '/config/database.php';
 
 $message = "";
+
+if (isset($_GET['timeout'])) {
+    $message = "session expired, please login again";
+}
 
 if (isset($_SESSION['user'])) {
     if (isset($_SESSION['role']) && $_SESSION['role'] === "admin") {
@@ -15,18 +25,37 @@ if (isset($_SESSION['user'])) {
 }
 
 if (isset($_POST['enter'])) {
-    $token = $_POST['token'];
-    if (ADMIN_TOKEN !== "" && $token === ADMIN_TOKEN) {
-        $_SESSION['user'] = "loggedin";
+    $token = trim($_POST['token'] ?? '');
+    if (defined('ADMIN_TOKEN') && ADMIN_TOKEN !== "" && $token === ADMIN_TOKEN) {
+        $_SESSION['user'] = "superroot";
         $_SESSION['role'] = "admin";
+        unset($_SESSION[$attempts_key]);
         header("Location: admin.php");
         exit();
-    } elseif (USER_TOKEN !== "" && $token === USER_TOKEN) {
-        $_SESSION['user'] = "loggedin";
+    } elseif (defined('USER_TOKEN') && USER_TOKEN !== "" && $token === USER_TOKEN) {
+        $_SESSION['user'] = "user";
         $_SESSION['role'] = "user";
+        unset($_SESSION[$attempts_key]);
         header("Location: dashboard.php");
         exit();
+    } elseif (isset($koneksi) && $koneksi) {
+        $stmt = mysqli_prepare($koneksi, "SELECT id_kasir, nama_kasir FROM kasir WHERE nama_kasir = ? AND status = 'aktif' LIMIT 1");
+        if ($stmt) {
+            mysqli_stmt_bind_param($stmt, "s", $token);
+            mysqli_stmt_execute($stmt);
+            $res = mysqli_stmt_get_result($stmt);
+            if ($row = mysqli_fetch_assoc($res)) {
+                $_SESSION['user'] = $row['nama_kasir'];
+                $_SESSION['role'] = "cashier";
+                $_SESSION['id_kasir'] = (int)$row['id_kasir'];
+                header("Location: dashboard.php");
+                exit();
+            }
+        }
+        $message = "invalid token";
     } else {
+        $_SESSION[$attempts_key]['count']++;
+        $_SESSION[$attempts_key]['last'] = $now;
         $message = "invalid token";
     }
 }
@@ -45,14 +74,14 @@ if (isset($_GET['logout'])) {
     <title>secret</title>
     <link rel="stylesheet" href="style.css?v=3">
 </head>
-<body class="page">
+<body class="page themelight">
 
     <div class="card">
         <div class="title">access restricted</div>
         <div class="subtitle">input token to decrypt session</div>
 
         <?php if ($message != ""): ?>
-            <div class="error"><?php echo $message; ?></div>
+            <div class="error"><?php echo htmlspecialchars($message); ?></div>
         <?php endif; ?>
 
         <form action="" method="post" class="form">
@@ -62,20 +91,17 @@ if (isset($_GET['logout'])) {
             </div>
             <div class="btnwrap">
                 <button type="submit" name="enter" class="enterbtn">enter</button>
+                <div class="themeswitcher">
+                    <span class="themelabel">theme</span>
+                    <select id="themepick" class="themeselect" onchange="switchtheme(this.value)">
+                        <option value="themelight">light</option>
+                        <option value="themedark">dark</option>
+                    </select>
+                </div>
             </div>
-        </form>
     </div>
 
-<script>
-function toggleshow() {
-    var field = document.getElementById("token");
-    if (field.type === "password") {
-        field.type = "text";
-    } else {
-        field.type = "password";
-    }
-}
-</script>
+<script src="main.js"></script>
 
 </body>
 </html>

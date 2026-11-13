@@ -4,7 +4,8 @@ CREATE TABLE products (
     price DECIMAL(10,2) NOT NULL,
     stock INT NOT NULL,
     category VARCHAR(50) NOT NULL,
-    description TEXT NOT NULL
+    description TEXT NOT NULL,
+    image VARCHAR(255) DEFAULT 'images/glock17.png'
 );
 
 CREATE TABLE kasir (
@@ -20,12 +21,23 @@ CREATE TABLE supplier (
     kota VARCHAR(30) DEFAULT NULL
 );
 
-INSERT INTO products (name, price, stock, category, description) VALUES
-('glock 19 gen 5', 520.00, 14, 'weapons', 'compact 9mm semi automatic pistol with stripped serial numbers and two 15 round magazines.'),
-('ak47 assault rifle', 950.00, 8, 'weapons', '7.62x39mm automatic rifle with folding stock, threaded muzzle and two 30 round magazines.'),
-('colt m4a1 carbine', 1300.00, 5, 'weapons', '5.56x45mm military grade carbine with picatinny rail system and unmarked receiver.'),
-('remington 870 shotgun', 460.00, 12, 'weapons', '12 gauge pump action tactical shotgun with short barrel and heat shield.'),
-('mp5 submachine gun', 1400.00, 4, 'weapons', 'compact 9mm submachine gun with retractable stock and threaded barrel for suppressor.'),
-('desert eagle 50ae', 1650.00, 3, 'weapons', 'heavy .50 ae semi automatic handgun with matte black tactical coat and clean barrel.'),
-('sig sauer p320', 580.00, 10, 'weapons', 'modular 9mm combat pistol with night sights and ambidextrous slide lock.'),
-('tactical combat knife', 75.00, 20, 'weapons', 'full tang blackened steel combat knife with serrated spine and kydex sheath.');
+CREATE TABLE pesanan (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nomor_pesanan VARCHAR(50) NOT NULL,
+    nama_pembeli VARCHAR(100) NOT NULL,
+    alamat TEXT NOT NULL,
+    total DECIMAL(10,2) NOT NULL,
+    metode_pembayaran VARCHAR(50) NOT NULL,
+    status_pembayaran VARCHAR(50) NOT NULL,
+    tanggal DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO products (name, price, stock, category, description, image) VALUES
+('glock 19 gen 5', 520.00, 14, 'weapons', 'compact 9mm semi automatic pistol with stripped serial numbers and two 15 round magazines.', 'images/glock17.png'),
+('ak47 assault rifle', 950.00, 8, 'weapons', '7.62x39mm automatic rifle with folding stock, threaded muzzle and two 30 round magazines.', 'images/ak47.jpg'),
+('colt m4a1 carbine', 1300.00, 5, 'weapons', '5.56x45mm military grade carbine with picatinny rail system and unmarked receiver.', 'images/coltm4.jpg'),
+('remington 870 shotgun', 460.00, 12, 'weapons', '12 gauge pump action tactical shotgun with short barrel and heat shield.', 'images/remington870.jpg'),
+('mp5 submachine gun', 1400.00, 4, 'weapons', 'compact 9mm submachine gun with retractable stock and threaded barrel for suppressor.', 'images/mp5mchine.jpg'),
+('desert eagle 50ae', 1650.00, 3, 'weapons', 'heavy .50 ae semi automatic handgun with matte black tactical coat and clean barrel.', 'images/deserteagle50.jpg'),
+('sig sauer p320', 580.00, 10, 'weapons', 'modular 9mm combat pistol with night sights and ambidextrous slide lock.', 'images/sigsauer.jpg'),
+('tactical combat knife', 75.00, 20, 'weapons', 'full tang blackened steel combat knife with serrated spine and kydex sheath.', 'images/tusuk.jpg');

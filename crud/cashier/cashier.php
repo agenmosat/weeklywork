@@ -5,14 +5,18 @@ require_once __DIR__ . '/../../config/database.php';
 $cari = trim($_GET['cari'] ?? '');
 if ($cari !== '') {
     $stmt = mysqli_prepare($koneksi, 'SELECT id_kasir, nama_kasir, status, tanggal_keluar FROM kasir WHERE nama_kasir LIKE CONCAT("%", ?, "%") ORDER BY id_kasir');
-    mysqli_stmt_bind_param($stmt, 's', $cari);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
+    if ($stmt) {
+        mysqli_stmt_bind_param($stmt, 's', $cari);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+    } else {
+        $result = mysqli_query($koneksi, 'SELECT id_kasir, nama_kasir, status, tanggal_keluar FROM kasir ORDER BY id_kasir');
+    }
 } else {
     $result = mysqli_query($koneksi, 'SELECT id_kasir, nama_kasir, status, tanggal_keluar FROM kasir ORDER BY id_kasir');
 }
 
-$pesan = ['tambah' => 'kasir berhasil ditambahkan.', 'edit' => 'kasir berhasil diubah.', 'hapus' => 'kasir berhasil dihapus.'][$_GET['status'] ?? ''] ?? '';
+$pesan = ['tambah' => 'kasir berhasil ditambahkan.', 'edit' => 'kasir berhasil diubah.', 'hapus' => 'kasir berhasil diubah statusnya.'][$_GET['status'] ?? ''] ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,8 +50,8 @@ $pesan = ['tambah' => 'kasir berhasil ditambahkan.', 'edit' => 'kasir berhasil d
             <div class="sidetitle">admin menu</div>
             <a href="../../admin.php" class="sidelink">dashboard</a>
             <a href="../product/product.php" class="sidelink">product</a>
-            <a href="../supplier/supplier.php" class="sidelink">supplier</a>
             <a href="cashier.php" class="sidelink">cashier</a>
+            <a href="../supplier/supplier.php" class="sidelink">supplier</a>
         </div>
 
         <div class="content">
@@ -84,7 +88,7 @@ $pesan = ['tambah' => 'kasir berhasil ditambahkan.', 'edit' => 'kasir berhasil d
                         <td class="cartcell">
                             <div class="actionrow">
                                 <a href="editcashier.php?id_kasir=<?= (int) $k['id_kasir'] ?>" class="sidelink">edit</a>
-                                <form method="post" action="offcashier.php" style="display:inline">
+                                <form method="post" action="offcashier.php" style="display:inline" onsubmit="return confirmoff();">
                                     <input type="hidden" name="id_kasir" value="<?= (int) $k['id_kasir'] ?>">
                                     <button type="submit" class="enterbtn">off</button>
                                 </form>
@@ -98,20 +102,8 @@ $pesan = ['tambah' => 'kasir berhasil ditambahkan.', 'edit' => 'kasir berhasil d
             </div>
         </div>
     </div>
-<script>
-function switchtheme(theme) {
-    document.body.className = "marketpage " + theme;
-    localStorage.setItem("theme", theme);
-}
-var savedtheme = localStorage.getItem("theme");
-if (savedtheme) {
-    document.body.className = "marketpage " + savedtheme;
-    var sel = document.getElementById("themepick");
-    if (sel) {
-        sel.value = savedtheme;
-    }
-}
-</script>
+
+<script src="../../main.js"></script>
 
 </body>
 </html>

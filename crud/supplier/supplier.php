@@ -5,9 +5,13 @@ require_once __DIR__ . '/../../config/database.php';
 $cari = trim($_GET['cari'] ?? '');
 if ($cari !== '') {
     $stmt = mysqli_prepare($koneksi, 'SELECT id_supplier, nama_supplier, kota FROM supplier WHERE nama_supplier LIKE CONCAT("%", ?, "%") OR kota LIKE CONCAT("%", ?, "%") ORDER BY id_supplier');
-    mysqli_stmt_bind_param($stmt, 'ss', $cari, $cari);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
+    if ($stmt) {
+        mysqli_stmt_bind_param($stmt, 'ss', $cari, $cari);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+    } else {
+        $result = mysqli_query($koneksi, 'SELECT id_supplier, nama_supplier, kota FROM supplier ORDER BY id_supplier');
+    }
 } else {
     $result = mysqli_query($koneksi, 'SELECT id_supplier, nama_supplier, kota FROM supplier ORDER BY id_supplier');
 }
@@ -82,7 +86,7 @@ $pesan = ['tambah' => 'supplier berhasil ditambahkan.', 'edit' => 'supplier berh
                         <td class="cartcell">
                             <div class="actionrow">
                                 <a href="editsupplier.php?id_supplier=<?= (int) $s['id_supplier'] ?>" class="sidelink">edit</a>
-                                <form method="post" action="delsupplier.php" style="display:inline">
+                                <form method="post" action="delsupplier.php" style="display:inline" onsubmit="return confirmdelete();">
                                     <input type="hidden" name="id_supplier" value="<?= (int) $s['id_supplier'] ?>">
                                     <button type="submit" class="enterbtn">del</button>
                                 </form>
@@ -96,20 +100,8 @@ $pesan = ['tambah' => 'supplier berhasil ditambahkan.', 'edit' => 'supplier berh
             </div>
         </div>
     </div>
-<script>
-function switchtheme(theme) {
-    document.body.className = "marketpage " + theme;
-    localStorage.setItem("theme", theme);
-}
-var savedtheme = localStorage.getItem("theme");
-if (savedtheme) {
-    document.body.className = "marketpage " + savedtheme;
-    var sel = document.getElementById("themepick");
-    if (sel) {
-        sel.value = savedtheme;
-    }
-}
-</script>
+
+<script src="../../main.js"></script>
 
 </body>
 </html>
