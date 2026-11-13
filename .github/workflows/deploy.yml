@@ -27,16 +27,25 @@ jobs:
           const USER_TOKEN = '${{ secrets.USER_TOKEN }}';
           PHP
 
-      - name: 🔐 Generate db.php from Secrets
+      - name: 🔐 Generate config/database.php from Secrets
         run: |
-          cat > db.php <<'PHP'
+          cat > config/database.php <<'PHP'
           <?php
-          mysqli_report(MYSQLI_REPORT_OFF);
+          if (function_exists('mysqli_report')) {
+              mysqli_report(MYSQLI_REPORT_OFF);
+          }
+
           const DB_HOST = '${{ secrets.DB_HOST }}';
           const DB_USER = '${{ secrets.DB_USER }}';
           const DB_PASS = '${{ secrets.DB_PASS }}';
           const DB_NAME = '${{ secrets.DB_NAME }}';
+
+          if (!function_exists('mysqli_connect')) {
+              die('ekstensi mysqli belum aktif di php. aktifkan extension=mysqli di php.ini atau jalankan server dengan: php -d extension=mysqli -S localhost:8000');
+          }
+
           $koneksi = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+
           if (!$koneksi) {
               die('koneksi database gagal: ' . mysqli_connect_error());
           }
@@ -59,7 +68,7 @@ jobs:
             .github/**
             ignore/**
             cookies.txt
-            db.example.php
+            config/database.example.php
             token.example.php
             *.sql
             preview.sh
