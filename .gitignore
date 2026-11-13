@@ -1,7 +1,6 @@
 # koneksi database, dibuat dari config/database.example.php per lingkungan
 config/database.php
 
-# token login, dibuat dari token.example.php per lingkungan
 token.php
 
 # file sensitif dan sampah lokal

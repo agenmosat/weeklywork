@@ -9,7 +9,7 @@
 - wajib commit sekali sehari
 - kalo pake ai dipikir  mas (suruh baca INSTRUCTION.md)
 - commit ga boleh ga mikir
-- jangan asal push ke main apalagi force ajg
+- jangan asal push ke main apalagi force
 - kalo mau push ke main setidaknya denger asmr dulu (di brannch lain udah aman (stabil))
 - wajib pull sebelum ngoding
 - jangan komentar di kodenya langsung

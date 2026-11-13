@@ -53,3 +53,7 @@ FROM (
     UNION ALL SELECT 'supplier2', 'bandung'
 ) AS seed
 WHERE NOT EXISTS (SELECT 1 FROM supplier s WHERE s.nama_supplier = seed.nama_supplier);
+
+DELETE p1 FROM products p1
+INNER JOIN products p2
+WHERE p1.name = p2.name AND p1.id > p2.id;
