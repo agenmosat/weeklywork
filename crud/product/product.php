@@ -4,9 +4,8 @@ require_once __DIR__ . '/../../config/database.php';
 
 $cari = trim($_GET['cari'] ?? '');
 if ($cari !== '') {
-    $like = '%' . $cari . '%';
-    $stmt = mysqli_prepare($koneksi, 'SELECT id, name, price, stock, category, description FROM products WHERE name LIKE ? OR category LIKE ? OR description LIKE ? ORDER BY id');
-    mysqli_stmt_bind_param($stmt, 'sss', $like, $like, $like);
+    $stmt = mysqli_prepare($koneksi, 'SELECT id, name, price, stock, category, description FROM products WHERE name LIKE CONCAT("%", ?, "%") OR category LIKE CONCAT("%", ?, "%") OR description LIKE CONCAT("%", ?, "%") ORDER BY id');
+    mysqli_stmt_bind_param($stmt, 'sss', $cari, $cari, $cari);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
 } else {
