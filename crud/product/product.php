@@ -74,7 +74,10 @@ $pesan = ['tambah' => 'produk berhasil ditambahkan.', 'edit' => 'produk berhasil
                         <td class="cartcell">
                             <div class="actionrow">
                                 <a href="editproduct.php?id=<?= (int) $p['id'] ?>" class="sidelink">edit</a>
-                                <a href="delproduct.php?id=<?= (int) $p['id'] ?>" class="sidelink">del</a>
+                                <form method="post" action="delproduct.php" style="display:inline">
+                                    <input type="hidden" name="id" value="<?= (int) $p['id'] ?>">
+                                    <button type="submit" class="enterbtn">del</button>
+                                </form>
                             </div>
                         </td>
                     </tr>
