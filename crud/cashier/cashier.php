@@ -18,6 +18,14 @@ $pesan = ['tambah' => 'kasir berhasil ditambahkan.', 'edit' => 'kasir berhasil d
 
     <div class="topbar">
         <div class="brand">darkfonder.net</div>
+        <div class="themeswitcher">
+            <span class="themelabel">theme</span>
+            <select id="themepick" class="themeselect" onchange="switchtheme(this.value)">
+                <option value="themelight">light</option>
+                <option value="themedark">dark</option>
+            </select>
+        </div>
+
         <div class="topnav">
             <a href="../../dashboard.php" class="navlink">store</a>
             <a href="../../admin.php" class="navlink">admin</a>
@@ -75,5 +83,20 @@ $pesan = ['tambah' => 'kasir berhasil ditambahkan.', 'edit' => 'kasir berhasil d
             </div>
         </div>
     </div>
+<script>
+function switchtheme(theme) {
+    document.body.className = "marketpage " + theme;
+    localStorage.setItem("theme", theme);
+}
+var savedtheme = localStorage.getItem("theme");
+if (savedtheme) {
+    document.body.className = "marketpage " + savedtheme;
+    var sel = document.getElementById("themepick");
+    if (sel) {
+        sel.value = savedtheme;
+    }
+}
+</script>
+
 </body>
 </html>

@@ -18,6 +18,14 @@ $pesan = ['tambah' => 'produk berhasil ditambahkan.', 'edit' => 'produk berhasil
 
     <div class="topbar">
         <div class="brand">darkfonder.net</div>
+        <div class="themeswitcher">
+            <span class="themelabel">theme</span>
+            <select id="themepick" class="themeselect" onchange="switchtheme(this.value)">
+                <option value="themelight">light</option>
+                <option value="themedark">dark</option>
+            </select>
+        </div>
+
         <div class="topnav">
             <a href="../../dashboard.php" class="navlink">store</a>
             <a href="../../admin.php" class="navlink">admin</a>
