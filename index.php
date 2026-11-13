@@ -58,13 +58,13 @@ if (isset($_GET['logout'])) {
                 <input type="password" name="token" id="token" class="tokeninput" placeholder="enter token..." required>
                 <button type="button" id="togglebtn" class="togglebtn" onclick="toggleshow()">?</button>
             </div>
-            <div class="btnwrap">
+            <!-- <div class="btnwrap">
                 <select id="themepick" class="themeselect" onchange="switchtheme(this.value)">
                     <option value="themelight">light</option>
                     <option value="themedark">dark</option>
                 </select>
                 <button type="submit" name="enter" class="enterbtn">enter</button>
-            </div>
+            </div> -->
         </form>
     </div>
 
