@@ -10,5 +10,5 @@
 10. sistem pembayaran escrow palsu (integrasikan gateway API) status : issued
 11. hotlinking aset gambar eksternal (gunakan aset lokal) status : issued
 12. duplikasi script JavaScript ekstrem (pisahkan ke file .js eksternal) status : issued
-13. penanganan error 404 produk gak valid (berikan halaman not found) status : issued
+13. penanganan error 404 produk gak valid (berikan halaman not found) status : added
 14. pembersihan keranjang terlalu prematur (perbaiki alur pemusnahan sesi) status : issued
