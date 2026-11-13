@@ -46,17 +46,19 @@ if ($category != "") {
 }
 
 if ($sort === "low") {
-    uasort($filtered, function ($a, $b) {
-        return $a['price'] <=> $b['price'];
-    });
+    $prices = array_column($filtered, 'price');
+    array_multisort($prices, SORT_ASC, $filtered);
 } elseif ($sort === "high") {
-    uasort($filtered, function ($a, $b) {
-        return $b['price'] <=> $a['price'];
-    });
+    $prices = array_column($filtered, 'price');
+    array_multisort($prices, SORT_DESC, $filtered);
 } elseif ($sort === "name") {
-    uasort($filtered, function ($a, $b) {
-        return strcmp($a['name'], $b['name']);
-    });
+    $names = array_column($filtered, 'name');
+    array_multisort($names, SORT_ASC, $filtered);
+}
+
+$catparam = "";
+if ($category != "") {
+    $catparam = "&cat=" . urlencode($category);
 }
 ?>
 <!DOCTYPE html>
@@ -84,6 +86,9 @@ if ($sort === "low") {
         </div>
         <div class="topnav">
             <a href="dashboard.php" class="navlink">home</a>
+            <?php if (isset($_SESSION['role']) && $_SESSION['role'] === "admin"): ?>
+                <a href="admin.php" class="navlink">admin</a>
+            <?php endif; ?>
             <a href="cart.php" class="navlink">cart (<?php echo $cartcount; ?>)</a>
             <a href="dashboard.php?logout=1" class="navlink">logout</a>
         </div>
@@ -93,15 +98,11 @@ if ($sort === "low") {
         <div class="sidebar">
             <div class="sidetitle">categories</div>
             <a href="dashboard.php" class="sidelink">all items</a>
-            <a href="dashboard.php?cat=weapons" class="sidelink">weapons (firearms)</a>
-            <a href="dashboard.php?cat=electronics" class="sidelink">electronics</a>
-            <a href="dashboard.php?cat=collectibles" class="sidelink">collectibles</a>
-            <a href="dashboard.php?cat=homegoods" class="sidelink">homegoods</a>
 
             <div class="sidetitle">sort by</div>
-            <a href="dashboard.php?sort=low<?php echo $category != "" ? "&cat=" . urlencode($category) : ""; ?>" class="sidelink">price: low to high</a>
-            <a href="dashboard.php?sort=high<?php echo $category != "" ? "&cat=" . urlencode($category) : ""; ?>" class="sidelink">price: high to low</a>
-            <a href="dashboard.php?sort=name<?php echo $category != "" ? "&cat=" . urlencode($category) : ""; ?>" class="sidelink">name: a to z</a>
+            <a href="dashboard.php?sort=low<?php echo $catparam; ?>" class="sidelink">price: low to high</a>
+            <a href="dashboard.php?sort=high<?php echo $catparam; ?>" class="sidelink">price: high to low</a>
+            <a href="dashboard.php?sort=name<?php echo $catparam; ?>" class="sidelink">name: a to z</a>
 
 
         </div>
@@ -130,7 +131,9 @@ if ($sort === "low") {
                     <?php foreach ($filtered as $p): ?>
                         <div class="item">
                             <span class="tagitem"><?php echo htmlspecialchars($p['category']); ?></span>
-                            <div class="imagebox">[item #0<?php echo $p['id']; ?>]</div>
+                            <div class="imagebox">
+                                <img src="<?php echo htmlspecialchars($p['image']); ?>" alt="<?php echo htmlspecialchars($p['name']); ?>" class="productimage">
+                            </div>
                             <a href="product.php?id=<?php echo $p['id']; ?>" class="itemname"><?php echo htmlspecialchars($p['name']); ?></a>
                             <div class="itemprice">$<?php echo number_format($p['price'], 2); ?></div>
                             <div class="detaildesc">stock: <?php echo $p['stock']; ?> units</div>

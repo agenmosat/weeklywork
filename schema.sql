@@ -7,13 +7,20 @@ CREATE TABLE products (
     description TEXT NOT NULL
 );
 
+CREATE TABLE kasir (
+    id_kasir INT AUTO_INCREMENT PRIMARY KEY,
+    nama_kasir VARCHAR(50) NOT NULL,
+    status ENUM('aktif','nonaktif') DEFAULT 'aktif',
+    tanggal_keluar DATE DEFAULT NULL
+);
+
+CREATE TABLE supplier (
+    id_supplier INT AUTO_INCREMENT PRIMARY KEY,
+    nama_supplier VARCHAR(50) NOT NULL,
+    kota VARCHAR(30) DEFAULT NULL
+);
+
 INSERT INTO products (name, price, stock, category, description) VALUES
-('retro radio', 25.00, 25, 'electronics', 'classic am fm vintage radio, tested and in working condition. perfect for collectors.'),
-('pocket watch', 45.00, 12, 'collectibles', 'antique brass mechanical pocket watch with chain, fully functional.'),
-('classic camera', 60.00, 8, 'electronics', 'vintage 35mm film camera with manual focus lens, excellent display piece.'),
-('desk lamp', 15.00, 30, 'homegoods', 'industrial style metal desk lamp with adjustable arm and warm light.'),
-('typewriter', 80.00, 5, 'collectibles', 'retro portable typewriter in working order, fresh black ribbon included.'),
-('game console', 55.00, 10, 'electronics', 'classic 8 bit gaming console with two wired controllers and cables.'),
 ('glock 19 gen 5', 520.00, 14, 'weapons', 'compact 9mm semi automatic pistol with stripped serial numbers and two 15 round magazines.'),
 ('ak47 assault rifle', 950.00, 8, 'weapons', '7.62x39mm automatic rifle with folding stock, threaded muzzle and two 30 round magazines.'),
 ('colt m4a1 carbine', 1300.00, 5, 'weapons', '5.56x45mm military grade carbine with picatinny rail system and unmarked receiver.'),

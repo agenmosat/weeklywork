@@ -1,0 +1,14 @@
+1. darkmode masih kasar (benarkan) status : issued
+2. barang-barang irrelevant (hilangkan) status : fixed
+3. kategori-kategori irrelevant (hilangkan) status : fixed
+4. gambar-gambar masih kosong (tambahkan) status : issued
+5. dasbor admin belum ada/berfungsi (tambahkan) status : issued
+6. data produk masih hardcoded (koneksikan ke database) status : issued
+7. validasi stok di server kurang ketat (validasi ulang sisi backend) status : issued
+8. kode UI redundan/berulang (gunakan modular include/require) status : issued
+9. UI belum responsif untuk versi mobile (tambahkan aturan media query) status : issued
+10. sistem pembayaran escrow palsu (integrasikan gateway API) status : issued
+11. hotlinking aset gambar eksternal (gunakan aset lokal) status : issued
+12. duplikasi script JavaScript ekstrem (pisahkan ke file .js eksternal) status : issued
+13. penanganan error 404 produk gak valid (berikan halaman not found) status : issued
+14. pembersihan keranjang terlalu prematur (perbaiki alur pemusnahan sesi) status : issued

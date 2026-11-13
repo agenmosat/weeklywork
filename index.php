@@ -1,18 +1,27 @@
 <?php
 session_start();
 
-$validtoken = "admin#1234";
 $message = "";
 
 if (isset($_SESSION['user'])) {
-    header("Location: dashboard.php");
+    if (isset($_SESSION['role']) && $_SESSION['role'] === "admin") {
+        header("Location: admin.php");
+    } else {
+        header("Location: dashboard.php");
+    }
     exit();
 }
 
 if (isset($_POST['enter'])) {
     $token = $_POST['token'];
-    if ($token === $validtoken) {
+    if ($token === "superroot#1234") {
         $_SESSION['user'] = "loggedin";
+        $_SESSION['role'] = "admin";
+        header("Location: admin.php");
+        exit();
+    } elseif ($token === "admin#1234") {
+        $_SESSION['user'] = "loggedin";
+        $_SESSION['role'] = "user";
         header("Location: dashboard.php");
         exit();
     } else {
@@ -34,7 +43,7 @@ if (isset($_GET['logout'])) {
     <title>secret</title>
     <link rel="stylesheet" href="style.css?v=3">
 </head>
-<body class="page themelight">
+<body class="page">
 
     <div class="card">
         <div class="title">access restricted</div>
@@ -50,10 +59,6 @@ if (isset($_GET['logout'])) {
                 <button type="button" id="togglebtn" class="togglebtn" onclick="toggleshow()">?</button>
             </div>
             <div class="btnwrap">
-                <select id="themepick" class="themeselect" onchange="switchtheme(this.value)">
-                    <option value="themelight">light</option>
-                    <option value="themedark">dark</option>
-                </select>
                 <button type="submit" name="enter" class="enterbtn">enter</button>
             </div>
         </form>
@@ -70,18 +75,6 @@ function toggleshow() {
         field.type = "text";
     } else {
         field.type = "password";
-    }
-}
-function switchtheme(theme) {
-    document.body.className = "page " + theme;
-    localStorage.setItem("theme", theme);
-}
-var savedtheme = localStorage.getItem("theme");
-if (savedtheme) {
-    document.body.className = "page " + savedtheme;
-    var sel = document.getElementById("themepick");
-    if (sel) {
-        sel.value = savedtheme;
     }
 }
 </script>

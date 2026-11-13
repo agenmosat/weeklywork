@@ -8,6 +8,7 @@ cookies.txt
 # hasil export database
 *.sql
 !schema.sql
+toko.sql
 
 # file editor dan sistem operasi
 .vscode/
