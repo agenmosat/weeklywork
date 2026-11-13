@@ -138,7 +138,7 @@ if ($category != "") {
                             <div class="itemprice">$<?php echo number_format($p['price'], 2); ?></div>
                             <div class="detaildesc">stock: <?php echo $p['stock']; ?> units</div>
                             <div class="itemactions">
-                                <a href="crud/product/product.php?id=<?php echo $p['id']; ?>" class="buybtn">view item</a>
+                                <a href="product.php?id=<?php echo $p['id']; ?>" class="buybtn">view item</a>
                                 <a href="cart.php?add=<?php echo $p['id']; ?>" class="cartbtn">add to cart</a>
                             </div>
                         </div>

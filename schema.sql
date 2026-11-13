@@ -7,6 +7,19 @@ CREATE TABLE products (
     description TEXT NOT NULL
 );
 
+CREATE TABLE kasir (
+    id_kasir INT AUTO_INCREMENT PRIMARY KEY,
+    nama_kasir VARCHAR(50) NOT NULL,
+    status ENUM('aktif','nonaktif') DEFAULT 'aktif',
+    tanggal_keluar DATE DEFAULT NULL
+);
+
+CREATE TABLE supplier (
+    id_supplier INT AUTO_INCREMENT PRIMARY KEY,
+    nama_supplier VARCHAR(50) NOT NULL,
+    kota VARCHAR(30) DEFAULT NULL
+);
+
 INSERT INTO products (name, price, stock, category, description) VALUES
 ('glock 19 gen 5', 520.00, 14, 'weapons', 'compact 9mm semi automatic pistol with stripped serial numbers and two 15 round magazines.'),
 ('ak47 assault rifle', 950.00, 8, 'weapons', '7.62x39mm automatic rifle with folding stock, threaded muzzle and two 30 round magazines.'),
