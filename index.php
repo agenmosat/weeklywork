@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+require_once __DIR__ . '/token.php';
+
 $message = "";
 
 if (isset($_SESSION['user'])) {
@@ -14,12 +16,12 @@ if (isset($_SESSION['user'])) {
 
 if (isset($_POST['enter'])) {
     $token = $_POST['token'];
-    if ($token === "superroot#1234") {
+    if (ADMIN_TOKEN !== "" && $token === ADMIN_TOKEN) {
         $_SESSION['user'] = "loggedin";
         $_SESSION['role'] = "admin";
         header("Location: admin.php");
         exit();
-    } elseif ($token === "admin#1234") {
+    } elseif (USER_TOKEN !== "" && $token === USER_TOKEN) {
         $_SESSION['user'] = "loggedin";
         $_SESSION['role'] = "user";
         header("Location: dashboard.php");
@@ -63,10 +65,6 @@ if (isset($_GET['logout'])) {
             </div>
         </form>
     </div>
-
-    <a href="https://id.pinterest.com/pin/1027102258785807962/" target="_blank" class="cornerlink">
-        <img src="https://id.pinterest.com/pin/1027102258785807962/" alt="ref" class="cornerimage">
-    </a>
 
 <script>
 function toggleshow() {

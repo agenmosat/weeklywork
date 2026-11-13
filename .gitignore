@@ -1,6 +1,9 @@
 # koneksi database, dibuat dari db.example.php per lingkungan
 db.php
 
+# token login, dibuat dari token.example.php per lingkungan
+token.php
+
 # file sensitif dan sampah lokal
 cookies.txt
 .env*
