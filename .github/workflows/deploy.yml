@@ -19,9 +19,14 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: 🔑 Inject TOKEN into index.php
+      - name: 🔑 Generate token.php from Secrets
         run: |
-          sed -i 's|\$validtoken = ".*";|\$validtoken = "${{ secrets.TOKEN }}";|' index.php
+          cat > token.php <<'PHP'
+          <?php
+          const ADMIN_TOKEN = '${{ secrets.TOKEN }}';
+          const USER_TOKEN = '${{ secrets.USER_TOKEN }}';
+          PHP
+
       - name: 🔐 Generate db.php from Secrets
         run: |
           cat > db.php <<'PHP'
@@ -55,6 +60,7 @@ jobs:
             ignore/**
             cookies.txt
             db.example.php
+            token.example.php
             *.sql
             preview.sh
             package.json
