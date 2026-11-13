@@ -2,7 +2,15 @@
 require_once __DIR__ . '/../guard.php';
 require_once __DIR__ . '/../../config/database.php';
 
-$result = mysqli_query($koneksi, 'SELECT id_kasir, nama_kasir, status, tanggal_keluar FROM kasir ORDER BY id_kasir');
+$cari = trim($_GET['cari'] ?? '');
+if ($cari !== '') {
+    $stmt = mysqli_prepare($koneksi, 'SELECT id_kasir, nama_kasir, status, tanggal_keluar FROM kasir WHERE nama_kasir LIKE CONCAT("%", ?, "%") ORDER BY id_kasir');
+    mysqli_stmt_bind_param($stmt, 's', $cari);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+} else {
+    $result = mysqli_query($koneksi, 'SELECT id_kasir, nama_kasir, status, tanggal_keluar FROM kasir ORDER BY id_kasir');
+}
 
 $pesan = ['tambah' => 'kasir berhasil ditambahkan.', 'edit' => 'kasir berhasil diubah.', 'hapus' => 'kasir berhasil dihapus.'][$_GET['status'] ?? ''] ?? '';
 ?>
@@ -52,6 +60,10 @@ $pesan = ['tambah' => 'kasir berhasil ditambahkan.', 'edit' => 'kasir berhasil d
                 <?php endif; ?>
 
                 <div class="actionrow">
+                    <form method="get" action="cashier.php" class="form" style="margin:0">
+                        <input type="text" name="cari" class="forminput" placeholder="cari kasir..." value="<?= htmlspecialchars($cari) ?>">
+                        <button type="submit" class="enterbtn">cari</button>
+                    </form>
                     <a href="newcashier.php" class="sidelink">+ add cashier</a>
                 </div>
 

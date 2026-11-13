@@ -2,7 +2,15 @@
 require_once __DIR__ . '/../guard.php';
 require_once __DIR__ . '/../../config/database.php';
 
-$result = mysqli_query($koneksi, 'SELECT id, name, price, stock, category, description FROM products ORDER BY id');
+$cari = trim($_GET['cari'] ?? '');
+if ($cari !== '') {
+    $stmt = mysqli_prepare($koneksi, 'SELECT id, name, price, stock, category, description FROM products WHERE name LIKE CONCAT("%", ?, "%") OR category LIKE CONCAT("%", ?, "%") OR description LIKE CONCAT("%", ?, "%") ORDER BY id');
+    mysqli_stmt_bind_param($stmt, 'sss', $cari, $cari, $cari);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+} else {
+    $result = mysqli_query($koneksi, 'SELECT id, name, price, stock, category, description FROM products ORDER BY id');
+}
 
 $pesan = ['tambah' => 'produk berhasil ditambahkan.', 'edit' => 'produk berhasil diubah.', 'hapus' => 'produk berhasil dihapus.'][$_GET['status'] ?? ''] ?? '';
 ?>
@@ -52,6 +60,10 @@ $pesan = ['tambah' => 'produk berhasil ditambahkan.', 'edit' => 'produk berhasil
                 <?php endif; ?>
 
                 <div class="actionrow">
+                    <form method="get" action="product.php" class="form" style="margin:0">
+                        <input type="text" name="cari" class="forminput" placeholder="cari produk..." value="<?= htmlspecialchars($cari) ?>">
+                        <button type="submit" class="enterbtn">cari</button>
+                    </form>
                     <a href="addproduct.php" class="sidelink">+ add product</a>
                 </div>
 

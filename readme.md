@@ -17,9 +17,9 @@
 - intinya jangan ai slop dah
 
 ## setup lokal
-- copy `db.example.php` jadi `db.php`, isi kredensial database lokal
+- copy `config/database.example.php` jadi `config/database.php`, isi kredensial database lokal
 - copy `token.example.php` jadi `token.php`, isi token login lokal
-- `db.php` dan `token.php` ga ikut ke git, di server dibuat dari GitHub Secrets
+- `config/database.php` dan `token.php` ga ikut ke git, di server dibuat dari GitHub Secrets
 
 ## tugas
 - Lengkapi modul kasir dan supplier
