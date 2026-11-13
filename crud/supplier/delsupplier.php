@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../guard.php';
 require_once __DIR__ . '/../../config/database.php';
 
-$id = (int) ($_GET['id_supplier'] ?? 0);
+$id = (int) ($_POST['id_supplier'] ?? 0);
 
 if ($id > 0) {
     $stmt = mysqli_prepare($koneksi, 'DELETE FROM supplier WHERE id_supplier = ?');

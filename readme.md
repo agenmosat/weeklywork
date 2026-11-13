@@ -9,12 +9,17 @@
 - wajib commit sekali sehari
 - kalo pake ai dipikir  mas (suruh baca INSTRUCTION.md)
 - commit ga boleh ga mikir
-- jangan asal push ke main apalagi force ajg 
+- jangan asal push ke main apalagi force ajg
 - kalo mau push ke main setidaknya denger asmr dulu (di brannch lain udah aman (stabil))
 - wajib pull sebelum ngoding
 - jangan komentar di kodenya langsung
 - pastikan cek branch saat ini
 - intinya jangan ai slop dah
+
+## setup lokal
+- copy `db.example.php` jadi `db.php`, isi kredensial database lokal
+- copy `token.example.php` jadi `token.php`, isi token login lokal
+- `db.php` dan `token.php` ga ikut ke git, di server dibuat dari GitHub Secrets
 
 ## tugas
 - Lengkapi modul kasir dan supplier

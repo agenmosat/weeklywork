@@ -70,7 +70,10 @@ $pesan = ['tambah' => 'supplier berhasil ditambahkan.', 'edit' => 'supplier berh
                         <td class="cartcell">
                             <div class="actionrow">
                                 <a href="editsupplier.php?id_supplier=<?= (int) $s['id_supplier'] ?>" class="sidelink">edit</a>
-                                <a href="delsupplier.php?id_supplier=<?= (int) $s['id_supplier'] ?>" class="sidelink">del</a>
+                                <form method="post" action="delsupplier.php" style="display:inline">
+                                    <input type="hidden" name="id_supplier" value="<?= (int) $s['id_supplier'] ?>">
+                                    <button type="submit" class="enterbtn">del</button>
+                                </form>
                             </div>
                         </td>
                     </tr>
