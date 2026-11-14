@@ -67,7 +67,7 @@
 041. mekanisme pengalihan batas waktu sesi menggunakan manipulasi string script_name yang rentan bermasalah (standarisasi routing pengalihan sesi menggunakan base url atau path absolut) status : pending
 042. ketiadaan implementasi modul proteksi token csrf pada seluruh formulir transaksi dan crud (terapkan token csrf pada setiap form post aplikasi) status : pending
 
-#fahri
+# fahri
 043. duplikasi fungsi dialog konfirmasi tindakan pada script javascript utama (sederhanakan menjadi satu fungsi konfirmasi generik) status : pending
 044. duplikasi elemen pemilih tema dropdown pada berbagai template dokumen (jadikan komponen tema terintegrasi dalam bar navigasi) status : pending
 045. variabel attempts_key dan now tidak terdefinisi pada logika pembatasan login (perbaiki atau hapus blok kode rate limit yang rusak) status : pending
