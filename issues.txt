@@ -30,7 +30,7 @@
 028. duplikasi penutup tag dokumen dan script footer html (pisahkan ke template modular footer.php) status : pending
 029. duplikasi markup bar navigasi atas topbar pada halaman admin dan modul crud (gunakan include topbar.php) status : pending
 030. duplikasi markup menu sidebar admin pada seluruh halaman modul crud (buat template modular sidebar_admin.php) status : pending
-031. kueri penyemaian data database menggunakan union all select dan subquery bertingkat yang rumit (sederhanakan dengan perintah insert into values standar) status : pending
+031. kueri penyemaian data database menggunakan union all select dan subquery bertingkat yang rumit (sederhanakan dengan perintah insert into values standar) status : pending #A
 032. kueri penghapusan data duplikat menggunakan multi-table self join yang sulit dipahami pemula (sederhanakan mekanisme pembersihan data tabel) status : pending
 033. manipulasi skema tabel melalui kueri alter table dan show columns saat proses form crud produk (pindahkan definisi kolom gambar ke berkas skema sql) status : pending
 034. eksekusi kueri ddl create table secara dinamis di dalam skrip alur transaksi invoice (pindahkan inisialisasi tabel pesanan ke skrip migrasi database) status : pending
