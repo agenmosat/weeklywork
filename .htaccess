@@ -1,0 +1,9 @@
+RewriteEngine On
+
+# Paksa pengalihan seluruh traffic HTTP ke HTTPS
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Nonaktifkan directory browsing (opsional, untuk keamanan)
+Options -Indexes

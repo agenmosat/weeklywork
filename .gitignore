@@ -1,0 +1,28 @@
+# koneksi database, dibuat dari config/database.example.php per lingkungan
+config/database.php
+
+token.php
+
+# file sensitif dan sampah lokal
+cookies.txt
+.env*
+
+# hasil export database
+*.sql
+!schema.sql
+!toko.sql
+
+# file editor dan sistem operasi
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# log dan backup
+*.log
+error_log
+*.bak
+VARIABEL.md
+
+PANDUAN_CRUD.md
+PANDUAN_SQL.md

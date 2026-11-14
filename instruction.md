@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 1. Use basic, beginner-level code only—strictly no advanced senior-level abstractions or clever one-liners.
 2. Write all class names and CSS classes with simple syntax using only lowercase letters, no hyphens (`-`), and no capital letters (e.g., `mainbox`, `bigbutton`, `usercard`).
 3. Do not add any comments anywhere in the code—zero inline comments, zero docstrings, and zero `// TODO` notes.
@@ -32,3 +33,15 @@
 32. Do not add `console.log` statements or debugging code unless asked to help debug.
 33. Double-check that every variable and function you use is actually defined and spelled the exact same way.
 34. Repeat and rewrite the output from scratch if even one of these 34 rules is not fulfilled.
+=======
+# THIS INSTRUCTION IS FOR AI!
+1. use basic code no advanced senior level codes
+2. make use make the classes with simple syntax and no "-" and no capitals
+3. do not add any comments
+4. only focus to the current given task
+5. do not change irrelevant codes
+6. keep it simple
+7. "i'm still a junior dev, do i understand this?"
+8. don't read ignore folder
+9. repeat if one of the 9 rules is not fulfilled
+>>>>>>> 6121eccd18410e76244301b3fb22172192a27093
