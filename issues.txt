@@ -45,3 +45,15 @@
 043. ketiadaan implementasi modul proteksi token csrf pada seluruh formulir transaksi dan crud (terapkan token csrf pada setiap form post aplikasi) status : pending
 044. duplikasi fungsi dialog konfirmasi tindakan pada script javascript utama (sederhanakan menjadi satu fungsi konfirmasi generik) status : pending
 045. duplikasi elemen pemilih tema dropdown pada berbagai template dokumen (jadikan komponen tema terintegrasi dalam bar navigasi) status : pending
+046. variabel attempts_key dan now tidak terdefinisi pada logika pembatasan login (perbaiki atau hapus blok kode rate limit yang rusak) status : pending
+047. penggunaan fungsi sql concat di dalam klausa pencarian like pada modul crud (sederhanakan penggabungan wildcard pencarian di sisi php) status : pending
+048. kueri pengurangan stok pesanan menggunakan fungsi sql greatest yang tidak umum bagi pemula (ganti dengan query update matematika dasar disertai validasi php) status : pending
+049. struktur basis data transaksi belum ternormalisasi karena ketiadaan tabel rincian transaksi (tambahkan tabel relasi penjualan_detail dan pembelian_detail) status : pending
+050. penggunaan fungsi string multibyte mb_strlen pada validasi form crud (ganti dengan fungsi strlen bawaan standar yang umum diajarkan) status : pending
+051. penggunaan fungsi ctype_digit untuk validasi input angka pada form produk (sederhanakan validasi menggunakan is_numeric atau konversi tipe data) status : pending
+052. penulisan one-liner dereferensi array langsung pada array literal pesan notifikasi crud (ubah menjadi struktur percabangan if atau switch yang mudah dibaca) status : pending
+053. validasi format url gambar menggunakan ekspresi reguler preg_match dengan delimiter kustom (sederhanakan validasi path gambar menggunakan string helper standar) status : pending
+054. logika penghapusan cookie sesi tingkat rendah menggunakan fungsi bawaan konfigurasi php (sederhanakan penghapusan sesi menggunakan session_destroy standar) status : pending
+055. pembuatan tautan paginasi katalog menggunakan fungsi pembentuk query url otomatis (sederhanakan pembuatan link nomor halaman secara manual) status : pending
+056. mutasi data sesi keranjang belanja terjadi di tengah proses perulangan tampilan html (pindahkan logika penyesuaian kuantitas sesi ke blok controller aksi) status : pending
+057. ketiadaan berkas modul transaksi pembelian dan penjualan sesuai rincian penugasan proyek (buat modul transaksi penjualan dan pembelian beserta rinciannya) status : pending
