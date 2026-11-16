@@ -34,3 +34,11 @@ CREATE TABLE pesanan (
 
 INSERT INTO products (name, price, stock, category, description, image) VALUES
 ('name', 520.00, 14, 'category', 'description', 'image'),
+
+INSERT INTO kasir (nama_kasir, status) VALUES
+('kasir1', 'aktif'),
+('kasir2', 'nonaktif');
+
+INSERT INTO supplier (nama_supplier, kota) VALUES
+('supplier1', 'jakarta'),
+('supplier2', 'bandung');
