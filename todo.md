@@ -50,9 +50,9 @@
 030. duplikasi markup menu sidebar admin pada seluruh halaman modul crud (buat template modular sidebar_admin.php) status : pending
 
 # alfredo
-031. kueri penyemaian data database menggunakan union all select dan subquery bertingkat yang rumit (sederhanakan dengan perintah insert into values standar) status : pending
-032. kueri penghapusan data duplikat menggunakan multi-table self join yang sulit dipahami pemula (sederhanakan mekanisme pembersihan data tabel) status : pending
-033. manipulasi skema tabel melalui kueri alter table dan show columns saat proses form crud produk (pindahkan definisi kolom gambar ke berkas skema sql) status : pending
+031. kueri penyemaian data database menggunakan union all select dan subquery bertingkat yang rumit (sederhanakan dengan perintah insert into values standar) status : don
+032. kueri penghapusan data duplikat menggunakan multi-table self join yang sulit dipahami pemula (sederhanakan mekanisme pembersihan data tabel) status : gtw gw rewrite dikit (don keknya :v)
+033. manipulasi skema tabel melalui kueri alter table dan show columns saat proses form crud produk (pindahkan definisi kolom gambar ke berkas skema sql) status : pending (ga ada gambarnya, jadi besok ajah)
 034. eksekusi kueri ddl create table secara dinamis di dalam skrip alur transaksi invoice (pindahkan inisialisasi tabel pesanan ke skrip migrasi database) status : pending
 
 # gery
