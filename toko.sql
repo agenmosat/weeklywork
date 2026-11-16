@@ -1,7 +1,4 @@
-CREATE DATABASE IF NOT EXISTS toko;
-USE toko;
-
-CREATE TABLE IF NOT EXISTS products (
+CREATE TABLE products (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL UNIQUE,
     price DECIMAL(10,2) NOT NULL,
@@ -11,22 +8,23 @@ CREATE TABLE IF NOT EXISTS products (
     image VARCHAR(255) DEFAULT 'images/glock17.png'
 );
 
-CREATE TABLE IF NOT EXISTS kasir (
+CREATE TABLE kasir (
     id_kasir INT AUTO_INCREMENT PRIMARY KEY,
-    nama_kasir VARCHAR(50) NOT NULL,
+    nama_kasir VARCHAR(50) NOT NULL UNIQUE,
+    status ENUM('aktif','nonaktif') DEFAULT 'aktif',
     tanggal_keluar DATE DEFAULT NULL
 );
 
-CREATE TABLE IF NOT EXISTS supplier (
+CREATE TABLE supplier (
     id_supplier INT AUTO_INCREMENT PRIMARY KEY,
     nama_supplier VARCHAR(50) NOT NULL UNIQUE,
     kota VARCHAR(30) DEFAULT NULL
 );
 
-CREATE TABLE IF NOT EXISTS pesanan (
+CREATE TABLE pesanan (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nomor_pesanan VARCHAR(50) NOT NULL,
-    nama_pembeli VARCHAR(100) NOT NULL,
+    nama_pembeli VARCHAR(100) NOT NULL UNIQUE,
     alamat TEXT NOT NULL,
     total DECIMAL(10,2) NOT NULL,
     metode_pembayaran VARCHAR(50) NOT NULL,
@@ -35,7 +33,7 @@ CREATE TABLE IF NOT EXISTS pesanan (
 );
 
 INSERT INTO products (name, price, stock, category, description, image) VALUES
-'glock 19 gen 5', 520.00, 14, 'weapons', 'description', 'image');
+('name', 520.00, 14, 'category', 'description', 'image'),
 
 INSERT INTO kasir (nama_kasir, status) VALUES
 ('kasir1', 'aktif'),
