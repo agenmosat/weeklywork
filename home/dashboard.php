@@ -124,7 +124,7 @@ function pageurl($p) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>darkfonder.net</title>
-    <link rel="stylesheet" href="../style.css?v=3">
+    <link rel="stylesheet" href="../assets/style.css?v=3">
 </head>
 <body class="marketpage themelight">
 
@@ -192,7 +192,7 @@ function pageurl($p) {
         </div>
     </div>
 
-<script src="../main.js"></script>
+<script src="../assets/main.js"></script>
 
 </body>
 </html>

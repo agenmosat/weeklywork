@@ -24,7 +24,7 @@ $pesan = ['tambah' => 'kasir berhasil ditambahkan.', 'edit' => 'kasir berhasil d
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>crud cashier</title>
-    <link rel="stylesheet" href="../../style.css?v=3">
+    <link rel="stylesheet" href="../../assets/style.css?v=3">
 </head>
 <body class="marketpage themelight">
 
@@ -104,7 +104,7 @@ $pesan = ['tambah' => 'kasir berhasil ditambahkan.', 'edit' => 'kasir berhasil d
         </div>
     </div>
 
-<script src="../../main.js"></script>
+<script src="../../assets/main.js"></script>
 
 </body>
 </html>

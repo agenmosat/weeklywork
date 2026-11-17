@@ -62,7 +62,7 @@ if ($subtotal <= 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>payment - darkfonder.net</title>
-    <link rel="stylesheet" href="../style.css?v=3">
+    <link rel="stylesheet" href="../assets/style.css?v=3">
 </head>
 <body class="marketpage themelight">
 
@@ -139,7 +139,7 @@ if ($subtotal <= 0) {
         </div>
     </div>
 
-<script src="../main.js"></script>
+<script src="../assets/main.js"></script>
 
 </body>
 </html>

@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>crud supplier - add</title>
-    <link rel="stylesheet" href="../../style.css?v=3">
+    <link rel="stylesheet" href="../../assets/style.css?v=3">
 </head>
 <body class="marketpage themelight">
 
@@ -94,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 
-<script src="../../main.js"></script>
+<script src="../../assets/main.js"></script>
 
 </body>
 </html>
