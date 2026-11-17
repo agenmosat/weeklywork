@@ -62,6 +62,7 @@ weeklywork/
 ├── todo.md                   # Pelacakan issue/bug yang telah diselesaikan dan daftar tugas anggota tim
 ├── token.example.php         # Berkas contoh konfigurasi token statis
 ├── token.php                 # Konfigurasi token rahasia login (diabaikan oleh git)
+├── schema.sql                # Definisi DDL tabel lengkap dan data awal (seed)
 │
 ├── admin/                    # MODUL PANEL KONTROL ADMINISTRATOR & KASIR
 │   ├── admin.php             # Dashboard admin (ringkasan sistem & 10 pesanan online terakhir)
@@ -107,10 +108,6 @@ weeklywork/
 ├── config/                   # KONFIGURASI APLIKASI
 │   ├── database.example.php  # Template berkas koneksi basis data
 │   └── database.php          # Konfigurasi aktif koneksi database MySQL lokal
-│
-├── database/                 # SKRIP BASIS DATA
-│   ├── schema.sql            # Definisi DDL tabel lengkap dan data awal (seed)
-│   └── toko.sql              # Cadangan skema basis data utama
 │
 ├── home/                     # STOREFRONT / MODUL TOKO ONLINE
 │   ├── dashboard.php         # Halaman katalog produk utama (search, filter, sort, pagination)
