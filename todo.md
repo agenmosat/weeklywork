@@ -62,10 +62,10 @@
 038. pemanggilan fungsi session_set_cookie_params setelah session_start aktif (pindahkan pengaturan parameter cookie sebelum pemanggilan session_start) status : pending
 
 # nell
-039. implementasi kueri berparameter dinamis menggunakan variadic unpacking dan penggabungan tipe yang kompleks (sederhanakan alur prepared statement dasar untuk pemula) status : pending
-040. dualisme sumber data gambar antara array asosiatif hardcoded dan kolom tabel produk (jadikan kolom database sebagai satu-satunya sumber data gambar) status : pending
-041. mekanisme pengalihan batas waktu sesi menggunakan manipulasi string script_name yang rentan bermasalah (standarisasi routing pengalihan sesi menggunakan base url atau path absolut) status : pending
-042. ketiadaan implementasi modul proteksi token csrf pada seluruh formulir transaksi dan crud (terapkan token csrf pada setiap form post aplikasi) status : pending
+039. implementasi kueri berparameter dinamis menggunakan variadic unpacking dan penggabungan tipe yang kompleks (sederhanakan alur prepared statement dasar untuk pemula) status : done
+040. dualisme sumber data gambar antara array asosiatif hardcoded dan kolom tabel produk (jadikan kolom database sebagai satu-satunya sumber data gambar) status : done
+041. mekanisme pengalihan batas waktu sesi menggunakan manipulasi string script_name yang rentan bermasalah (standarisasi routing pengalihan sesi menggunakan base url atau path absolut) status : done
+042. ketiadaan implementasi modul proteksi token csrf pada seluruh formulir transaksi dan crud (terapkan token csrf pada setiap form post aplikasi) status : done
 
 # fahri
 043. duplikasi fungsi dialog konfirmasi tindakan pada script javascript utama (sederhanakan menjadi satu fungsi konfirmasi generik) status : pending

@@ -2,6 +2,8 @@
 require_once __DIR__ . '/../guard.php';
 require_once __DIR__ . '/../../config/database.php';
 
+csrf_verify();
+
 $id = (int) ($_POST['id_supplier'] ?? 0);
 
 if ($id > 0) {

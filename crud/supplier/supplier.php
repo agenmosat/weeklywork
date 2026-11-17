@@ -87,6 +87,7 @@ $pesan = ['tambah' => 'supplier berhasil ditambahkan.', 'edit' => 'supplier berh
                             <div class="actionrow">
                                 <a href="editsupplier.php?id_supplier=<?= (int) $s['id_supplier'] ?>" class="sidelink">edit</a>
                                 <form method="post" action="delsupplier.php" style="display:inline" onsubmit="return confirmdelete();">
+                                    <?= csrf_field() ?>
                                     <input type="hidden" name="id_supplier" value="<?= (int) $s['id_supplier'] ?>">
                                     <button type="submit" class="enterbtn">del</button>
                                 </form>

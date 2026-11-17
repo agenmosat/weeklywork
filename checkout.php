@@ -83,6 +83,7 @@ $total = $subtotal + $shipping;
             <div class="heading">shipping checkout</div>
 
             <form action="payment.php" method="post" class="formbox">
+                <?= csrf_field(); ?>
                 <input type="hidden" name="source" value="<?php echo htmlspecialchars($source); ?>">
                 <?php if ($source === "direct"): ?>
                     <input type="hidden" name="direct_id" value="<?php echo $directid; ?>">

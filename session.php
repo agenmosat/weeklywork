@@ -3,6 +3,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+require_once __DIR__ . '/csrf.php';
+
 $timeout = 1800;
 
 if (isset($_SESSION['user'])) {
@@ -16,11 +18,8 @@ if (isset($_SESSION['user'])) {
             );
         }
         session_destroy();
-        $redirect = 'index.php?timeout=1';
-        if (isset($_SERVER['SCRIPT_NAME']) && strpos($_SERVER['SCRIPT_NAME'], '/crud/') !== false) {
-            $redirect = '../../index.php?timeout=1';
-        }
-        header("Location: " . $redirect);
+        $base_url = '/index.php?timeout=1';
+        header("Location: " . $base_url);
         exit();
     }
     $_SESSION['lastactivity'] = time();

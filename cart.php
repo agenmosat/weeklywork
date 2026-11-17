@@ -13,48 +13,51 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
-    $itemid = (int)$_POST['id'];
-    $itemqty = isset($_POST['qty']) ? max(1, (int)$_POST['qty']) : 1;
-    if (isset($products[$itemid])) {
-        $availablestock = $products[$itemid]['stock'];
-        if ($availablestock > 0) {
-            if ($_POST['action'] === "buy") {
-                $buyqty = min($itemqty, $availablestock);
-                header("Location: checkout.php?id=" . $itemid . "&qty=" . $buyqty);
-                exit();
-            }
-            if (!isset($_SESSION['cart'])) {
-                $_SESSION['cart'] = [];
-            }
-            $currentincart = $_SESSION['cart'][$itemid] ?? 0;
-            $newcartqty = min($currentincart + $itemqty, $availablestock);
-            if ($newcartqty > 0) {
-                $_SESSION['cart'][$itemid] = $newcartqty;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_verify();
+    if (isset($_POST['action'])) {
+        $itemid = (int)$_POST['id'];
+        $itemqty = isset($_POST['qty']) ? max(1, (int)$_POST['qty']) : 1;
+        if (isset($products[$itemid])) {
+            $availablestock = $products[$itemid]['stock'];
+            if ($availablestock > 0) {
+                if ($_POST['action'] === "buy") {
+                    $buyqty = min($itemqty, $availablestock);
+                    header("Location: checkout.php?id=" . $itemid . "&qty=" . $buyqty);
+                    exit();
+                }
+                if (!isset($_SESSION['cart'])) {
+                    $_SESSION['cart'] = [];
+                }
+                $currentincart = $_SESSION['cart'][$itemid] ?? 0;
+                $newcartqty = min($currentincart + $itemqty, $availablestock);
+                if ($newcartqty > 0) {
+                    $_SESSION['cart'][$itemid] = $newcartqty;
+                }
             }
         }
+        header("Location: cart.php");
+        exit();
     }
-    header("Location: cart.php");
-    exit();
-}
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updatecart']) && isset($_POST['qty'])) {
-    foreach ($_POST['qty'] as $qid => $newqty) {
-        $qid = (int)$qid;
-        $newqty = (int)$newqty;
-        if (isset($products[$qid])) {
-            $maxstock = $products[$qid]['stock'];
-            if ($newqty > 0 && $maxstock > 0) {
-                $_SESSION['cart'][$qid] = min($newqty, $maxstock);
+    if (isset($_POST['updatecart']) && isset($_POST['qty'])) {
+        foreach ($_POST['qty'] as $qid => $newqty) {
+            $qid = (int)$qid;
+            $newqty = (int)$newqty;
+            if (isset($products[$qid])) {
+                $maxstock = $products[$qid]['stock'];
+                if ($newqty > 0 && $maxstock > 0) {
+                    $_SESSION['cart'][$qid] = min($newqty, $maxstock);
+                } else {
+                    unset($_SESSION['cart'][$qid]);
+                }
             } else {
                 unset($_SESSION['cart'][$qid]);
             }
-        } else {
-            unset($_SESSION['cart'][$qid]);
         }
+        header("Location: cart.php");
+        exit();
     }
-    header("Location: cart.php");
-    exit();
 }
 
 if (isset($_GET['add'])) {
@@ -145,6 +148,7 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
                 </div>
             <?php else: ?>
                 <form action="cart.php" method="post" class="cartbox">
+                    <?= csrf_field(); ?>
                     <table class="carttable">
                         <tr class="cartheader">
                             <th class="cartcell">item</th>

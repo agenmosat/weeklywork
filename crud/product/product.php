@@ -96,6 +96,7 @@ $pesan = ['tambah' => 'produk berhasil ditambahkan.', 'edit' => 'produk berhasil
                             <div class="actionrow">
                                 <a href="editproduct.php?id=<?= (int) $p['id'] ?>" class="sidelink">edit</a>
                                 <form method="post" action="delproduct.php" style="display:inline" onsubmit="return confirmdelete();">
+                                    <?= csrf_field() ?>
                                     <input type="hidden" name="id" value="<?= (int) $p['id'] ?>">
                                     <button type="submit" class="enterbtn">del</button>
                                 </form>

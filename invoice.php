@@ -22,6 +22,10 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_verify();
+}
+
 $name = isset($_POST['name']) ? trim($_POST['name']) : "john doe";
 $address = isset($_POST['address']) ? trim($_POST['address']) : "123 market street";
 $city = isset($_POST['city']) ? trim($_POST['city']) : "springfield 97477";

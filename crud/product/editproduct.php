@@ -17,6 +17,7 @@ if ($id <= 0) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_verify();
     $id = (int) ($_POST['id'] ?? 0);
     $name = trim($_POST['name'] ?? '');
     $price = trim((string) ($_POST['price'] ?? ''));
@@ -133,6 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endif; ?>
 
                 <form method="post" action="editproduct.php?id=<?= (int) $id ?>" class="form" enctype="multipart/form-data">
+                    <?= csrf_field() ?>
                     <input type="hidden" name="id" value="<?= (int) $id ?>">
                     <div class="formrow">
                         <label class="formlabel" for="name">nama produk</label>

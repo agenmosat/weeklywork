@@ -67,6 +67,7 @@ if ($id <= 0 || !isset($products[$id])) {
 
                         <?php if ($product['stock'] > 0): ?>
                             <form action="cart.php" method="post" class="qtyform">
+                                <?= csrf_field(); ?>
                                 <input type="hidden" name="id" value="<?php echo $product['id']; ?>">
                                 <div class="qtybox">
                                     <label class="formlabel">select quantity:</label>

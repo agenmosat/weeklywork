@@ -20,27 +20,16 @@ $page = max(1, (int)($_GET['page'] ?? 1));
 $perpage = 6;
 $offset = ($page - 1) * $perpage;
 
-$whereclauses = [];
-$params = [];
-$types = "";
+$searchterm = "%" . $searchquery . "%";
 
-if ($searchquery !== "") {
-    $whereclauses[] = "(name LIKE ? OR description LIKE ?)";
-    $searchterm = "%" . $searchquery . "%";
-    $params[] = $searchterm;
-    $params[] = $searchterm;
-    $types .= "ss";
-}
-
-if ($category !== "") {
-    $whereclauses[] = "category = ?";
-    $params[] = $category;
-    $types .= "s";
-}
-
-$wherestr = "";
-if (!empty($whereclauses)) {
-    $wherestr = " WHERE " . implode(" AND ", $whereclauses);
+if ($searchquery !== "" && $category !== "") {
+    $wherestr = " WHERE (name LIKE ? OR description LIKE ?) AND category = ?";
+} elseif ($searchquery !== "") {
+    $wherestr = " WHERE (name LIKE ? OR description LIKE ?)";
+} elseif ($category !== "") {
+    $wherestr = " WHERE category = ?";
+} else {
+    $wherestr = "";
 }
 
 $orderstr = " ORDER BY id";
@@ -54,23 +43,29 @@ if ($sort === "low") {
 
 $countsql = "SELECT COUNT(*) AS total FROM products" . $wherestr;
 $totalitems = 0;
-if (empty($params)) {
-    $countres = mysqli_query($koneksi, $countsql);
-    if ($countres) {
-        $totalrow = mysqli_fetch_assoc($countres);
-        $totalitems = (int) $totalrow['total'];
-    }
-} else {
+
+if ($searchquery !== "" && $category !== "") {
     $stmt = mysqli_prepare($koneksi, $countsql);
-    if ($stmt) {
-        mysqli_stmt_bind_param($stmt, $types, ...$params);
-        mysqli_stmt_execute($stmt);
-        $countres = mysqli_stmt_get_result($stmt);
-        if ($countres) {
-            $totalrow = mysqli_fetch_assoc($countres);
-            $totalitems = (int) $totalrow['total'];
-        }
-    }
+    mysqli_stmt_bind_param($stmt, "sss", $searchterm, $searchterm, $category);
+    mysqli_stmt_execute($stmt);
+    $countres = mysqli_stmt_get_result($stmt);
+} elseif ($searchquery !== "") {
+    $stmt = mysqli_prepare($koneksi, $countsql);
+    mysqli_stmt_bind_param($stmt, "ss", $searchterm, $searchterm);
+    mysqli_stmt_execute($stmt);
+    $countres = mysqli_stmt_get_result($stmt);
+} elseif ($category !== "") {
+    $stmt = mysqli_prepare($koneksi, $countsql);
+    mysqli_stmt_bind_param($stmt, "s", $category);
+    mysqli_stmt_execute($stmt);
+    $countres = mysqli_stmt_get_result($stmt);
+} else {
+    $countres = mysqli_query($koneksi, $countsql);
+}
+
+if ($countres) {
+    $totalrow = mysqli_fetch_assoc($countres);
+    $totalitems = (int) $totalrow['total'];
 }
 
 $totalpages = max(1, (int)ceil($totalitems / $perpage));
@@ -80,25 +75,31 @@ if ($page > $totalpages) {
 }
 
 $datasql = "SELECT * FROM products" . $wherestr . $orderstr . " LIMIT " . (int)$perpage . " OFFSET " . (int)$offset;
-if (empty($params)) {
-    $result = mysqli_query($koneksi, $datasql);
-} else {
+
+if ($searchquery !== "" && $category !== "") {
     $stmt = mysqli_prepare($koneksi, $datasql);
-    if ($stmt) {
-        mysqli_stmt_bind_param($stmt, $types, ...$params);
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
-    } else {
-        $result = false;
-    }
+    mysqli_stmt_bind_param($stmt, "sss", $searchterm, $searchterm, $category);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+} elseif ($searchquery !== "") {
+    $stmt = mysqli_prepare($koneksi, $datasql);
+    mysqli_stmt_bind_param($stmt, "ss", $searchterm, $searchterm);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+} elseif ($category !== "") {
+    $stmt = mysqli_prepare($koneksi, $datasql);
+    mysqli_stmt_bind_param($stmt, "s", $category);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+} else {
+    $result = mysqli_query($koneksi, $datasql);
 }
 
 $filtered = [];
 if ($result) {
     while ($row = mysqli_fetch_assoc($result)) {
         $id = (int)$row['id'];
-        $name = strtolower(trim($row['name']));
-        $img = !empty($row['image']) ? $row['image'] : ($images[$name] ?? "images/glock17.png");
+        $img = !empty($row['image']) ? $row['image'] : "images/glock17.png";
         $filtered[] = [
             "id" => $id,
             "name" => $row['name'],

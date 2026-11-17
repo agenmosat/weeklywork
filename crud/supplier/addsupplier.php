@@ -7,6 +7,7 @@ $nama_supplier = '';
 $kota = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_verify();
     $nama_supplier = trim($_POST['nama_supplier'] ?? '');
     $kota = trim($_POST['kota'] ?? '');
 
@@ -75,6 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endif; ?>
 
                 <form method="post" action="addsupplier.php" class="form">
+                    <?= csrf_field() ?>
                     <div class="formrow">
                         <label class="formlabel" for="nama_supplier">nama supplier</label>
                         <input class="forminput" type="text" id="nama_supplier" name="nama_supplier" maxlength="50" value="<?= htmlspecialchars($nama_supplier) ?>" required>

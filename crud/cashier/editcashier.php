@@ -14,6 +14,7 @@ if ($id_kasir <= 0) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_verify();
     $id_kasir = (int) ($_POST['id_kasir'] ?? 0);
     $nama_kasir = trim($_POST['nama_kasir'] ?? '');
     $status = trim($_POST['status'] ?? '');
@@ -105,6 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endif; ?>
 
                 <form method="post" action="editcashier.php?id_kasir=<?= (int) $id_kasir ?>" class="form">
+                    <?= csrf_field() ?>
                     <input type="hidden" name="id_kasir" value="<?= (int) $id_kasir ?>">
                     <div class="formrow">
                         <label class="formlabel" for="nama_kasir">nama kasir</label>

@@ -11,6 +11,7 @@ $description = '';
 $image = 'images/glock17.png';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_verify();
     $name = trim($_POST['name'] ?? '');
     $price = trim((string) ($_POST['price'] ?? ''));
     $stock = trim((string) ($_POST['stock'] ?? ''));
@@ -106,6 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endif; ?>
 
                 <form method="post" action="addproduct.php" class="form" enctype="multipart/form-data">
+                    <?= csrf_field() ?>
                     <div class="formrow">
                         <label class="formlabel" for="name">nama produk</label>
                         <input class="forminput" type="text" id="name" name="name" maxlength="100" value="<?= htmlspecialchars($name) ?>" required>

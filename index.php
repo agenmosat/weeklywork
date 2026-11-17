@@ -25,6 +25,7 @@ if (isset($_SESSION['user'])) {
 }
 
 if (isset($_POST['enter'])) {
+    csrf_verify();
     $token = trim($_POST['token'] ?? '');
     if (defined('ADMIN_TOKEN') && ADMIN_TOKEN !== "" && $token === ADMIN_TOKEN) {
         $_SESSION['user'] = "superroot";
@@ -85,6 +86,7 @@ if (isset($_GET['logout'])) {
         <?php endif; ?>
 
         <form action="" method="post" class="form">
+            <?= csrf_field(); ?>
             <div class="field">
                 <input type="password" name="token" id="token" class="tokeninput" placeholder="enter token..." required>
                 <button type="button" id="togglebtn" class="togglebtn" onclick="toggleshow()">?</button>

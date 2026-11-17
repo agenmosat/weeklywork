@@ -13,6 +13,7 @@ if ($id_supplier <= 0) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_verify();
     $id_supplier = (int) ($_POST['id_supplier'] ?? 0);
     $nama_supplier = trim($_POST['nama_supplier'] ?? '');
     $kota = trim($_POST['kota'] ?? '');
@@ -99,6 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endif; ?>
 
                 <form method="post" action="editsupplier.php?id_supplier=<?= (int) $id_supplier ?>" class="form">
+                    <?= csrf_field() ?>
                     <input type="hidden" name="id_supplier" value="<?= (int) $id_supplier ?>">
                     <div class="formrow">
                         <label class="formlabel" for="nama_supplier">nama supplier</label>

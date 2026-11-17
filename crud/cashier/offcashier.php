@@ -3,6 +3,8 @@
 require_once __DIR__ . '/../guard.php';
 require_once __DIR__ . '/../../config/database.php';
 
+csrf_verify();
+
 $id = (int) ($_POST['id_kasir'] ?? 0);
 if ($id > 0) {
     $tgl = date('Y-m-d');
@@ -14,4 +16,4 @@ if ($id > 0) {
 }
 
 header('Location: cashier.php?status=hapus');
-exit
+exit;

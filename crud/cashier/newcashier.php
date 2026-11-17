@@ -7,6 +7,7 @@ $nama_kasir = '';
 $status = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_verify();
     $nama_kasir = trim($_POST['nama_kasir'] ?? '');
     $status = trim($_POST['status'] ?? '');
 
@@ -75,6 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endif; ?>
 
                 <form method="post" action="newcashier.php" class="form">
+                    <?= csrf_field() ?>
                     <div class="formrow">
                         <label class="formlabel" for="nama_kasir">nama kasir</label>
                         <input class="forminput" type="text" id="nama_kasir" name="nama_kasir" maxlength="50" value="<?= htmlspecialchars($nama_kasir) ?>" required>

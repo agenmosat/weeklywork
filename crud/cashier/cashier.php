@@ -89,6 +89,7 @@ $pesan = ['tambah' => 'kasir berhasil ditambahkan.', 'edit' => 'kasir berhasil d
                             <div class="actionrow">
                                 <a href="editcashier.php?id_kasir=<?= (int) $k['id_kasir'] ?>" class="sidelink">edit</a>
                                 <form method="post" action="offcashier.php" style="display:inline" onsubmit="return confirmoff();">
+                                    <?= csrf_field() ?>
                                     <input type="hidden" name="id_kasir" value="<?= (int) $k['id_kasir'] ?>">
                                     <button type="submit" class="enterbtn">off</button>
                                 </form>
