@@ -7,11 +7,11 @@ if (isset($_SESSION['cart'])) {
 }
 $topbarquery = isset($_GET['q']) ? trim($_GET['q']) : "";
 $topbarbase = '';
-if (file_exists('index.php')) {
+if (file_exists('config/database.php')) {
     $topbarbase = '';
-} elseif (file_exists('../index.php')) {
+} elseif (file_exists('../config/database.php')) {
     $topbarbase = '../';
-} elseif (file_exists('../../index.php')) {
+} elseif (file_exists('../../config/database.php')) {
     $topbarbase = '../../';
 }
 ?>

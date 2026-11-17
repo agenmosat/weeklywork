@@ -52,6 +52,9 @@ $pesan = ['tambah' => 'produk berhasil ditambahkan.', 'edit' => 'produk berhasil
             <a href="product.php" class="sidelink">product</a>
             <a href="../cashier/cashier.php" class="sidelink">cashier</a>
             <a href="../supplier/supplier.php" class="sidelink">supplier</a>
+            <a href="../penjualan/penjualan.php" class="sidelink">sales</a>
+            <a href="../pembelian/pembelian.php" class="sidelink">purchases</a>
+            <a href="../checklist.php" class="sidelink">checklist</a>
         </div>
 
         <div class="content">

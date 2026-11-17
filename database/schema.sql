@@ -33,7 +33,7 @@ CREATE TABLE pesanan (
 );
 
 INSERT INTO products (name, price, stock, category, description, image) VALUES
-('name', 520.00, 14, 'category', 'description', 'image'),
+('glock 19 gen 5', 520.00, 14, 'pistol', 'standard sidearm', 'images/glock17.png');
 
 INSERT INTO kasir (nama_kasir, status) VALUES
 ('kasir1', 'aktif'),
@@ -42,3 +42,37 @@ INSERT INTO kasir (nama_kasir, status) VALUES
 INSERT INTO supplier (nama_supplier, kota) VALUES
 ('supplier1', 'jakarta'),
 ('supplier2', 'bandung');
+
+CREATE TABLE IF NOT EXISTS penjualan (
+    id_penjualan INT AUTO_INCREMENT PRIMARY KEY,
+    nomor_transaksi VARCHAR(50) NOT NULL UNIQUE,
+    tanggal DATETIME DEFAULT CURRENT_TIMESTAMP,
+    nama_pelanggan VARCHAR(100) NOT NULL,
+    total DECIMAL(10,2) NOT NULL DEFAULT 0.00
+);
+
+CREATE TABLE IF NOT EXISTS penjualan_detail (
+    id_detail INT AUTO_INCREMENT PRIMARY KEY,
+    id_penjualan INT NOT NULL,
+    id_product INT NOT NULL,
+    harga DECIMAL(10,2) NOT NULL,
+    qty INT NOT NULL,
+    subtotal DECIMAL(10,2) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS pembelian (
+    id_pembelian INT AUTO_INCREMENT PRIMARY KEY,
+    nomor_transaksi VARCHAR(50) NOT NULL UNIQUE,
+    tanggal DATETIME DEFAULT CURRENT_TIMESTAMP,
+    id_supplier INT NOT NULL,
+    total DECIMAL(10,2) NOT NULL DEFAULT 0.00
+);
+
+CREATE TABLE IF NOT EXISTS pembelian_detail (
+    id_detail INT AUTO_INCREMENT PRIMARY KEY,
+    id_pembelian INT NOT NULL,
+    id_product INT NOT NULL,
+    harga_beli DECIMAL(10,2) NOT NULL,
+    qty INT NOT NULL,
+    subtotal DECIMAL(10,2) NOT NULL
+);
