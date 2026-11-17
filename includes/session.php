@@ -18,7 +18,7 @@ if (isset($_SESSION['user'])) {
             );
         }
         session_destroy();
-        $base_url = '/index.php?timeout=1';
+        $base_url = file_exists('index.php') ? 'index.php?timeout=1' : (file_exists('../index.php') ? '../index.php?timeout=1' : '../../index.php?timeout=1');
         header("Location: " . $base_url);
         exit();
     }

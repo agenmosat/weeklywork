@@ -39,16 +39,16 @@ $pesan = ['tambah' => 'kasir berhasil ditambahkan.', 'edit' => 'kasir berhasil d
         </div>
 
         <div class="topnav">
-            <a href="../../dashboard.php" class="navlink">store</a>
-            <a href="../../admin.php" class="navlink">admin</a>
-            <a href="../../admin.php?logout=1" class="navlink">logout</a>
+            <a href="../../home/dashboard.php" class="navlink">store</a>
+            <a href="../admin.php" class="navlink">admin</a>
+            <a href="../../logout.php" class="navlink">logout</a>
         </div>
     </div>
 
     <div class="layout">
         <div class="sidebar">
             <div class="sidetitle">admin menu</div>
-            <a href="../../admin.php" class="sidelink">dashboard</a>
+            <a href="../admin.php" class="sidelink">dashboard</a>
             <a href="../product/product.php" class="sidelink">product</a>
             <a href="cashier.php" class="sidelink">cashier</a>
             <a href="../supplier/supplier.php" class="sidelink">supplier</a>
@@ -99,7 +99,7 @@ $pesan = ['tambah' => 'kasir berhasil ditambahkan.', 'edit' => 'kasir berhasil d
                     <?php endwhile; ?>
                 </table>
 
-                <div class="backlink"><a href="../../admin.php" class="sidelink">back to admin</a></div>
+                <div class="backlink"><a href="../admin.php" class="sidelink">back to admin</a></div>
             </div>
         </div>
     </div>

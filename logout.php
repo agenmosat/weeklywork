@@ -7,12 +7,9 @@ session_set_cookie_params([
     'samesite' => 'Lax'
 ]);
 
-require_once __DIR__ . '/csrf.php';
+require_once __DIR__ . '/includes/csrf.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    csrf_verify();
-    session_destroy();
-}
+session_destroy();
 
 header("Location: index.php");
 exit;

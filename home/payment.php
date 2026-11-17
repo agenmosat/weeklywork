@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/session.php';
-require_once __DIR__ . '/items.php';
+require_once __DIR__ . '/../includes/session.php';
+require_once __DIR__ . '/../includes/items.php';
 
 session_set_cookie_params([
     'httponly' => true,
@@ -8,16 +8,16 @@ session_set_cookie_params([
     'samesite' => 'Lax'
 ]);
 
-require_once "items.php";
+require_once __DIR__ . '/../includes/items.php';
 
 if (!isset($_SESSION['user'])) {
-    header("Location: index.php");
+    header("Location: ../index.php");
     exit();
 }
 
 if (isset($_GET['logout'])) {
     session_destroy();
-    header("Location: index.php");
+    header("Location: ../index.php");
     exit();
 }
 
@@ -62,14 +62,14 @@ if ($subtotal <= 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>payment - darkfonder.net</title>
-    <link rel="stylesheet" href="style.css?v=3">
+    <link rel="stylesheet" href="../style.css?v=3">
 </head>
 <body class="marketpage themelight">
 
-    <?php require __DIR__ . '/topbar.php'; ?>
+    <?php require __DIR__ . '/../partials/topbar.php'; ?>
 
     <div class="layout">
-        <?php require __DIR__ . '/sidebar.php'; ?>
+        <?php require __DIR__ . '/../partials/sidebar.php'; ?>
 
         <div class="content">
             <a href="checkout.php" class="backlink">&laquo; back to checkout</a>
@@ -139,7 +139,7 @@ if ($subtotal <= 0) {
         </div>
     </div>
 
-<script src="main.js"></script>
+<script src="../main.js"></script>
 
 </body>
 </html>

@@ -2,23 +2,16 @@
 require_once __DIR__ . '/../guard.php';
 require_once __DIR__ . '/../../config/database.php';
 
-$id = (int) ($_GET['id'] ?? 0);
 $error = '';
 $name = '';
 $price = '';
 $stock = '';
 $category = '';
 $description = '';
-$image = '';
-
-if ($id <= 0) {
-    header('Location: product.php');
-    exit;
-}
+$image = 'images/glock17.png';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_verify();
-    $id = (int) ($_POST['id'] ?? 0);
     $name = trim($_POST['name'] ?? '');
     $price = trim((string) ($_POST['price'] ?? ''));
     $stock = trim((string) ($_POST['stock'] ?? ''));
@@ -41,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $image = 'images/' . $image;
     }
 
-    if ($id <= 0 || $name === '') {
+    if ($name === '') {
         $error = 'nama produk wajib diisi.';
     } elseif (mb_strlen($name) > 100) {
         $error = 'nama produk maksimal 100 karakter.';
@@ -55,37 +48,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             mysqli_query($koneksi, "ALTER TABLE products ADD COLUMN image VARCHAR(255) DEFAULT 'images/glock17.png'");
         }
 
-        $stmt = mysqli_prepare($koneksi, 'UPDATE products SET name = ?, price = ?, stock = ?, category = ?, description = ?, image = ? WHERE id = ?');
+        $stmt = mysqli_prepare($koneksi, 'INSERT INTO products (name, price, stock, category, description, image) VALUES (?, ?, ?, ?, ?, ?)');
         if ($stmt) {
-            mysqli_stmt_bind_param($stmt, 'sdisssi', $name, $price, $stock, $category, $description, $image, $id);
-            if (mysqli_stmt_execute($stmt)) {
-                header('Location: product.php?status=edit');
+            mysqli_stmt_bind_param($stmt, 'sdisss', $name, $price, $stock, $category, $description, $image);
+            $ok = mysqli_stmt_execute($stmt);
+            if ($ok) {
+                header('Location: product.php?status=tambah');
                 exit;
             }
         }
-        $error = 'gagal mengubah produk.';
+        $error = 'gagal menyimpan produk.';
     }
-} else {
-    $stmt = mysqli_prepare($koneksi, 'SELECT * FROM products WHERE id = ?');
-    $row = null;
-    if ($stmt) {
-        mysqli_stmt_bind_param($stmt, 'i', $id);
-        mysqli_stmt_execute($stmt);
-        $res = mysqli_stmt_get_result($stmt);
-        if ($res) {
-            $row = mysqli_fetch_assoc($res);
-        }
-    }
-    if (!$row) {
-        header('Location: product.php');
-        exit;
-    }
-    $name = $row['name'];
-    $price = $row['price'];
-    $stock = $row['stock'];
-    $category = $row['category'];
-    $description = $row['description'];
-    $image = $row['image'] ?? 'images/glock17.png';
 }
 ?>
 <!DOCTYPE html>
@@ -93,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>crud product - edit</title>
+    <title>crud product - add</title>
     <link rel="stylesheet" href="../../style.css?v=3">
 </head>
 <body class="marketpage themelight">
@@ -109,33 +82,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <div class="topnav">
-            <a href="../../dashboard.php" class="navlink">store</a>
-            <a href="../../admin.php" class="navlink">admin</a>
-            <a href="../../admin.php?logout=1" class="navlink">logout</a>
+            <a href="../../home/dashboard.php" class="navlink">store</a>
+            <a href="../admin.php" class="navlink">admin</a>
+            <a href="../../logout.php" class="navlink">logout</a>
         </div>
     </div>
 
     <div class="layout">
         <div class="sidebar">
             <div class="sidetitle">admin menu</div>
-            <a href="../../admin.php" class="sidelink">dashboard</a>
+            <a href="../admin.php" class="sidelink">dashboard</a>
             <a href="product.php" class="sidelink">product</a>
             <a href="../cashier/cashier.php" class="sidelink">cashier</a>
             <a href="../supplier/supplier.php" class="sidelink">supplier</a>
         </div>
 
         <div class="content">
-            <div class="heading">crud product - edit #<?= (int) $id ?></div>
+            <div class="heading">crud product - add</div>
             <div class="emptybox formbox">
-                <div class="sidetitle">form edit produk</div>
+                <div class="sidetitle">form tambah produk</div>
 
                 <?php if ($error !== ''): ?>
                     <div class="error"><?= htmlspecialchars($error) ?></div>
                 <?php endif; ?>
 
-                <form method="post" action="editproduct.php?id=<?= (int) $id ?>" class="form" enctype="multipart/form-data">
+                <form method="post" action="addproduct.php" class="form" enctype="multipart/form-data">
                     <?= csrf_field() ?>
-                    <input type="hidden" name="id" value="<?= (int) $id ?>">
                     <div class="formrow">
                         <label class="formlabel" for="name">nama produk</label>
                         <input class="forminput" type="text" id="name" name="name" maxlength="100" value="<?= htmlspecialchars($name) ?>" required>
@@ -158,10 +130,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <div class="formrow">
                         <label class="formlabel" for="image">nama / path gambar</label>
-                        <input class="forminput" type="text" id="image" name="image" value="<?= htmlspecialchars($image) ?>">
+                        <input class="forminput" type="text" id="image" name="image" placeholder="images/glock17.png" value="<?= htmlspecialchars($image) ?>">
                     </div>
                     <div class="formrow">
-                        <label class="formlabel" for="imagefile">unggah gambar baru</label>
+                        <label class="formlabel" for="imagefile">unggah gambar</label>
                         <input class="forminput" type="file" id="imagefile" name="imagefile">
                     </div>
                     <div class="btnwrap">

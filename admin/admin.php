@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/session.php';
-require_once __DIR__ . '/config/database.php';
+require_once __DIR__ . '/../includes/session.php';
+require_once __DIR__ . '/../config/database.php';
 
 session_set_cookie_params([
     'httponly' => true,
@@ -9,18 +9,18 @@ session_set_cookie_params([
 ]);
 
 if (!isset($_SESSION['user'])) {
-    header("Location: index.php");
+    header("Location: ../index.php");
     exit();
 }
 
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== "admin") {
-    header("Location: dashboard.php");
+    header("Location: ../home/dashboard.php");
     exit();
 }
 
 if (isset($_GET['logout'])) {
     session_destroy();
-    header("Location: index.php");
+    header("Location: ../index.php");
     exit();
 }
 
@@ -41,7 +41,7 @@ if ($checktable && mysqli_num_rows($checktable) > 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>admin - darkfonder.net</title>
-    <link rel="stylesheet" href="style.css?v=3">
+    <link rel="stylesheet" href="../style.css?v=3">
 </head>
 <body class="marketpage themelight">
 
@@ -55,9 +55,9 @@ if ($checktable && mysqli_num_rows($checktable) > 0) {
             </select>
         </div>
         <div class="topnav">
-            <a href="dashboard.php" class="navlink">store</a>
+            <a href="../home/dashboard.php" class="navlink">store</a>
             <a href="admin.php" class="navlink">admin</a>
-            <a href="admin.php?logout=1" class="navlink">logout</a>
+            <a href="../logout.php" class="navlink">logout</a>
         </div>
     </div>
 
@@ -65,9 +65,9 @@ if ($checktable && mysqli_num_rows($checktable) > 0) {
         <div class="sidebar">
             <div class="sidetitle">admin menu</div>
             <a href="admin.php" class="sidelink">dashboard</a>
-            <a href="crud/product/product.php" class="sidelink">product</a>
-            <a href="crud/cashier/cashier.php" class="sidelink">cashier</a>
-            <a href="crud/supplier/supplier.php" class="sidelink">supplier</a>
+            <a href="product/product.php" class="sidelink">product</a>
+            <a href="cashier/cashier.php" class="sidelink">cashier</a>
+            <a href="supplier/supplier.php" class="sidelink">supplier</a>
         </div>
 
         <div class="content">
@@ -109,7 +109,7 @@ if ($checktable && mysqli_num_rows($checktable) > 0) {
         </div>
     </div>
 
-<script src="main.js"></script>
+<script src="../main.js"></script>
 
 </body>
 </html>

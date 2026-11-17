@@ -2,56 +2,32 @@
 require_once __DIR__ . '/../guard.php';
 require_once __DIR__ . '/../../config/database.php';
 
-$id_supplier = (int) ($_GET['id_supplier'] ?? 0);
 $error = '';
 $nama_supplier = '';
 $kota = '';
 
-if ($id_supplier <= 0) {
-    header('Location: supplier.php');
-    exit;
-}
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_verify();
-    $id_supplier = (int) ($_POST['id_supplier'] ?? 0);
     $nama_supplier = trim($_POST['nama_supplier'] ?? '');
     $kota = trim($_POST['kota'] ?? '');
 
-    if ($id_supplier <= 0 || $nama_supplier === '') {
+    if ($nama_supplier === '') {
         $error = 'nama supplier wajib diisi.';
     } elseif (mb_strlen($nama_supplier) > 50) {
         $error = 'nama supplier maksimal 50 karakter.';
     } elseif (mb_strlen($kota) > 30) {
         $error = 'kota maksimal 30 karakter.';
     } else {
-        $stmt = mysqli_prepare($koneksi, 'UPDATE supplier SET nama_supplier = ?, kota = ? WHERE id_supplier = ?');
+        $stmt = mysqli_prepare($koneksi, 'INSERT INTO supplier (nama_supplier, kota) VALUES (?, ?)');
         if ($stmt) {
-            mysqli_stmt_bind_param($stmt, 'ssi', $nama_supplier, $kota, $id_supplier);
+            mysqli_stmt_bind_param($stmt, 'ss', $nama_supplier, $kota);
             if (mysqli_stmt_execute($stmt)) {
-                header('Location: supplier.php?status=edit');
+                header('Location: supplier.php?status=tambah');
                 exit;
             }
         }
-        $error = 'gagal mengubah supplier.';
+        $error = 'gagal menyimpan supplier.';
     }
-} else {
-    $stmt = mysqli_prepare($koneksi, 'SELECT id_supplier, nama_supplier, kota FROM supplier WHERE id_supplier = ?');
-    $row = null;
-    if ($stmt) {
-        mysqli_stmt_bind_param($stmt, 'i', $id_supplier);
-        mysqli_stmt_execute($stmt);
-        $res = mysqli_stmt_get_result($stmt);
-        if ($res) {
-            $row = mysqli_fetch_assoc($res);
-        }
-    }
-    if (!$row) {
-        header('Location: supplier.php');
-        exit;
-    }
-    $nama_supplier = $row['nama_supplier'];
-    $kota = $row['kota'];
 }
 ?>
 <!DOCTYPE html>
@@ -59,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>crud supplier - edit</title>
+    <title>crud supplier - add</title>
     <link rel="stylesheet" href="../../style.css?v=3">
 </head>
 <body class="marketpage themelight">
@@ -75,33 +51,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <div class="topnav">
-            <a href="../../dashboard.php" class="navlink">store</a>
-            <a href="../../admin.php" class="navlink">admin</a>
-            <a href="../../admin.php?logout=1" class="navlink">logout</a>
+            <a href="../../home/dashboard.php" class="navlink">store</a>
+            <a href="../admin.php" class="navlink">admin</a>
+            <a href="../../logout.php" class="navlink">logout</a>
         </div>
     </div>
 
     <div class="layout">
         <div class="sidebar">
             <div class="sidetitle">admin menu</div>
-            <a href="../../admin.php" class="sidelink">dashboard</a>
+            <a href="../admin.php" class="sidelink">dashboard</a>
             <a href="../product/product.php" class="sidelink">product</a>
             <a href="../cashier/cashier.php" class="sidelink">cashier</a>
             <a href="supplier.php" class="sidelink">supplier</a>
         </div>
 
         <div class="content">
-            <div class="heading">crud supplier - edit #<?= (int) $id_supplier ?></div>
+            <div class="heading">crud supplier - add</div>
             <div class="emptybox formbox">
-                <div class="sidetitle">form edit supplier</div>
+                <div class="sidetitle">form tambah supplier</div>
 
                 <?php if ($error !== ''): ?>
                     <div class="error"><?= htmlspecialchars($error) ?></div>
                 <?php endif; ?>
 
-                <form method="post" action="editsupplier.php?id_supplier=<?= (int) $id_supplier ?>" class="form">
+                <form method="post" action="addsupplier.php" class="form">
                     <?= csrf_field() ?>
-                    <input type="hidden" name="id_supplier" value="<?= (int) $id_supplier ?>">
                     <div class="formrow">
                         <label class="formlabel" for="nama_supplier">nama supplier</label>
                         <input class="forminput" type="text" id="nama_supplier" name="nama_supplier" maxlength="50" value="<?= htmlspecialchars($nama_supplier) ?>" required>

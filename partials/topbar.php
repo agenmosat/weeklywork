@@ -6,10 +6,18 @@ if (isset($_SESSION['cart'])) {
     }
 }
 $topbarquery = isset($_GET['q']) ? trim($_GET['q']) : "";
+$topbarbase = '';
+if (file_exists('index.php')) {
+    $topbarbase = '';
+} elseif (file_exists('../index.php')) {
+    $topbarbase = '../';
+} elseif (file_exists('../../index.php')) {
+    $topbarbase = '../../';
+}
 ?>
 <div class="topbar">
     <div class="brand">darkfonder.net</div>
-    <form action="dashboard.php" method="get" class="searchbox">
+    <form action="<?php echo $topbarbase; ?>home/dashboard.php" method="get" class="searchbox">
         <input type="text" name="q" placeholder="search items..." class="searchinput" value="<?php echo htmlspecialchars($topbarquery); ?>">
         <button type="submit" class="searchbtn">search</button>
     </form>
@@ -21,13 +29,13 @@ $topbarquery = isset($_GET['q']) ? trim($_GET['q']) : "";
         </select>
     </div>
     <div class="topnav">
-        <a href="dashboard.php" class="navlink">store</a>
+        <a href="<?php echo $topbarbase; ?>home/dashboard.php" class="navlink">store</a>
         <?php if (isset($_SESSION['role']) && $_SESSION['role'] === "admin"): ?>
-            <a href="admin.php" class="navlink">admin</a>
+            <a href="<?php echo $topbarbase; ?>admin/admin.php" class="navlink">admin</a>
         <?php elseif (isset($_SESSION['role']) && $_SESSION['role'] === "cashier"): ?>
-            <a href="crud/cashier/cashier.php" class="navlink">cashier</a>
+            <a href="<?php echo $topbarbase; ?>admin/cashier/cashier.php" class="navlink">cashier</a>
         <?php endif; ?>
-        <a href="cart.php" class="navlink">cart (<?php echo $topbarcartcount; ?>)</a>
-        <a href="dashboard.php?logout=1" class="navlink">logout</a>
+        <a href="<?php echo $topbarbase; ?>home/cart.php" class="navlink">cart (<?php echo $topbarcartcount; ?>)</a>
+        <a href="<?php echo $topbarbase; ?>logout.php" class="navlink">logout</a>
     </div>
 </div>

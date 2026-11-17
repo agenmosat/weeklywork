@@ -1,15 +1,15 @@
 <?php
-require_once __DIR__ . '/session.php';
-require_once __DIR__ . '/items.php';
+require_once __DIR__ . '/../includes/session.php';
+require_once __DIR__ . '/../includes/items.php';
 
 if (!isset($_SESSION['user'])) {
-    header("Location: index.php");
+    header("Location: ../index.php");
     exit();
 }
 
 if (isset($_GET['logout'])) {
     session_destroy();
-    header("Location: index.php");
+    header("Location: ../index.php");
     exit();
 }
 
@@ -124,14 +124,14 @@ function pageurl($p) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>darkfonder.net</title>
-    <link rel="stylesheet" href="style.css?v=3">
+    <link rel="stylesheet" href="../style.css?v=3">
 </head>
 <body class="marketpage themelight">
 
-    <?php require __DIR__ . '/topbar.php'; ?>
+    <?php require __DIR__ . '/../partials/topbar.php'; ?>
 
     <div class="layout">
-        <?php require __DIR__ . '/sidebar.php'; ?>
+        <?php require __DIR__ . '/../partials/sidebar.php'; ?>
 
         <div class="content">
             <div class="heading">
@@ -158,7 +158,7 @@ function pageurl($p) {
                         <div class="item">
                             <span class="tagitem"><?php echo htmlspecialchars($p['category']); ?></span>
                             <div class="imagebox">
-                                <img src="<?php echo htmlspecialchars($p['image']); ?>" alt="<?php echo htmlspecialchars($p['name']); ?>" class="productimage">
+                                <img src="../<?php echo htmlspecialchars($p['image']); ?>" alt="<?php echo htmlspecialchars($p['name']); ?>" class="productimage">
                             </div>
                             <a href="product.php?id=<?php echo $p['id']; ?>" class="itemname"><?php echo htmlspecialchars($p['name']); ?></a>
                             <div class="itemprice">$<?php echo number_format($p['price'], 2); ?></div>
@@ -192,7 +192,7 @@ function pageurl($p) {
         </div>
     </div>
 
-<script src="main.js"></script>
+<script src="../main.js"></script>
 
 </body>
 </html>
