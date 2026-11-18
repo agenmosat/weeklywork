@@ -26,3 +26,7 @@ VARIABEL.md
 
 PANDUAN_CRUD.md
 PANDUAN_SQL.md
+
+# PHP CS Fixer configuration
+/.php-cs-fixer.cache
+/.php-cs-fixer.php
