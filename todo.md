@@ -79,4 +79,5 @@ kali ini itu aja kayaknya :v
 EXTRA (dari pm)
 ini list yang harus ditambahkan
 1. ekripsi url
-2. tba
+2. https://mailtrap.io/blog/php-email-verification/ verif email
+3. butstrep
