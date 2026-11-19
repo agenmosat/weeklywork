@@ -1,104 +1,73 @@
-# DAFTAR ISU DAN TUGAS PENGEMBANGAN PROYEK
+# DAFTAR TUGAS MENERAPKAN BOOTSTRAP
 
-Dokumen ini memuat seluruh rekapitulasi tugas, perbaikan bug, penyelarasan kurikulum Modul Ajar Pemrograman Web (KasirQu / KasirSMK), serta instruksi tambahan yang harus diselesaikan pada proyek aplikasi kasir.
-
----
-
-## 1. Isu Awal & Perbaikan Dasar Sistem 
-
-001. Penyesuaian transisi dan kontras tampilan mode gelap (perbaiki styling CSS dark mode agar lebih halus dan konsisten) status : fixed
-002. Keberadaan entitas produk yang tidak relevan dengan katalog toko (bersihkan dan hapus data barang yang tidak sesuai dari sistem) status : fixed
-003. Keberadaan kategori produk yang tidak relevan (singkirkan kategori yang tidak sesuai dari basis data dan navigasi) status : fixed
-004. Ketiadaan aset gambar visual pada sebagian besar data produk (lengkapi aset gambar lokal untuk seluruh produk katalog) status : fixed
-005. Dasbor administrasi belum tersedia atau belum berfungsi (bangun antarmuka dasbor admin untuk manajemen toko) status : fixed
-006. Data katalog produk masih tersimpan secara statis di dalam kode (hubungkan pemuatan data produk langsung dari basis data) status : fixed
-007. Validasi ketersediaan stok produk pada sisi server kurang ketat (perketat validasi stok di sisi backend sebelum memproses pesanan) status : fixed
-008. Duplikasi struktur kode antarmuka pengguna pada berbagai halaman (terapkan modularisasi kode antarmuka menggunakan include dan require) status : fixed
-009. Antarmuka pengguna belum responsif terhadap perangkat mobile (tambahkan aturan CSS media query untuk tata letak layar kecil) status : fixed
-010. Mekanisme pembayaran escrow masih bersifat simulasi statis (integrasikan modul API gateway pembayaran mandiri) status : fixed
-011. Penggunaan tautan langsung ke aset gambar eksternal (alihkan seluruh tautan gambar ke penyimpanan aset lokal) status : fixed
-012. Duplikasi kode JavaScript yang tersebar di banyak dokumen (ekstraksi dan satukan script logika ke dalam berkas JavaScript eksternal) status : fixed
-013. Penanganan galat 404 ketika mengakses ID produk yang tidak valid belum tersedia (sediakan tampilan halaman not found yang informatif) status : fixed
-014. Pembersihan data sesi keranjang belanja terjadi terlalu prematur (perbaiki siklus hidup sesi agar keranjang tidak terhapus sebelum transaksi tuntas) status : fixed
-015. Stok produk pada basis data tidak berkurang setelah proses checkout selesai (sinkronkan pemotongan stok otomatis pada saat pesanan berhasil disimpan) status : fixed
-016. Riwayat transaksi pembelian pelanggan belum tersimpan secara permanen (buat tabel pesanan dan simpan data setiap transaksi pembayaran) status : fixed
-017. Antarmuka formulir CRUD produk belum mendukung pengelolaan berkas gambar (tambahkan input nama atau unggah berkas gambar pada form produk) status : fixed
-018. Mekanisme pencarian dan penyaringan kategori masih memproses array di memori (optimalkan logika pencarian langsung ke kueri basis data) status : fixed
-019. Pembagian halaman data katalog belum diimplementasikan (terapkan mekanisme pagination menggunakan klausa LIMIT dan OFFSET pada kueri) status : fixed
-020. Komponen dropdown pemilih tema dinonaktifkan pada dasbor toko utama (aktifkan kembali interaktivitas pengubah tema) status : fixed
-021. Inkonsistensi penamaan label dan tautan navigasi antarhalaman (seragamkan istilah dan target tautan navigasi aplikasi) status : fixed
-022. Autentikasi kasir belum terintegrasi dengan tabel kasir pada basis data (terapkan verifikasi login kasir mandiri melalui basis data) status : fixed
-023. Ketiadaan dialog konfirmasi sebelum aksi penghapusan atau pengosongan keranjang (sediakan modal atau dialog konfirmasi tindakan pengguna) status : fixed
-024. Fitur pencetakan struk faktur pembayaran belum tersedia (tambahkan fungsi cetak dokumen invoice menggunakan stylesheet cetak) status : fixed
-025. Perhitungan total harga pada formulir checkout rentan dimanipulasi dari sisi klien (kalkulasi ulang total belanja secara mutlak di sisi server) status : fixed
-026. Ketiadaan batas masa aktif sesi pengguna yang masuk ke sistem (terapkan mekanisme session timeout otomatis setelah periode inaktivitas tertentu) status : fixed
+Dokumen ini memuat daftar tugas penerapan Bootstrap 5 pada proyek aplikasi kasir agar antarmuka rapi, responsif, dan mudah digunakan.
 
 ---
 
-## 2. Isu Pembagian Tim 
+## 1. Setup & Template Modular
 
-### Dinda
-027. Duplikasi kerangka awal dokumen HTML pada setiap halaman (pisahkan ke template modular header.php) status : pending
-028. Duplikasi penutup dokumen HTML dan script pada setiap halaman (pisahkan ke template modular footer.php) status : pending
-029. Duplikasi markup bar navigasi atas pada antarmuka admin dan modul CRUD (terapkan pemanggilan terpusat melalui partials/topbar.php) status : done
-030. Duplikasi markup navigasi menu bilah sisi pada seluruh modul administrasi (terapkan template modular bilah sisi admin) status : pending
-
-### Alfredo
-031. Query isi data awal database terlalu rumit pakai UNION ALL (ganti pakai INSERT INTO biasa) status : done
-032. Query hapus data duplikat terlalu rumit pakai join tabel (sederhanakan cara bersihkannya) status : done
-033. Form produk masih pakai ALTER TABLE (pindahkan pembuatan kolom langsung ke file database schema.sql) status : done
-034. Proses invoice masih otomatis bikin tabel baru (pindahkan pembuatan tabel pesanan ke file database schema.sql) status : done
-
-### Gery
-035. Redundansi logika kalkulasi subtotal dan validasi item belanja pada modul transaksi (satukan ke fungsi helper kalkulasi terpusat) status : pending
-036. Duplikasi penanganan proses keluar sistem di berbagai dokumen (seragamkan pengalihan keluar melalui berkas logout.php terpusat) status : done
-037. Pemanggilan berkas pendukung data produk berulang dan pemuatan kueri ganda pada katalog (optimalkan alur pemanggilan berkas dan hilangkan kueri redundan) status : pending
-038. Pengaturan parameter kuki sesi dipanggil setelah inisialisasi sesi aktif (pindahkan pemanggilan session_set_cookie_params sebelum session_start) status : done
-
-### Nell
-039. Kueri berparameter dinamis menggunakan variadic unpacking dan manipulasi tipe data kompleks (sederhanakan alur prepared statement standar yang terstruktur) status : done
-040. Dualisme sumber data gambar antara array asosiatif dan kolom tabel basis data (tetapkan kolom tabel produk sebagai satu-satunya sumber data gambar) status : done
-041. Mekanisme pengalihan batas waktu sesi menggunakan pemotongan string SCRIPT_NAME yang rentan galat (standarisasi pengalihan sesi menggunakan jalur absolut atau path terstruktur) status : done
-042. Ketiadaan proteksi token CSRF pada formulir transaksi dan manipulasi data (terapkan verifikasi token CSRF pada seluruh formulir berstatus POST) status : done
-
-### Fahri
-043. Duplikasi fungsi dialog konfirmasi tindakan pengguna pada berkas JavaScript (sederhanakan menjadi fungsi konfirmasi generik terpadu) status : done
-044. Duplikasi komponen pemilih tema antarmuka pada berbagai dokumen (integrasikan pemilih tema ke dalam bar navigasi utama) status : done
-045. Variabel penampung batas percobaan login tidak terdefinisi pada alur login (perbaiki mekanisme rate limiting atau bersihkan blok kode bermasalah) status : pending
-046. Penggunaan fungsi CONCAT SQL pada penyaringan pencarian tabel modul CRUD (sederhanakan penggabungan wildcard pencarian di sisi PHP) status : done
-047. Struktur basis data transaksi belum memenuhi kaidah normalisasi (buat tabel relasi penjualan_detail dan pembelian_detail) status : done
+001. Pasang pustaka Bootstrap 5 (CSS & JS) di file partials (header dan footer) status : done
+002. Rapikan template modular partials/header.php dan partials/footer.php status : done
+003. Terapkan bar navigasi partials/topbar.php menggunakan navbar Bootstrap status : pending
+004. Terapkan menu navigasi partials/sidebar.php menggunakan komponen nav Bootstrap status : pending
 
 ---
 
-## 3. Tugas Modul Lanjutan Berdasarkan Modul Ajar
+## 2. Halaman Login
 
-### Transaksi & Kartu Stok
-048. Ketiadaan pencatatan mutasi kartu stok barang secara kronologis (bangun tabel stok untuk mencatat setiap peristiwa barang masuk dan keluar beserta saldo awal dan saldo akhir) status : pending
-049. Formulir transaksi pembelian dan penjualan hanya mendukung penambahan satu jenis barang per nota (kembangkan formulir multi-baris dinamis berbasis JavaScript dan penanganan array input) status : pending
-050. Ketiadaan penanganan transaksi basis data atomik pada penyimpanan nota (terapkan blok transaksi mysqli_begin_transaction, commit, dan rollback pada modul transaksi) status : pending
-051. Format penomoran transaksi nota belum sekuensial dan terstandarisasi (implementasikan generator nomor transaksi otomatis berurutan dengan format PB-XXXX dan PJ-XXXX) status : pending
-052. Ketiadaan prosedur pembatalan transaksi nota yang aman (sediakan fitur pembatalan nota dengan validasi ketersediaan saldo dan pencatatan mutasi stok pembalik) status : pending
-
-### Pengamanan Integritas Data Master
-053. Penghapusan data produk tidak memvalidasi riwayat penggunaan pada nota transaksi (pasang validasi pengecekan relasi detail transaksi sebelum eksekusi penghapusan produk) status : pending
-054. Penghapusan data pemasok (supplier) tidak memvalidasi riwayat transaksi pembelian (pasang validasi pengecekan relasi nota pembelian sebelum eksekusi penghapusan supplier) status : pending
-
-### Modul Laporan & Rekapitulasi Bisnis 
-055. Ketiadaan modul laporan rekapitulasi penjualan per periode (buat halaman laporan_penjualan.php dengan filter rentang tanggal, agregasi total, dan rincian transaksi) status : pending
-056. Ketiadaan modul laporan rekapitulasi pembelian per periode (buat halaman laporan_pembelian.php dengan filter tanggal dan rekapitulasi biaya belanja ke pemasok) status : pending
-057. Ketiadaan modul laporan pemantauan sisa stok inventaris (buat halaman laporan_stok.php yang menampilkan saldo terkini dan filter peringatan stok minimum) status : pending
-058. Ketiadaan modul laporan estimasi laba kotor toko (buat halaman laporan_laba.php yang mengkalkulasi selisih omzet penjualan terhadap harga modal beli produk) status : pending
-059. Ketiadaan fasilitas cetak dokumen fisik pada seluruh halaman laporan (tambahkan tombol cetak dengan integrasi window.print dan stylesheet khusus media cetak) status : pending
-
-### Manajemen Pengguna, Otorisasi, & Sesi
-060. Sistem autentikasi pengguna belum terhubung dengan tabel data akun terpusat (implementasikan tabel pengguna dengan penyimpanan kata sandi terenkripsi hash bcrypt) status : pending
-061. Pembatasan hak akses berbasis peran (role) belum diterapkan secara menyeluruh di tingkat peladen (terapkan modul otorisasi peran admin dan kasir pada setiap halaman bisnis) status : pending
-062. Alur keluar sistem (logout) masih dapat dipicu melalui metode HTTP GET (perbarui tombol logout menjadi formulir metode POST dengan regenerasi ID sesi) status : pending
+005. Ubah tampilan halaman login (index.php) menggunakan card Bootstrap di tengah layar status : pending
+006. Terapkan form-label, form-control, dan btn Bootstrap pada formulir login status : pending
+007. Terapkan alert Bootstrap untuk pesan error dan notifikasi sesi habis status : pending
 
 ---
 
-## 4. Instruksi Tambahan Project Manager 
+## 3. Halaman Toko & Kasir (Home)
 
-063. Keterpaparan kunci utama produk pada parameter URL publik (terapkan mekanisme penyamaran atau enkripsi URL parameter untuk menyembunyikan primary key produk) status : pending
-064. Ketiadaan alur verifikasi alamat surat elektronik pengguna (integrasikan mekanisme verifikasi email pada modul registrasi atau profil akun) status : pending
-065. Pustaka antarmuka Bootstrap 5 lokal belum terpasang (sediakan aset Bootstrap CSS dan JS lokal di dalam direktori aset untuk mendukung stabilitas tata letak) status : pending
+008. Terapkan grid card Bootstrap untuk katalog produk di home/dashboard.php status : pending
+009. Terapkan pagination Bootstrap untuk pembagian halaman produk status : pending
+010. Terapkan layout card dan tombol beli pada halaman detail produk (home/product.php) status : pending
+011. Terapkan tabel Bootstrap (table table-striped) pada keranjang belanja (home/cart.php) status : pending
+012. Terapkan form checkout dan rincian belanja di home/checkout.php status : pending
+013. Terapkan card dan tombol pembayaran di home/payment.php status : pending
+014. Terapkan tampilan struk faktur pembayaran yang rapi di home/invoice.php status : pending
+
+---
+
+## 4. Halaman Dashboard Admin
+
+015. Terapkan layout grid dan card ringkasan statistik di admin/admin.php status : pending
+016. Pastikan tampilan dashboard admin responsif di layar mobile status : pending
+
+---
+
+## 5. Modul CRUD Produk
+
+017. Terapkan tabel Bootstrap dan badge stok pada daftar produk (admin/product/product.php) status : pending
+018. Terapkan form control Bootstrap pada form tambah produk (admin/product/addproduct.php) status : pending
+019. Terapkan form control Bootstrap pada form edit produk (admin/product/editproduct.php) status : pending
+020. Terapkan modal atau alert konfirmasi pada hapus produk (admin/product/delproduct.php) status : pending
+
+---
+
+## 6. Modul CRUD Kasir & Supplier
+
+021. Terapkan tabel Bootstrap pada daftar kasir (admin/cashier/cashier.php) status : pending
+022. Terapkan form Bootstrap pada tambah dan edit kasir (admin/cashier/) status : pending
+023. Terapkan tabel Bootstrap pada daftar supplier (admin/supplier/supplier.php) status : pending
+024. Terapkan form Bootstrap pada tambah dan edit supplier (admin/supplier/) status : pending
+
+---
+
+## 7. Modul Transaksi & Laporan
+
+025. Terapkan tabel Bootstrap pada riwayat penjualan (admin/penjualan/penjualan.php) status : pending
+026. Terapkan form Bootstrap pada tambah penjualan (admin/penjualan/penjualan_tambah.php) status : pending
+027. Terapkan card dan tabel pada detail penjualan (admin/penjualan/penjualan_detail.php) status : pending
+028. Terapkan tabel dan form Bootstrap pada modul pembelian (admin/pembelian/) status : pending
+
+---
+
+## 8. Komponen Tambahan & Perapihan
+
+029. Ganti pesan notifikasi dan peringatan manual menggunakan alert Bootstrap status : pending
+030. Bersihkan class CSS lama yang sudah digantikan oleh Bootstrap utility classes status : pending
