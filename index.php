@@ -1,9 +1,9 @@
 <?php
-require_once __DIR__ . '/session.php';
+require_once __DIR__ . '/includes/session.php';
 
 if (file_exists(__DIR__ . '/token.php')) {
     require_once __DIR__ . '/token.php';
-} else {
+} elseif (file_exists(__DIR__ . '/token.example.php')) {
     require_once __DIR__ . '/token.example.php';
 }
 
@@ -17,26 +17,27 @@ if (isset($_GET['timeout'])) {
 
 if (isset($_SESSION['user'])) {
     if (isset($_SESSION['role']) && $_SESSION['role'] === "admin") {
-        header("Location: admin.php");
+        header("Location: admin/admin.php");
     } else {
-        header("Location: dashboard.php");
+        header("Location: home/dashboard.php");
     }
     exit();
 }
 
 if (isset($_POST['enter'])) {
+    csrf_verify();
     $token = trim($_POST['token'] ?? '');
     if (defined('ADMIN_TOKEN') && ADMIN_TOKEN !== "" && $token === ADMIN_TOKEN) {
         $_SESSION['user'] = "superroot";
         $_SESSION['role'] = "admin";
         unset($_SESSION[$attempts_key]);
-        header("Location: admin.php");
+        header("Location: admin/admin.php");
         exit();
     } elseif (defined('USER_TOKEN') && USER_TOKEN !== "" && $token === USER_TOKEN) {
         $_SESSION['user'] = "user";
         $_SESSION['role'] = "user";
         unset($_SESSION[$attempts_key]);
-        header("Location: dashboard.php");
+        header("Location: home/dashboard.php");
         exit();
     } elseif (isset($koneksi) && $koneksi) {
         $stmt = mysqli_prepare($koneksi, "SELECT id_kasir, nama_kasir FROM kasir WHERE nama_kasir = ? AND status = 'aktif' LIMIT 1");
@@ -48,7 +49,7 @@ if (isset($_POST['enter'])) {
                 $_SESSION['user'] = $row['nama_kasir'];
                 $_SESSION['role'] = "cashier";
                 $_SESSION['id_kasir'] = (int)$row['id_kasir'];
-                header("Location: dashboard.php");
+                header("Location: home/dashboard.php");
                 exit();
             }
         }
@@ -72,7 +73,7 @@ if (isset($_GET['logout'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>secret</title>
-    <link rel="stylesheet" href="style.css?v=3">
+    <link rel="stylesheet" href="assets/style.css?v=3">
 </head>
 <body class="page themelight">
 
@@ -85,6 +86,7 @@ if (isset($_GET['logout'])) {
         <?php endif; ?>
 
         <form action="" method="post" class="form">
+            <?= csrf_field(); ?>
             <div class="field">
                 <input type="password" name="token" id="token" class="tokeninput" placeholder="enter token..." required>
                 <button type="button" id="togglebtn" class="togglebtn" onclick="toggleshow()">?</button>
@@ -101,7 +103,7 @@ if (isset($_GET['logout'])) {
             </div>
     </div>
 
-<script src="main.js"></script>
+<script src="assets/main.js"></script>
 
 </body>
 </html>
