@@ -1,5 +1,7 @@
 <?php
-function init_transaksi_tables($koneksi) {
+
+function init_transaksi_tables($koneksi)
+{
     if (!$koneksi) {
         return;
     }
@@ -35,15 +37,18 @@ function init_transaksi_tables($koneksi) {
     )");
 }
 
-function format_uang($angka) {
+function format_uang($angka)
+{
     return "$" . number_format((float)$angka, 2);
 }
 
-function generate_nomor_transaksi($prefix) {
+function generate_nomor_transaksi($prefix)
+{
     return strtoupper($prefix) . "-" . date("YmdHis") . "-" . rand(100, 999);
 }
 
-function hitung_total_transaksi($harga, $qty) {
+function hitung_total_transaksi($harga, $qty)
+{
     return (float)$harga * (int)$qty;
 }
 

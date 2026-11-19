@@ -53,7 +53,7 @@ if (empty($checkoutitems)) {
             <form action="payment.php" method="post" class="formbox">
                 <?= csrf_field(); ?>
                 <input type="hidden" name="source" value="<?php echo htmlspecialchars($source); ?>">
-                <?php if ($source === "direct"): ?>
+                <?php if ($source === "direct") : ?>
                     <input type="hidden" name="direct_id" value="<?php echo $directid; ?>">
                     <input type="hidden" name="direct_qty" value="<?php echo $directqty; ?>">
                 <?php endif; ?>
@@ -84,7 +84,7 @@ if (empty($checkoutitems)) {
 
                     <div class="summarybox">
                         <div class="summarytitle">order summary</div>
-                        <?php foreach ($checkoutitems as $ci): ?>
+                        <?php foreach ($checkoutitems as $ci) : ?>
                             <div class="summaryrow">
                                 <span><?php echo htmlspecialchars($ci['name']); ?> (x<?php echo $ci['qty']; ?>)</span>
                                 <span>$<?php echo number_format($ci['total'], 2); ?></span>
