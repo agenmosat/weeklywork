@@ -44,10 +44,10 @@ Dokumen ini memuat seluruh rekapitulasi tugas, perbaikan bug, penyelarasan kurik
 030. Duplikasi markup navigasi menu bilah sisi pada seluruh modul administrasi (terapkan template modular bilah sisi admin) status : pending
 
 ### Alfredo
-031. Kueri penyemaian data awal basis data menggunakan UNION ALL dan subkueri bertingkat (sederhanakan menggunakan perintah INSERT INTO VALUES standar) status : done
-032. Kueri penghapusan data duplikat menggunakan penggabungan multi-tabel yang rumit (sederhanakan mekanisme pembersihan data tabel) status : done
-033. Manipulasi struktur tabel menggunakan perintah DDL ALTER TABLE pada saat pemrosesan formulir (pindahkan definisi kolom ke skema basis data utama) status : pending
-034. Eksekusi pembuatan tabel dinamis pada alur pembuatan faktur pembayaran (pindahkan inisialisasi tabel pesanan ke skrip migrasi basis data) status : pending
+031. Query isi data awal database terlalu rumit pakai UNION ALL (ganti pakai INSERT INTO biasa) status : done
+032. Query hapus data duplikat terlalu rumit pakai join tabel (sederhanakan cara bersihkannya) status : done
+033. Form produk masih pakai ALTER TABLE (pindahkan pembuatan kolom langsung ke file database schema.sql) status : done
+034. Proses invoice masih otomatis bikin tabel baru (pindahkan pembuatan tabel pesanan ke file database schema.sql) status : done
 
 ### Gery
 035. Redundansi logika kalkulasi subtotal dan validasi item belanja pada modul transaksi (satukan ke fungsi helper kalkulasi terpusat) status : pending

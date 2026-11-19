@@ -5,7 +5,7 @@ CREATE TABLE products (
     stock INT NOT NULL,
     category VARCHAR(50) NOT NULL,
     description TEXT NOT NULL,
-    image VARCHAR(255) DEFAULT 'images/glock17.png'
+    image VARCHAR(255) DEFAULT 'images/no-image.webp'
 );
 
 CREATE TABLE kasir (
@@ -24,7 +24,7 @@ CREATE TABLE supplier (
 CREATE TABLE pesanan (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nomor_pesanan VARCHAR(50) NOT NULL,
-    nama_pembeli VARCHAR(100) NOT NULL
+    nama_pembeli VARCHAR(100) NOT NULL,
     alamat TEXT NOT NULL,
     total DECIMAL(10,2) NOT NULL,
     metode_pembayaran VARCHAR(50) NOT NULL,
