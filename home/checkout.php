@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../includes/session.php';
 require_once __DIR__ . '/../includes/items.php';
+require_once __DIR__ . '/../includes/transaksi_helper.php';
 
 if (!isset($_SESSION['user'])) {
     header("Location: ../index.php");
@@ -13,55 +14,22 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
-$checkoutitems = [];
-$subtotal = 0.0;
-$shipping = 5.00;
 $directid = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-$directqty = isset($_GET['qty']) ? max(1, (int)$_GET['qty']) : 1;
-$source = "cart";
+$directqty = isset($_GET['qty']) ?  max(1, (int)$_GET['qty']) : 1;
+$source = ($directid > 0 && isset($products[$directid])) ? "direct" : "cart";
 
-if ($directid > 0 && isset($products[$directid])) {
-    $p = $products[$directid];
-    $directqty = min($directqty, $p['stock']);
-    if ($directqty > 0) {
-        $source = "direct";
-        $itemtotal = $p['price'] * $directqty;
-        $checkoutitems[] = [
-            "id" => $p['id'],
-            "name" => $p['name'],
-            "qty" => $directqty,
-            "price" => $p['price'],
-            "total" => $itemtotal
-        ];
-        $subtotal = $itemtotal;
-    }
-} elseif (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
-    foreach ($_SESSION['cart'] as $cid => $qty) {
-        if (isset($products[$cid]) && $products[$cid]['stock'] >= $qty) {
-            $p = $products[$cid];
-            $realqty = min((int)$qty, $p['stock']);
-            if ($realqty <= 0) {
-                continue;
-            }
-            $itemtotal = $p['price'] * $realqty;
-            $subtotal += $itemtotal;
-            $checkoutitems[] = [
-                "id" => $p['id'],
-                "name" => $p['name'],
-                "qty" => $realqty,
-                "price" => $p['price'],
-                "total" => $itemtotal
-            ];
-        }
-    }
-}
+$result = hitung_pesanan($products, $source, $directid, $directqty, $_SESSION['cart'] ?? []);
+$checkoutitems = $result['items'];
+$subtotal = $result['subtotal'];
+$shipping = $result['shipping'];
+$total = $result['total'];
+$directqty = $result['directqty'];
 
 if (empty($checkoutitems)) {
     header("Location: cart.php");
     exit();
 }
 
-$total = $subtotal + $shipping;
 ?>
 <!DOCTYPE html>
 <html lang="en">
