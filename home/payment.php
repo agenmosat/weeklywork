@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../includes/session.php';
 require_once __DIR__ . '/../includes/items.php';
+require_once __DIR__ . '/../includes/transaksi_helper.php';
 
 session_set_cookie_params([
     'httponly' => true,
@@ -8,7 +9,6 @@ session_set_cookie_params([
     'samesite' => 'Lax'
 ]);
 
-require_once __DIR__ . '/../includes/items.php';
 
 if (!isset($_SESSION['user'])) {
     header("Location: ../index.php");
@@ -32,24 +32,11 @@ $source = isset($_POST['source']) ? $_POST['source'] : "cart";
 $directid = isset($_POST['direct_id']) ? (int)$_POST['direct_id'] : 0;
 $directqty = isset($_POST['direct_qty']) ? max(1, (int)$_POST['direct_qty']) : 1;
 
-$subtotal = 0.0;
-$shipping = 5.00;
-
-if ($source === "direct" && $directid > 0 && isset($products[$directid])) {
-    $p = $products[$directid];
-    $directqty = min($directqty, $p['stock']);
-    $subtotal = $p['price'] * $directqty;
-} elseif (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
-    foreach ($_SESSION['cart'] as $cid => $qty) {
-        if (isset($products[$cid])) {
-            $p = $products[$cid];
-            $realqty = min((int)$qty, $p['stock']);
-            $subtotal += $p['price'] * $realqty;
-        }
-    }
-}
-
-$total = $subtotal + $shipping;
+$result = hitung_pesanan($products, $source, $directid,$directqty, $_SESSION['cart'] ?? []);
+$subtotal = $result['subtotal'];
+$shipping = $result['shipping'];
+$total = $result['total'];
+$directqty = $result['directqty'];
 
 if ($subtotal <= 0) {
     header("Location: cart.php");
