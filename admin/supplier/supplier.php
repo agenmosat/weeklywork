@@ -16,7 +16,14 @@ if ($cari !== '') {
     $result = mysqli_query($koneksi, 'SELECT id_supplier, nama_supplier, kota FROM supplier ORDER BY id_supplier');
 }
 
-$pesan = ['tambah' => 'supplier berhasil ditambahkan.', 'edit' => 'supplier berhasil diubah.', 'hapus' => 'supplier berhasil dihapus.'][$_GET['status'] ?? ''] ?? '';
+$status = $_GET['status'] ?? $_GET['pesan'] ?? '';
+$pesan = [
+    'tambah' => 'supplier berhasil ditambahkan.',
+    'edit' => 'supplier berhasil diubah.',
+    'hapus' => 'supplier berhasil dihapus.',
+    'error_relasi' => 'data supplier tidak dapat dihapus karena sudah memiliki riwayat transaksi.',
+    'gagal_relasi' => 'data supplier tidak dapat dihapus karena sudah memiliki riwayat transaksi.'
+][$status] ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,7 +48,9 @@ $pesan = ['tambah' => 'supplier berhasil ditambahkan.', 'edit' => 'supplier berh
         <div class="topnav">
             <a href="../../home/dashboard.php" class="navlink">store</a>
             <a href="../admin.php" class="navlink">admin</a>
-            <a href="../../logout.php" class="navlink">logout</a>
+            <form method="post" action="../../logout.php" class="logoutform">
+                <button type="submit" class="logoutbtn">logout</button>
+            </form>
         </div>
     </div>
 

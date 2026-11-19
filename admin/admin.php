@@ -8,15 +8,7 @@ session_set_cookie_params([
     'samesite' => 'Lax'
 ]);
 
-if (!isset($_SESSION['user'])) {
-    header("Location: ../index.php");
-    exit();
-}
-
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== "admin") {
-    header("Location: ../home/dashboard.php");
-    exit();
-}
+require_once __DIR__ . '/guard.php';
 
 if (isset($_GET['logout'])) {
     session_destroy();
@@ -57,7 +49,9 @@ if ($checktable && mysqli_num_rows($checktable) > 0) {
         <div class="topnav">
             <a href="../home/dashboard.php" class="navlink">store</a>
             <a href="admin.php" class="navlink">admin</a>
-            <a href="../logout.php" class="navlink">logout</a>
+            <form method="post" action="../logout.php" class="logoutform">
+                <button type="submit" class="logoutbtn">logout</button>
+            </form>
         </div>
     </div>
 
@@ -71,6 +65,11 @@ if ($checktable && mysqli_num_rows($checktable) > 0) {
             <a href="penjualan/penjualan.php" class="sidelink">sales</a>
             <a href="pembelian/pembelian.php" class="sidelink">purchases</a>
             <a href="checklist.php" class="sidelink">checklist</a>
+            <div class="sidetitle">reports</div>
+            <a href="laporan_penjualan.php" class="sidelink">sales report</a>
+            <a href="laporan_pembelian.php" class="sidelink">purchase report</a>
+            <a href="laporan_stok.php" class="sidelink">stock report</a>
+            <a href="laporan_laba.php" class="sidelink">profit report</a>
         </div>
 
         <div class="content">

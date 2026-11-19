@@ -5,54 +5,37 @@ require_once __DIR__ . '/../includes/transaksi_helper.php';
 
 init_transaksi_tables($koneksi);
 
-$tgl_mulai = trim($_GET['tgl_mulai'] ?? ($_GET['dari'] ?? ''));
-$tgl_akhir = trim($_GET['tgl_akhir'] ?? ($_GET['sampai'] ?? ''));
+$tgl_mulai = $_GET['tgl_mulai'] ?? ($_GET['dari'] ?? date('Y-m-01'));
+$tgl_akhir = $_GET['tgl_akhir'] ?? ($_GET['sampai'] ?? date('Y-m-d'));
 
-if (empty($tgl_mulai)) {
-    $tgl_mulai = date('Y-m-01');
-}
-if (empty($tgl_akhir)) {
-    $tgl_akhir = date('Y-m-d');
-}
 if ($tgl_mulai > $tgl_akhir) {
     $temp = $tgl_mulai;
     $tgl_mulai = $tgl_akhir;
     $tgl_akhir = $temp;
 }
 
-$datetime_mulai = $tgl_mulai . ' 00:00:00';
-$datetime_akhir = $tgl_akhir . ' 23:59:59';
-
-$total_sales = 0.0;
+$q_sales = mysqli_query($koneksi, "SELECT * FROM penjualan WHERE DATE(tanggal) BETWEEN '$tgl_mulai' AND '$tgl_akhir' AND status != 'batal'");
+$total_sales = 0;
 $count_sales = 0;
-
-$stmt_sales = mysqli_prepare($koneksi, "SELECT COUNT(id_penjualan) AS count_sales, COALESCE(SUM(total), 0) AS total_sales FROM penjualan WHERE tanggal BETWEEN ? AND ?");
-if ($stmt_sales) {
-    mysqli_stmt_bind_param($stmt_sales, "ss", $datetime_mulai, $datetime_akhir);
-    mysqli_stmt_execute($stmt_sales);
-    $res_sales = mysqli_stmt_get_result($stmt_sales);
-    if ($res_sales && ($row_sales = mysqli_fetch_assoc($res_sales))) {
-        $count_sales = (int)$row_sales['count_sales'];
-        $total_sales = (float)$row_sales['total_sales'];
+if ($q_sales) {
+    while ($row = mysqli_fetch_assoc($q_sales)) {
+        $total_sales += (float)$row['total'];
+        $count_sales++;
     }
 }
 
-$total_cost = 0.0;
+$q_cost = mysqli_query($koneksi, "SELECT * FROM pembelian WHERE DATE(tanggal) BETWEEN '$tgl_mulai' AND '$tgl_akhir' AND status != 'batal'");
+$total_cost = 0;
 $count_cost = 0;
-
-$stmt_cost = mysqli_prepare($koneksi, "SELECT COUNT(id_pembelian) AS count_cost, COALESCE(SUM(total), 0) AS total_cost FROM pembelian WHERE tanggal BETWEEN ? AND ?");
-if ($stmt_cost) {
-    mysqli_stmt_bind_param($stmt_cost, "ss", $datetime_mulai, $datetime_akhir);
-    mysqli_stmt_execute($stmt_cost);
-    $res_cost = mysqli_stmt_get_result($stmt_cost);
-    if ($res_cost && ($row_cost = mysqli_fetch_assoc($res_cost))) {
-        $count_cost = (int)$row_cost['count_cost'];
-        $total_cost = (float)$row_cost['total_cost'];
+if ($q_cost) {
+    while ($row = mysqli_fetch_assoc($q_cost)) {
+        $total_cost += (float)$row['total'];
+        $count_cost++;
     }
 }
 
 $gross_profit = $total_sales - $total_cost;
-$profit_margin = ($total_sales > 0) ? (($gross_profit / $total_sales) * 100) : 0.0;
+$profit_margin = $total_sales > 0 ? ($gross_profit / $total_sales) * 100 : 0.0;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -84,7 +67,7 @@ $profit_margin = ($total_sales > 0) ? (($gross_profit / $total_sales) * 100) : 0
         </div>
 
         <div class="content">
-            <div class="heading">gross profit estimation report</div>
+            <div class="heading">gross profit report</div>
 
             <div class="emptybox">
                 <div class="filterbox">

@@ -5,60 +5,41 @@ require_once __DIR__ . '/../includes/transaksi_helper.php';
 
 init_transaksi_tables($koneksi);
 
-$tgl_mulai = trim($_GET['tgl_mulai'] ?? ($_GET['dari'] ?? ''));
-$tgl_akhir = trim($_GET['tgl_akhir'] ?? ($_GET['sampai'] ?? ''));
+$tgl_mulai = $_GET['tgl_mulai'] ?? ($_GET['dari'] ?? date('Y-m-01'));
+$tgl_akhir = $_GET['tgl_akhir'] ?? ($_GET['sampai'] ?? date('Y-m-d'));
 
-if (empty($tgl_mulai)) {
-    $tgl_mulai = date('Y-m-01');
-}
-if (empty($tgl_akhir)) {
-    $tgl_akhir = date('Y-m-d');
-}
 if ($tgl_mulai > $tgl_akhir) {
     $temp = $tgl_mulai;
     $tgl_mulai = $tgl_akhir;
     $tgl_akhir = $temp;
 }
 
-$datetime_mulai = $tgl_mulai . ' 00:00:00';
-$datetime_akhir = $tgl_akhir . ' 23:59:59';
+$query = mysqli_query($koneksi, "SELECT p.*, s.nama_supplier, s.kota FROM pembelian p LEFT JOIN supplier s ON p.id_supplier = s.id_supplier WHERE DATE(p.tanggal) BETWEEN '$tgl_mulai' AND '$tgl_akhir' ORDER BY p.tanggal DESC");
 
-$total_pengeluaran = 0.0;
+$total_pengeluaran = 0;
 $total_transaksi = 0;
-
-$stmt_agg = mysqli_prepare($koneksi, "SELECT COUNT(id_pembelian) AS total_transaksi, COALESCE(SUM(total), 0) AS total_pengeluaran FROM pembelian WHERE tanggal BETWEEN ? AND ?");
-if ($stmt_agg) {
-    mysqli_stmt_bind_param($stmt_agg, "ss", $datetime_mulai, $datetime_akhir);
-    mysqli_stmt_execute($stmt_agg);
-    $res_agg = mysqli_stmt_get_result($stmt_agg);
-    if ($res_agg && ($agg = mysqli_fetch_assoc($res_agg))) {
-        $total_transaksi = (int)$agg['total_transaksi'];
-        $total_pengeluaran = (float)$agg['total_pengeluaran'];
-    }
-}
-
-$rekap_supplier = [];
-$stmt_supp = mysqli_prepare($koneksi, "SELECT p.id_supplier, COALESCE(s.nama_supplier, 'unknown') AS nama_supplier, s.kota, COUNT(p.id_pembelian) AS total_transaksi, COALESCE(SUM(p.total), 0) AS subtotal FROM pembelian p LEFT JOIN supplier s ON p.id_supplier = s.id_supplier WHERE p.tanggal BETWEEN ? AND ? GROUP BY p.id_supplier, s.nama_supplier, s.kota ORDER BY subtotal DESC");
-if ($stmt_supp) {
-    mysqli_stmt_bind_param($stmt_supp, "ss", $datetime_mulai, $datetime_akhir);
-    mysqli_stmt_execute($stmt_supp);
-    $res_supp = mysqli_stmt_get_result($stmt_supp);
-    if ($res_supp) {
-        while ($row = mysqli_fetch_assoc($res_supp)) {
-            $rekap_supplier[] = $row;
-        }
-    }
-}
-
 $daftar_pembelian = [];
-$stmt_list = mysqli_prepare($koneksi, "SELECT p.id_pembelian, p.nomor_transaksi, p.tanggal, COALESCE(s.nama_supplier, 'unknown') AS nama_supplier, p.total, p.status FROM pembelian p LEFT JOIN supplier s ON p.id_supplier = s.id_supplier WHERE p.tanggal BETWEEN ? AND ? ORDER BY p.tanggal DESC, p.id_pembelian DESC");
-if ($stmt_list) {
-    mysqli_stmt_bind_param($stmt_list, "ss", $datetime_mulai, $datetime_akhir);
-    mysqli_stmt_execute($stmt_list);
-    $res_list = mysqli_stmt_get_result($stmt_list);
-    if ($res_list) {
-        while ($row = mysqli_fetch_assoc($res_list)) {
-            $daftar_pembelian[] = $row;
+$rekap_supplier = [];
+
+if ($query) {
+    while ($row = mysqli_fetch_assoc($query)) {
+        $daftar_pembelian[] = $row;
+        if (($row['status'] ?? '') !== 'batal') {
+            $total_pengeluaran += (float)$row['total'];
+            $total_transaksi++;
+
+            $sid = (int)$row['id_supplier'];
+            if (!isset($rekap_supplier[$sid])) {
+                $rekap_supplier[$sid] = [
+                    'id_supplier' => $sid,
+                    'nama_supplier' => $row['nama_supplier'] ?? 'Unknown',
+                    'kota' => $row['kota'] ?? '-',
+                    'total_transaksi' => 0,
+                    'subtotal' => 0
+                ];
+            }
+            $rekap_supplier[$sid]['total_transaksi']++;
+            $rekap_supplier[$sid]['subtotal'] += (float)$row['total'];
         }
     }
 }
@@ -160,7 +141,7 @@ if ($stmt_list) {
                                 <td class="cartcell"><?= (int)$pb['id_pembelian'] ?></td>
                                 <td class="cartcell"><?= htmlspecialchars($pb['nomor_transaksi']) ?></td>
                                 <td class="cartcell"><?= htmlspecialchars($pb['tanggal']) ?></td>
-                                <td class="cartcell"><?= htmlspecialchars($pb['nama_supplier']) ?></td>
+                                <td class="cartcell"><?= htmlspecialchars($pb['nama_supplier'] ?? 'Unknown') ?></td>
                                 <td class="cartcell"><?= format_uang($pb['total']) ?></td>
                                 <td class="cartcell">
                                     <?php if (($pb['status'] ?? '') === 'batal'): ?>

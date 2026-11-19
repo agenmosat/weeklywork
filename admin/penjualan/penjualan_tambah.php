@@ -7,7 +7,6 @@ require_once __DIR__ . '/../../includes/transaksi_helper.php';
 init_transaksi_tables($koneksi);
 
 $error = '';
-
 $product_res = mysqli_query($koneksi, 'SELECT id, name, price, stock FROM products ORDER BY name ASC');
 $product_list = [];
 if ($product_res) {
@@ -20,48 +19,80 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_verify();
 
     $nama_pelanggan = trim($_POST['nama_pelanggan'] ?? '');
-    $id_product = (int)($_POST['id_product'] ?? 0);
-    $qty = (int)($_POST['qty'] ?? 0);
+    $id_products = $_POST['id_product'] ?? [];
+    $qtys = $_POST['jumlah'] ?? ($_POST['qty'] ?? []);
+    $prices = $_POST['harga'] ?? [];
+
+    if (!is_array($id_products)) {
+        $id_products = [$id_products];
+        $qtys = [$qtys];
+        $prices = [$prices];
+    }
 
     if ($nama_pelanggan === '') {
-        $error = 'customer name is required.';
-    } elseif ($id_product <= 0) {
-        $error = 'please select a product.';
-    } elseif ($qty <= 0) {
-        $error = 'quantity must be at least 1.';
+        $error = 'Customer name is required.';
+    } elseif (empty($id_products)) {
+        $error = 'Please select at least one product.';
     } else {
-        $stmtp = mysqli_prepare($koneksi, 'SELECT id, price, stock FROM products WHERE id = ?');
-        mysqli_stmt_bind_param($stmtp, 'i', $id_product);
-        mysqli_stmt_execute($stmtp);
-        $prodres = mysqli_stmt_get_result($stmtp);
-        $prod = mysqli_fetch_assoc($prodres);
+        $grand_total = 0;
+        $items = [];
+        $stock_ok = true;
 
-        if (!$prod) {
-            $error = 'product not found.';
-        } elseif ($prod['stock'] < $qty) {
-            $error = 'insufficient product stock (available: ' . $prod['stock'] . ').';
-        } else {
-            $harga = (float)$prod['price'];
-            $subtotal = hitung_total_transaksi($harga, $qty);
-            $nomor_transaksi = generate_nomor_transaksi('PJL');
+        for ($i = 0; $i < count($id_products); $i++) {
+            $pid = (int)($id_products[$i] ?? 0);
+            $qty = (int)($qtys[$i] ?? 0);
+            $harga = (float)($prices[$i] ?? 0);
 
-            $stmtpj = mysqli_prepare($koneksi, 'INSERT INTO penjualan (nomor_transaksi, nama_pelanggan, total) VALUES (?, ?, ?)');
-            mysqli_stmt_bind_param($stmtpj, 'ssd', $nomor_transaksi, $nama_pelanggan, $subtotal);
-            if (mysqli_stmt_execute($stmtpj)) {
-                $id_penjualan = mysqli_insert_id($koneksi);
+            if ($pid > 0 && $qty > 0) {
+                $qp = mysqli_query($koneksi, "SELECT name, price, stock FROM products WHERE id = $pid");
+                $prod = mysqli_fetch_assoc($qp);
+                if (!$prod) {
+                    $error = 'Product not found.';
+                    $stock_ok = false;
+                    break;
+                }
+                if ((int)$prod['stock'] < $qty) {
+                    $error = 'Insufficient stock for ' . htmlspecialchars($prod['name']) . ' (available: ' . (int)$prod['stock'] . ').';
+                    $stock_ok = false;
+                    break;
+                }
+                if ($harga <= 0) {
+                    $harga = (float)$prod['price'];
+                }
+                $subtotal = $harga * $qty;
+                $grand_total += $subtotal;
+                $items[] = [
+                    'id_product' => $pid,
+                    'qty' => $qty,
+                    'harga' => $harga,
+                    'subtotal' => $subtotal
+                ];
+            }
+        }
 
-                $stmtdet = mysqli_prepare($koneksi, 'INSERT INTO penjualan_detail (id_penjualan, id_product, harga, qty, subtotal) VALUES (?, ?, ?, ?, ?)');
-                mysqli_stmt_bind_param($stmtdet, 'iidid', $id_penjualan, $id_product, $harga, $qty, $subtotal);
-                mysqli_stmt_execute($stmtdet);
+        if ($stock_ok && !empty($items)) {
+            mysqli_begin_transaction($koneksi);
+            try {
+                $no = buat_nomor($koneksi, 'PJ', 'penjualan', 'nomor_transaksi');
+                $nama_esc = mysqli_real_escape_string($koneksi, $nama_pelanggan);
+                mysqli_query($koneksi, "INSERT INTO penjualan (nomor_transaksi, nama_pelanggan, total, status) VALUES ('$no', '$nama_esc', $grand_total, 'selesai')");
+                $id_penjualan = (int)mysqli_insert_id($koneksi);
 
-                $stmtstock = mysqli_prepare($koneksi, 'UPDATE products SET stock = stock - ? WHERE id = ?');
-                mysqli_stmt_bind_param($stmtstock, 'ii', $qty, $id_product);
-                mysqli_stmt_execute($stmtstock);
+                foreach ($items as $it) {
+                    $pid = (int)$it['id_product'];
+                    $qty = (int)$it['qty'];
+                    $hrg = (float)$it['harga'];
+                    $sub = (float)$it['subtotal'];
+                    mysqli_query($koneksi, "INSERT INTO penjualan_detail (id_penjualan, id_product, harga, qty, subtotal) VALUES ($id_penjualan, $pid, $hrg, $qty, $sub)");
+                    catat_mutasi_stok($koneksi, $pid, 0, $qty, $no, null, 'Penjualan ' . $no);
+                }
 
+                mysqli_commit($koneksi);
                 header('Location: penjualan.php?status=tambah');
                 exit;
-            } else {
-                $error = 'failed to save sales transaction.';
+            } catch (Exception $e) {
+                mysqli_rollback($koneksi);
+                $error = 'Failed to save transaction.';
             }
         }
     }
@@ -72,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>add sale - darkfonder.net</title>
+    <title>add sales - darkfonder.net</title>
     <link rel="stylesheet" href="../../assets/style.css?v=3">
 </head>
 <body class="marketpage themelight">
@@ -89,52 +120,84 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <a href="penjualan.php" class="sidelink">sales</a>
             <a href="../pembelian/pembelian.php" class="sidelink">purchases</a>
             <a href="../checklist.php" class="sidelink">checklist</a>
+            <div class="sidetitle">reports</div>
+            <a href="../laporan_penjualan.php" class="sidelink">sales report</a>
+            <a href="../laporan_pembelian.php" class="sidelink">purchase report</a>
+            <a href="../laporan_stok.php" class="sidelink">stock report</a>
+            <a href="../laporan_laba.php" class="sidelink">profit report</a>
         </div>
 
         <div class="content">
-            <div class="heading">add sales transaction</div>
-            <div class="emptybox formbox">
-                <div class="sidetitle">sales form</div>
+            <div class="heading">add new sales transaction</div>
 
-                <?php if ($error !== ''): ?>
-                    <div class="error"><?= htmlspecialchars($error) ?></div>
-                <?php endif; ?>
+            <?php if ($error !== ''): ?>
+                <div class="field" style="color:#d9534f;margin-bottom:12px;font-weight:bold"><?= htmlspecialchars($error) ?></div>
+            <?php endif; ?>
 
-                <form method="post" action="penjualan_tambah.php" class="form" onsubmit="return confirmtransaksi();">
-                    <?= csrf_field() ?>
-                    <div class="formrow">
-                        <label class="formlabel" for="nama_pelanggan">customer name</label>
-                        <input class="forminput" type="text" id="nama_pelanggan" name="nama_pelanggan" required value="<?= htmlspecialchars($_POST['nama_pelanggan'] ?? '') ?>">
+            <div class="emptybox">
+                <form action="penjualan_tambah.php" method="post" id="formtransaksi">
+                    <?= csrf_field(); ?>
+
+                    <div class="formgrid" style="margin-bottom:16px">
+                        <div class="field">
+                            <label for="namapelanggan" class="fieldlabel">customer name</label>
+                            <input class="forminput" type="text" id="namapelanggan" name="nama_pelanggan" value="<?= htmlspecialchars($_POST['nama_pelanggan'] ?? '') ?>" placeholder="enter customer name..." required>
+                        </div>
                     </div>
 
-                    <div class="formrow">
-                        <label class="formlabel" for="id_product">select product</label>
-                        <select class="forminput" id="id_product" name="id_product" onchange="pilihbarang()" required>
-                            <option value="">-- select product --</option>
-                            <?php foreach ($product_list as $prod_item): ?>
-                                <option value="<?= (int)$prod_item['id'] ?>" data-harga="<?= (float)$prod_item['price'] ?>">
-                                    <?= htmlspecialchars($prod_item['name']) ?> ($<?= number_format((float)$prod_item['price'], 2) ?> - stock: <?= (int)$prod_item['stock'] ?>)
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
+                    <div class="sidetitle" style="margin-bottom:8px">items in transaction</div>
 
-                    <div class="formrow">
-                        <label class="formlabel" for="harga">unit price ($)</label>
-                        <input class="forminput" type="text" id="harga" name="harga" readonly value="0.00">
-                    </div>
-
-                    <div class="formrow">
-                        <label class="formlabel" for="qty">quantity</label>
-                        <input class="forminput" type="number" id="qty" name="qty" min="1" value="1" oninput="hitungsubtotal()" required>
-                    </div>
-
-                    <div class="formrow">
-                        <label class="formlabel" for="subtotal">subtotal ($)</label>
-                        <input class="forminput" type="text" id="subtotal" name="subtotal" readonly value="0.00">
-                    </div>
+                    <table class="carttable" id="tabelitem">
+                        <thead>
+                            <tr class="cartheader">
+                                <th class="cartcell">product</th>
+                                <th class="cartcell">unit price ($)</th>
+                                <th class="cartcell">qty</th>
+                                <th class="cartcell">subtotal ($)</th>
+                                <th class="cartcell">action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="badanitem">
+                            <tr class="cartrow itemrow">
+                                <td class="cartcell">
+                                    <select class="forminput prodselect" name="id_product[]" onchange="pilihitem(this)" required>
+                                        <option value="">-- select product --</option>
+                                        <?php foreach ($product_list as $prod_item): ?>
+                                            <option value="<?= (int)$prod_item['id'] ?>" data-harga="<?= (float)$prod_item['price'] ?>" data-stock="<?= (int)$prod_item['stock'] ?>">
+                                                <?= htmlspecialchars($prod_item['name']) ?> ($<?= number_format((float)$prod_item['price'], 2) ?> - stock: <?= (int)$prod_item['stock'] ?>)
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </td>
+                                <td class="cartcell">
+                                    <input class="forminput priceinput" type="number" step="0.01" name="harga[]" value="0.00" readonly>
+                                </td>
+                                <td class="cartcell">
+                                    <input class="forminput qtyinput" type="number" name="jumlah[]" min="1" value="1" oninput="hitungbaris(this)" required>
+                                </td>
+                                <td class="cartcell">
+                                    <input class="forminput subtotalinput" type="text" name="subtotal[]" value="0.00" readonly>
+                                </td>
+                                <td class="cartcell">
+                                    <button type="button" class="cartbtn btndel" onclick="hapusbaris(this)">remove</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="cartrow">
+                                <td class="cartcell" colspan="3" style="text-align:right"><strong>grand total ($):</strong></td>
+                                <td class="cartcell" colspan="2">
+                                    <input class="forminput totalbox" type="text" id="grandtotal" name="grandtotal" readonly value="0.00">
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
 
                     <div class="actionrow">
+                        <button type="button" class="enterbtn btnadd" onclick="tambahbaris()">+ add item</button>
+                    </div>
+
+                    <div class="actionrow" style="margin-top:16px">
                         <button class="buybtn" type="submit">save transaction</button>
                         <a href="penjualan.php" class="sidelink">cancel</a>
                     </div>
@@ -142,6 +205,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
     </div>
+
+<template id="templatebaris">
+    <tr class="cartrow itemrow">
+        <td class="cartcell">
+            <select class="forminput prodselect" name="id_product[]" onchange="pilihitem(this)" required>
+                <option value="">-- select product --</option>
+                <?php foreach ($product_list as $prod_item): ?>
+                    <option value="<?= (int)$prod_item['id'] ?>" data-harga="<?= (float)$prod_item['price'] ?>" data-stock="<?= (int)$prod_item['stock'] ?>">
+                        <?= htmlspecialchars($prod_item['name']) ?> ($<?= number_format((float)$prod_item['price'], 2) ?> - stock: <?= (int)$prod_item['stock'] ?>)
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </td>
+        <td class="cartcell">
+            <input class="forminput priceinput" type="number" step="0.01" name="harga[]" value="0.00" readonly>
+        </td>
+        <td class="cartcell">
+            <input class="forminput qtyinput" type="number" name="jumlah[]" min="1" value="1" oninput="hitungbaris(this)" required>
+        </td>
+        <td class="cartcell">
+            <input class="forminput subtotalinput" type="text" name="subtotal[]" value="0.00" readonly>
+        </td>
+        <td class="cartcell">
+            <button type="button" class="cartbtn btndel" onclick="hapusbaris(this)">remove</button>
+        </td>
+    </tr>
+</template>
 
 <script src="../../assets/main.js"></script>
 <script src="../../assets/transaksi.js"></script>

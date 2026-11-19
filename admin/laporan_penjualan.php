@@ -5,47 +5,27 @@ require_once __DIR__ . '/../includes/transaksi_helper.php';
 
 init_transaksi_tables($koneksi);
 
-$tgl_mulai = trim($_GET['tgl_mulai'] ?? ($_GET['dari'] ?? ''));
-$tgl_akhir = trim($_GET['tgl_akhir'] ?? ($_GET['sampai'] ?? ''));
+$tgl_mulai = $_GET['tgl_mulai'] ?? ($_GET['dari'] ?? date('Y-m-01'));
+$tgl_akhir = $_GET['tgl_akhir'] ?? ($_GET['sampai'] ?? date('Y-m-d'));
 
-if (empty($tgl_mulai)) {
-    $tgl_mulai = date('Y-m-01');
-}
-if (empty($tgl_akhir)) {
-    $tgl_akhir = date('Y-m-d');
-}
 if ($tgl_mulai > $tgl_akhir) {
     $temp = $tgl_mulai;
     $tgl_mulai = $tgl_akhir;
     $tgl_akhir = $temp;
 }
 
-$datetime_mulai = $tgl_mulai . ' 00:00:00';
-$datetime_akhir = $tgl_akhir . ' 23:59:59';
+$query = mysqli_query($koneksi, "SELECT * FROM penjualan WHERE DATE(tanggal) BETWEEN '$tgl_mulai' AND '$tgl_akhir' ORDER BY tanggal DESC");
 
-$total_pendapatan = 0.0;
+$total_pendapatan = 0;
 $total_transaksi = 0;
-
-$stmt_agg = mysqli_prepare($koneksi, "SELECT COUNT(id_penjualan) AS total_transaksi, COALESCE(SUM(total), 0) AS total_pendapatan FROM penjualan WHERE tanggal BETWEEN ? AND ?");
-if ($stmt_agg) {
-    mysqli_stmt_bind_param($stmt_agg, "ss", $datetime_mulai, $datetime_akhir);
-    mysqli_stmt_execute($stmt_agg);
-    $res_agg = mysqli_stmt_get_result($stmt_agg);
-    if ($res_agg && ($agg = mysqli_fetch_assoc($res_agg))) {
-        $total_transaksi = (int)$agg['total_transaksi'];
-        $total_pendapatan = (float)$agg['total_pendapatan'];
-    }
-}
-
 $daftar_penjualan = [];
-$stmt_list = mysqli_prepare($koneksi, "SELECT id_penjualan, nomor_transaksi, tanggal, nama_pelanggan, total, status FROM penjualan WHERE tanggal BETWEEN ? AND ? ORDER BY tanggal DESC, id_penjualan DESC");
-if ($stmt_list) {
-    mysqli_stmt_bind_param($stmt_list, "ss", $datetime_mulai, $datetime_akhir);
-    mysqli_stmt_execute($stmt_list);
-    $res_list = mysqli_stmt_get_result($stmt_list);
-    if ($res_list) {
-        while ($row = mysqli_fetch_assoc($res_list)) {
-            $daftar_penjualan[] = $row;
+
+if ($query) {
+    while ($row = mysqli_fetch_assoc($query)) {
+        $daftar_penjualan[] = $row;
+        if (($row['status'] ?? '') !== 'batal') {
+            $total_pendapatan += (float)$row['total'];
+            $total_transaksi++;
         }
     }
 }

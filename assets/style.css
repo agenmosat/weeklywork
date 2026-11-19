@@ -297,6 +297,41 @@ a:hover {
     text-decoration: underline;
 }
 
+.logoutform {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+.logoutbtn {
+    background: none;
+    border: none;
+    color: var(--linkcolor);
+    font-size: 11px;
+    font-family: inherit;
+    cursor: pointer;
+    padding: 0;
+    display: inline;
+    line-height: inherit;
+}
+
+.logoutbtn::before {
+    content: "[";
+    color: var(--textmain);
+    margin-right: 2px;
+}
+
+.logoutbtn::after {
+    content: "]";
+    color: var(--textmain);
+    margin-left: 2px;
+}
+
+.logoutbtn:hover {
+    color: var(--linkhover);
+    text-decoration: underline;
+}
+
 .themeswitcher {
     display: flex;
     align-items: center;
@@ -992,7 +1027,7 @@ body.themedark .imagebox {
 }
 
 @media print {
-    .topbar, .sidebar, .actionrow, .themeswitcher, .backlink, .cornerlink {
+    .topbar, .sidebar, .actionrow, .themeswitcher, .backlink, .cornerlink, .filterbox, .filterform, .printbtn, form, button {
         display: none !important;
     }
     .layout {
@@ -1001,8 +1036,140 @@ body.themedark .imagebox {
     .content {
         padding: 0 !important;
     }
+    .emptybox {
+        border: none !important;
+        background-color: transparent !important;
+        padding: 0 !important;
+    }
     .receiptbox {
         max-width: 100% !important;
         border: 1px solid #000000 !important;
     }
+    .carttable {
+        width: 100% !important;
+        border-collapse: collapse !important;
+    }
+    .cartcell, .cartheader th {
+        border: 1px solid #000000 !important;
+        color: #000000 !important;
+    }
+}
+
+.totalbox {
+    font-weight: bold;
+    font-size: 13px;
+    color: var(--accent);
+}
+
+.btnadd {
+    margin-top: 6px;
+    margin-bottom: 12px;
+}
+
+.btndel {
+    cursor: pointer;
+    font-size: 11px;
+    padding: 2px 6px;
+}
+
+.pillok {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    background: #d4edda;
+    color: #155724;
+}
+
+.pillno {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.pillalert {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    background: #fff3cd;
+    color: #856404;
+}
+
+.printbtn {
+    padding: 3px 10px;
+    background-color: var(--btnbg);
+    border: 2px outset var(--btnborder);
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: bold;
+    color: var(--btntext);
+    font-family: Tahoma, Verdana, Arial, sans-serif;
+    display: inline-block;
+}
+
+.printbtn:hover {
+    background-color: var(--border);
+}
+
+.printbtn:active {
+    border-style: inset;
+}
+
+.cardgrid, .summarycards {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.summarycard {
+    flex: 1;
+    min-width: 140px;
+    background-color: var(--bgcard);
+    border: 1px solid var(--border);
+    padding: 10px 12px;
+    text-align: left;
+}
+
+.cardtitle {
+    font-size: 11px;
+    color: var(--textdim);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.cardvalue {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--brand);
+}
+
+.filterbox {
+    margin-bottom: 14px;
+    padding: 10px;
+    border: 1px solid var(--border);
+    background-color: var(--bgcard);
+}
+
+.filterform {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 0;
+}
+
+.filterlabel {
+    font-size: 11px;
+    font-weight: bold;
+    color: var(--textdim);
+}
+
+.dateinput {
+    padding: 4px 8px;
+    font-size: 11px;
 }

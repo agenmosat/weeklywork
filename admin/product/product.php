@@ -16,7 +16,14 @@ if ($cari !== '') {
     $result = mysqli_query($koneksi, 'SELECT * FROM products ORDER BY id');
 }
 
-$pesan = ['tambah' => 'produk berhasil ditambahkan.', 'edit' => 'produk berhasil diubah.', 'hapus' => 'produk berhasil dihapus.'][$_GET['status'] ?? ''] ?? '';
+$status = $_GET['status'] ?? $_GET['pesan'] ?? '';
+$pesan = [
+    'tambah' => 'produk berhasil ditambahkan.',
+    'edit' => 'produk berhasil diubah.',
+    'hapus' => 'produk berhasil dihapus.',
+    'error_relasi' => 'data produk tidak dapat dihapus karena sudah memiliki riwayat transaksi.',
+    'gagal_relasi' => 'data produk tidak dapat dihapus karena sudah memiliki riwayat transaksi.'
+][$status] ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,7 +48,9 @@ $pesan = ['tambah' => 'produk berhasil ditambahkan.', 'edit' => 'produk berhasil
         <div class="topnav">
             <a href="../../home/dashboard.php" class="navlink">store</a>
             <a href="../admin.php" class="navlink">admin</a>
-            <a href="../../logout.php" class="navlink">logout</a>
+            <form method="post" action="../../logout.php" class="logoutform">
+                <button type="submit" class="logoutbtn">logout</button>
+            </form>
         </div>
     </div>
 

@@ -5,36 +5,32 @@ require_once __DIR__ . '/../includes/transaksi_helper.php';
 
 init_transaksi_tables($koneksi);
 
-$threshold_input = trim($_GET['threshold'] ?? ($_GET['min_stock'] ?? ''));
-$threshold = ($threshold_input !== '' && is_numeric($threshold_input)) ? (int)$threshold_input : null;
-
-$active_limit = ($threshold !== null) ? $threshold : 5;
+$threshold = isset($_GET['threshold']) && is_numeric($_GET['threshold']) ? (int)$_GET['threshold'] : null;
+$active_limit = $threshold !== null ? $threshold : 5;
 
 if ($threshold !== null) {
-    $stmt = mysqli_prepare($koneksi, "SELECT id, name, price, stock, category FROM products WHERE stock <= ? ORDER BY stock ASC, name ASC");
-    if ($stmt) {
-        mysqli_stmt_bind_param($stmt, "i", $threshold);
-        mysqli_stmt_execute($stmt);
-        $res_products = mysqli_stmt_get_result($stmt);
-    } else {
-        $res_products = false;
-    }
+    $res_products = mysqli_query($koneksi, "SELECT * FROM products WHERE stock <= $threshold ORDER BY stock ASC");
 } else {
-    $res_products = mysqli_query($koneksi, "SELECT id, name, price, stock, category FROM products ORDER BY name ASC");
+    $res_products = mysqli_query($koneksi, "SELECT * FROM products ORDER BY name ASC");
 }
 
-$stats = [
-    'total_items' => 0,
-    'total_stock' => 0,
-    'low_stock' => 0,
-    'out_stock' => 0
-];
-$q_stats = mysqli_query($koneksi, "SELECT COUNT(id) AS total_items, COALESCE(SUM(stock), 0) AS total_stock, COALESCE(SUM(CASE WHEN stock <= 5 THEN 1 ELSE 0 END), 0) AS low_stock, COALESCE(SUM(CASE WHEN stock <= 0 THEN 1 ELSE 0 END), 0) AS out_stock FROM products");
-if ($q_stats && ($row_stats = mysqli_fetch_assoc($q_stats))) {
-    $stats['total_items'] = (int)$row_stats['total_items'];
-    $stats['total_stock'] = (int)$row_stats['total_stock'];
-    $stats['low_stock'] = (int)$row_stats['low_stock'];
-    $stats['out_stock'] = (int)$row_stats['out_stock'];
+$q_all = mysqli_query($koneksi, "SELECT * FROM products");
+$total_items = 0;
+$total_stock = 0;
+$low_stock = 0;
+$out_stock = 0;
+
+if ($q_all) {
+    while ($row = mysqli_fetch_assoc($q_all)) {
+        $total_items++;
+        $total_stock += (int)$row['stock'];
+        if ((int)$row['stock'] <= 5) {
+            $low_stock++;
+        }
+        if ((int)$row['stock'] <= 0) {
+            $out_stock++;
+        }
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -83,19 +79,19 @@ if ($q_stats && ($row_stats = mysqli_fetch_assoc($q_stats))) {
                 <div class="cardgrid">
                     <div class="summarycard">
                         <div class="cardtitle">total products</div>
-                        <div class="cardvalue"><?= $stats['total_items'] ?></div>
+                        <div class="cardvalue"><?= $total_items ?></div>
                     </div>
                     <div class="summarycard">
                         <div class="cardtitle">total stock units</div>
-                        <div class="cardvalue"><?= $stats['total_stock'] ?></div>
+                        <div class="cardvalue"><?= $total_stock ?></div>
                     </div>
                     <div class="summarycard">
                         <div class="cardtitle">low stock alerts</div>
-                        <div class="cardvalue"><?= $stats['low_stock'] ?></div>
+                        <div class="cardvalue"><?= $low_stock ?></div>
                     </div>
                     <div class="summarycard">
                         <div class="cardtitle">out of stock</div>
-                        <div class="cardvalue"><?= $stats['out_stock'] ?></div>
+                        <div class="cardvalue"><?= $out_stock ?></div>
                     </div>
                 </div>
 

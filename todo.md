@@ -73,27 +73,27 @@ Dokumen ini memuat seluruh rekapitulasi tugas, perbaikan bug, penyelarasan kurik
 ## 3. Tugas Modul Lanjutan Berdasarkan Modul Ajar
 
 ### Transaksi & Kartu Stok
-048. Ketiadaan pencatatan mutasi kartu stok barang secara kronologis (bangun tabel stok untuk mencatat setiap peristiwa barang masuk dan keluar beserta saldo awal dan saldo akhir) status : pending
-049. Formulir transaksi pembelian dan penjualan hanya mendukung penambahan satu jenis barang per nota (kembangkan formulir multi-baris dinamis berbasis JavaScript dan penanganan array input) status : pending
-050. Ketiadaan penanganan transaksi basis data atomik pada penyimpanan nota (terapkan blok transaksi mysqli_begin_transaction, commit, dan rollback pada modul transaksi) status : pending
-051. Format penomoran transaksi nota belum sekuensial dan terstandarisasi (implementasikan generator nomor transaksi otomatis berurutan dengan format PB-XXXX dan PJ-XXXX) status : pending
-052. Ketiadaan prosedur pembatalan transaksi nota yang aman (sediakan fitur pembatalan nota dengan validasi ketersediaan saldo dan pencatatan mutasi stok pembalik) status : pending
+048. Ketiadaan pencatatan mutasi kartu stok barang secara kronologis (bangun tabel stok untuk mencatat setiap peristiwa barang masuk dan keluar beserta saldo awal dan saldo akhir) status : done
+049. Formulir transaksi pembelian dan penjualan hanya mendukung penambahan satu jenis barang per nota (kembangkan formulir multi-baris dinamis berbasis JavaScript dan penanganan array input) status : done
+050. Ketiadaan penanganan transaksi basis data atomik pada penyimpanan nota (terapkan blok transaksi mysqli_begin_transaction, commit, dan rollback pada modul transaksi) status : done
+051. Format penomoran transaksi nota belum sekuensial dan terstandarisasi (implementasikan generator nomor transaksi otomatis berurutan dengan format PB-XXXX dan PJ-XXXX) status : done
+052. Ketiadaan prosedur pembatalan transaksi nota yang aman (sediakan fitur pembatalan nota dengan validasi ketersediaan saldo dan pencatatan mutasi stok pembalik) status : done
 
 ### Pengamanan Integritas Data Master
-053. Penghapusan data produk tidak memvalidasi riwayat penggunaan pada nota transaksi (pasang validasi pengecekan relasi detail transaksi sebelum eksekusi penghapusan produk) status : pending
-054. Penghapusan data pemasok (supplier) tidak memvalidasi riwayat transaksi pembelian (pasang validasi pengecekan relasi nota pembelian sebelum eksekusi penghapusan supplier) status : pending
+053. Penghapusan data produk tidak memvalidasi riwayat penggunaan pada nota transaksi (pasang validasi pengecekan relasi detail transaksi sebelum eksekusi penghapusan produk) status : done
+054. Penghapusan data pemasok (supplier) tidak memvalidasi riwayat transaksi pembelian (pasang validasi pengecekan relasi nota pembelian sebelum eksekusi penghapusan supplier) status : done
 
 ### Modul Laporan & Rekapitulasi Bisnis 
-055. Ketiadaan modul laporan rekapitulasi penjualan per periode (buat halaman laporan_penjualan.php dengan filter rentang tanggal, agregasi total, dan rincian transaksi) status : pending
-056. Ketiadaan modul laporan rekapitulasi pembelian per periode (buat halaman laporan_pembelian.php dengan filter tanggal dan rekapitulasi biaya belanja ke pemasok) status : pending
-057. Ketiadaan modul laporan pemantauan sisa stok inventaris (buat halaman laporan_stok.php yang menampilkan saldo terkini dan filter peringatan stok minimum) status : pending
-058. Ketiadaan modul laporan estimasi laba kotor toko (buat halaman laporan_laba.php yang mengkalkulasi selisih omzet penjualan terhadap harga modal beli produk) status : pending
-059. Ketiadaan fasilitas cetak dokumen fisik pada seluruh halaman laporan (tambahkan tombol cetak dengan integrasi window.print dan stylesheet khusus media cetak) status : pending
+055. Ketiadaan modul laporan rekapitulasi penjualan per periode (buat halaman laporan_penjualan.php dengan filter rentang tanggal, agregasi total, dan rincian transaksi) status : done
+056. Ketiadaan modul laporan rekapitulasi pembelian per periode (buat halaman laporan_pembelian.php dengan filter tanggal dan rekapitulasi biaya belanja ke pemasok) status : done
+057. Ketiadaan modul laporan pemantauan sisa stok inventaris (buat halaman laporan_stok.php yang menampilkan saldo terkini dan filter peringatan stok minimum) status : done
+058. Ketiadaan modul laporan estimasi laba kotor toko (buat halaman laporan_laba.php yang mengkalkulasi selisih omzet penjualan terhadap harga modal beli produk) status : done
+059. Ketiadaan fasilitas cetak dokumen fisik pada seluruh halaman laporan (tambahkan tombol cetak dengan integrasi window.print dan stylesheet khusus media cetak) status : done
 
 ### Manajemen Pengguna, Otorisasi, & Sesi
-060. Sistem autentikasi pengguna belum terhubung dengan tabel data akun terpusat (implementasikan tabel pengguna dengan penyimpanan kata sandi terenkripsi hash bcrypt) status : pending
-061. Pembatasan hak akses berbasis peran (role) belum diterapkan secara menyeluruh di tingkat peladen (terapkan modul otorisasi peran admin dan kasir pada setiap halaman bisnis) status : pending
-062. Alur keluar sistem (logout) masih dapat dipicu melalui metode HTTP GET (perbarui tombol logout menjadi formulir metode POST dengan regenerasi ID sesi) status : pending
+060. Sistem autentikasi pengguna belum terhubung dengan tabel data akun terpusat (implementasikan tabel pengguna dengan penyimpanan kata sandi terenkripsi hash bcrypt) status : done
+061. Pembatasan hak akses berbasis peran (role) belum diterapkan secara menyeluruh di tingkat peladen (terapkan modul otorisasi peran admin dan kasir pada setiap halaman bisnis) status : done
+062. Alur keluar sistem (logout) masih dapat dipicu melalui metode HTTP GET (perbarui tombol logout menjadi formulir metode POST dengan regenerasi ID sesi) status : done
 
 ---
 
