@@ -15,6 +15,7 @@
 - jangan komentar di kodenya langsung
 - pastikan cek branch saat ini
 - intinya jangan ai slop dah
+- pastikan gambarnya .webp (biar loading web nya ga kelamaan)
 
 ## setup lokal
 - copy `config/database.example.php` jadi `config/database.php`, isi kredensial database lokal

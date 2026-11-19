@@ -5,7 +5,7 @@ CREATE TABLE products (
     stock INT NOT NULL,
     category VARCHAR(50) NOT NULL,
     description TEXT NOT NULL,
-    image VARCHAR(255) DEFAULT 'images/glock17.png'
+    image VARCHAR(255) DEFAULT 'images/no-image.webp'
 );
 
 CREATE TABLE kasir (

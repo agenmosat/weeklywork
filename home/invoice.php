@@ -96,17 +96,6 @@ foreach ($purchaseditems as $item) {
     }
 }
 
-mysqli_query($koneksi, "CREATE TABLE IF NOT EXISTS pesanan (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nomor_pesanan VARCHAR(50) NOT NULL,
-    nama_pembeli VARCHAR(100) NOT NULL,
-    alamat TEXT NOT NULL,
-    total DECIMAL(10,2) NOT NULL,
-    metode_pembayaran VARCHAR(50) NOT NULL,
-    status_pembayaran VARCHAR(50) NOT NULL,
-    tanggal DATETIME DEFAULT CURRENT_TIMESTAMP
-)");
-
 $fulladdress = $address . ", " . $city;
 $stmtpesanan = mysqli_prepare($koneksi, "INSERT INTO pesanan (nomor_pesanan, nama_pembeli, alamat, total, metode_pembayaran, status_pembayaran) VALUES (?, ?, ?, ?, ?, ?)");
 if ($stmtpesanan) {
