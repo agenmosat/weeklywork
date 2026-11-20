@@ -9,6 +9,8 @@ if (file_exists(__DIR__ . '/token.php')) {
 
 require_once __DIR__ . '/config/database.php';
 
+$attempts_key = 'login_attempts';
+$now = time();
 $message = "";
 
 if (isset($_GET['timeout'])) {
@@ -24,40 +26,47 @@ if (isset($_SESSION['user'])) {
     exit();
 }
 
-if (isset($_POST['enter'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['enter']) || isset($_POST['login']) || isset($_POST['username']))) {
     csrf_verify();
-    $token = trim($_POST['token'] ?? '');
-    if (defined('ADMIN_TOKEN') && ADMIN_TOKEN !== "" && $token === ADMIN_TOKEN) {
-        $_SESSION['user'] = "superroot";
-        $_SESSION['role'] = "admin";
-        unset($_SESSION[$attempts_key]);
-        header("Location: admin/admin.php");
-        exit();
-    } elseif (defined('USER_TOKEN') && USER_TOKEN !== "" && $token === USER_TOKEN) {
-        $_SESSION['user'] = "user";
-        $_SESSION['role'] = "user";
-        unset($_SESSION[$attempts_key]);
-        header("Location: home/dashboard.php");
-        exit();
-    } elseif (isset($koneksi) && $koneksi) {
-        $stmt = mysqli_prepare($koneksi, "SELECT id_kasir, nama_kasir FROM kasir WHERE nama_kasir = ? AND status = 'aktif' LIMIT 1");
+    $username = trim($_POST['username'] ?? $_POST['token'] ?? '');
+    $password = (string)($_POST['password'] ?? $_POST['token'] ?? '');
+    $login_ok = false;
+
+    if (isset($koneksi) && $koneksi && $username !== '') {
+        $stmt = mysqli_prepare($koneksi, "SELECT id_pengguna, username, password, nama, role, id_kasir, status FROM pengguna WHERE username = ? LIMIT 1");
         if ($stmt) {
-            mysqli_stmt_bind_param($stmt, "s", $token);
+            mysqli_stmt_bind_param($stmt, "s", $username);
             mysqli_stmt_execute($stmt);
             $res = mysqli_stmt_get_result($stmt);
             if ($row = mysqli_fetch_assoc($res)) {
-                $_SESSION['user'] = $row['nama_kasir'];
-                $_SESSION['role'] = "cashier";
-                $_SESSION['id_kasir'] = (int)$row['id_kasir'];
-                header("Location: home/dashboard.php");
-                exit();
+                if ($row['status'] === 'aktif' && password_verify($password, $row['password'])) {
+                    $login_ok = true;
+                    if (isset($_SESSION[$attempts_key])) {
+                        unset($_SESSION[$attempts_key]);
+                    }
+                    $_SESSION['user'] = $row['username'];
+                    $_SESSION['username'] = $row['username'];
+                    $_SESSION['role'] = $row['role'];
+                    $_SESSION['id_pengguna'] = (int)$row['id_pengguna'];
+                    $_SESSION['id_kasir'] = !empty($row['id_kasir']) ? (int)$row['id_kasir'] : null;
+                    if ($row['role'] === 'admin') {
+                        header("Location: admin/admin.php");
+                    } else {
+                        header("Location: home/dashboard.php");
+                    }
+                    exit();
+                }
             }
         }
-        $message = "invalid token";
-    } else {
+    }
+
+    if (!$login_ok) {
+        if (!isset($_SESSION[$attempts_key])) {
+            $_SESSION[$attempts_key] = array('count' => 0, 'last' => $now);
+        }
         $_SESSION[$attempts_key]['count']++;
         $_SESSION[$attempts_key]['last'] = $now;
-        $message = "invalid token";
+        $message = "Username atau password salah";
     }
 }
 
@@ -88,7 +97,10 @@ if (isset($_GET['logout'])) {
         <form action="" method="post" class="form">
             <?= csrf_field(); ?>
             <div class="field">
-                <input type="password" name="token" id="token" class="tokeninput" placeholder="enter token..." required>
+                <input type="text" name="username" id="username" class="tokeninput" placeholder="username" required>
+            </div>
+            <div class="field">
+                <input type="password" name="password" id="token" class="tokeninput" placeholder="password" required>
                 <button type="button" id="togglebtn" class="togglebtn" onclick="toggleshow()">?</button>
             </div>
             <div class="btnwrap">
@@ -101,6 +113,7 @@ if (isset($_GET['logout'])) {
                     </select>
                 </div>
             </div>
+        </form>
     </div>
 
 <script src="assets/main.js"></script>

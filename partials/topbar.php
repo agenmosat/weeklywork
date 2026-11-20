@@ -25,14 +25,14 @@ if (file_exists('config/database.php')) {
         <a href="<?php echo $topbarbase; ?>home/dashboard.php" class="navlink">store</a>
         <?php if (isset($_SESSION['role']) && $_SESSION['role'] === "admin"): ?>
             <a href="<?php echo $topbarbase; ?>admin/admin.php" class="navlink">admin</a>
-        <?php elseif (isset($_SESSION['role']) && $_SESSION['role'] === "cashier"): ?>
-            <a href="<?php echo $topbarbase; ?>admin/cashier/cashier.php" class="navlink">cashier</a>
         <?php endif; ?>
         <a href="<?php echo $topbarbase; ?>home/cart.php" class="navlink cartlink">cart <span class="cartcount"><?php echo $topbarcartcount; ?></span></a>
         <?php if (isset($_SESSION['user'])): ?>
             <span class="userbadge"><?php echo htmlspecialchars($_SESSION['user']); ?></span>
         <?php endif; ?>
-        <a href="<?php echo $topbarbase; ?>logout.php" class="navlink">logout</a>
+        <form method="post" action="<?php echo $topbarbase . 'logout.php'; ?>" class="logoutform">
+            <button type="submit" class="logoutbtn">logout</button>
+        </form>
         <div class="themeswitcher">
             <select id="themepick" class="themeselect" onchange="switchtheme(this.value)" aria-label="theme">
                 <option value="themelight">light</option>

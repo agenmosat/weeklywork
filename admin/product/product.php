@@ -16,7 +16,14 @@ if ($cari !== '') {
     $result = mysqli_query($koneksi, 'SELECT * FROM products ORDER BY id');
 }
 
-$pesan = ['tambah' => 'produk berhasil ditambahkan.', 'edit' => 'produk berhasil diubah.', 'hapus' => 'produk berhasil dihapus.'][$_GET['status'] ?? ''] ?? '';
+$status = $_GET['status'] ?? $_GET['pesan'] ?? '';
+$pesan = [
+    'tambah' => 'produk berhasil ditambahkan.',
+    'edit' => 'produk berhasil diubah.',
+    'hapus' => 'produk berhasil dihapus.',
+    'error_relasi' => 'data produk tidak dapat dihapus karena sudah memiliki riwayat transaksi.',
+    'gagal_relasi' => 'data produk tidak dapat dihapus karena sudah memiliki riwayat transaksi.'
+][$status] ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="en">

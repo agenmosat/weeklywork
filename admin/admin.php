@@ -1,16 +1,6 @@
 <?php
-require_once __DIR__ . '/../includes/session.php';
+require_once __DIR__ . '/guard.php';
 require_once __DIR__ . '/../config/database.php';
-
-if (!isset($_SESSION['user'])) {
-    header("Location: ../index.php");
-    exit();
-}
-
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== "admin") {
-    header("Location: ../home/dashboard.php");
-    exit();
-}
 
 if (isset($_GET['logout'])) {
     session_destroy();
@@ -51,9 +41,13 @@ if ($checktable && mysqli_num_rows($checktable) > 0) {
             <a href="penjualan/penjualan.php" class="sidelink">sales</a>
             <a href="pembelian/pembelian.php" class="sidelink">purchases</a>
             <a href="checklist.php" class="sidelink">checklist</a>
+            <div class="sidetitle">reports</div>
+            <a href="laporan_penjualan.php" class="sidelink">sales report</a>
+            <a href="laporan_pembelian.php" class="sidelink">purchase report</a>
+            <a href="laporan_stok.php" class="sidelink">stock report</a>
+            <a href="laporan_laba.php" class="sidelink">profit report</a>
             <div class="sidetitle">account</div>
             <a href="../home/dashboard.php" class="sidelink">view store</a>
-            <a href="../logout.php" class="sidelink">logout</a>
         </div>
 
         <div class="content">
