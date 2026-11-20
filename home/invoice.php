@@ -2,14 +2,7 @@
 require_once __DIR__ . '/../includes/session.php';
 require_once __DIR__ . '/../includes/items.php';
 require_once __DIR__ . '/../includes/gateway.php';
-
-session_set_cookie_params([
-    'httponly' => true,
-    'secure' => isset($_SERVER['HTTPS']),
-    'samesite' => 'Lax'
-]);
-
-require_once __DIR__ . '/../includes/items.php';
+require_once __DIR__ . '/../includes/transaksi_helper.php';
 
 if (!isset($_SESSION['user'])) {
     header("Location: ../index.php");
@@ -32,54 +25,19 @@ $city = isset($_POST['city']) ? trim($_POST['city']) : "springfield 97477";
 $method = isset($_POST['method']) ? trim($_POST['method']) : "crypto escrow";
 $source = isset($_POST['source']) ? trim($_POST['source']) : "cart";
 
-$purchaseditems = [];
-$subtotal = 0.0;
-$shipping = 5.00;
+$directid = (int)($_POST['direct_id'] ?? 0);
+$directqty = max(1, (int)($_POST['direct_qty'] ?? 1));
 
-if ($source === "direct") {
-    $directid = (int)($_POST['direct_id'] ?? 0);
-    $directqty = max(1, (int)($_POST['direct_qty'] ?? 1));
-    if (isset($products[$directid])) {
-        $p = $products[$directid];
-        $realqty = min($directqty, $p['stock']);
-        if ($realqty > 0) {
-            $itemtotal = $p['price'] * $realqty;
-            $subtotal += $itemtotal;
-            $purchaseditems[] = [
-                "id" => $p['id'],
-                "name" => $p['name'],
-                "qty" => $realqty,
-                "price" => $p['price'],
-                "total" => $itemtotal
-            ];
-        }
-    }
-} elseif (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
-    foreach ($_SESSION['cart'] as $cid => $qty) {
-        if (isset($products[$cid])) {
-            $p = $products[$cid];
-            $realqty = min((int)$qty, $p['stock']);
-            if ($realqty > 0) {
-                $itemtotal = $p['price'] * $realqty;
-                $subtotal += $itemtotal;
-                $purchaseditems[] = [
-                    "id" => $p['id'],
-                    "name" => $p['name'],
-                    "qty" => $realqty,
-                    "price" => $p['price'],
-                    "total" => $itemtotal
-                ];
-            }
-        }
-    }
-}
+$result = hitung_pesanan($products, $source, $directid, $directqty, $_SESSION['cart'] ?? []);
+$purchaseditems = $result['items'];
+$subtotal = $result['subtotal'];
+$shipping = $result['shipping'];
+$total = $result['total'];
 
 if (empty($purchaseditems)) {
     header("Location: cart.php");
     exit();
 }
-
-$total = $subtotal + $shipping;
 $ordernumber = "onion" . rand(10000, 99999);
 $gatewayres = processgatewaypayment($ordernumber, $total, $method, $name);
 $txnid = $gatewayres['transaction_id'] ?? ("TXN" . rand(10000, 99999));

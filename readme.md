@@ -25,5 +25,6 @@
 ## tugas
 - Lengkapi modul kasir dan supplier
 - Fokus di index dan tambah dahulu
+
 - Silahkan diatur tasknya oleh ktuanya
 - Wajib semua paham ya

@@ -19,6 +19,37 @@ Dokumen ini memuat daftar tugas penerapan Bootstrap 5 pada proyek aplikasi kasir
 006. Terapkan form-label, form-control, dan btn Bootstrap pada formulir login status : pending
 007. Terapkan alert Bootstrap untuk pesan error dan notifikasi sesi habis status : pending
 
+### Dinda
+027. Duplikasi kerangka awal dokumen HTML pada setiap halaman (pisahkan ke template modular header.php) status : pending
+028. Duplikasi penutup dokumen HTML dan script pada setiap halaman (pisahkan ke template modular footer.php) status : pending
+029. Duplikasi markup bar navigasi atas pada antarmuka admin dan modul CRUD (terapkan pemanggilan terpusat melalui partials/topbar.php) status : done
+030. Duplikasi markup navigasi menu bilah sisi pada seluruh modul administrasi (terapkan template modular bilah sisi admin) status : pending
+
+### Alfredo
+031. Kueri penyemaian data awal basis data menggunakan UNION ALL dan subkueri bertingkat (sederhanakan menggunakan perintah INSERT INTO VALUES standar) status : done
+032. Kueri penghapusan data duplikat menggunakan penggabungan multi-tabel yang rumit (sederhanakan mekanisme pembersihan data tabel) status : done
+033. Manipulasi struktur tabel menggunakan perintah DDL ALTER TABLE pada saat pemrosesan formulir (pindahkan definisi kolom ke skema basis data utama) status : pending
+034. Eksekusi pembuatan tabel dinamis pada alur pembuatan faktur pembayaran (pindahkan inisialisasi tabel pesanan ke skrip migrasi basis data) status : pending
+
+### Gery
+035. Redundansi logika kalkulasi subtotal dan validasi item belanja pada modul transaksi (satukan ke fungsi helper kalkulasi terpusat) status : done
+036. Duplikasi penanganan proses keluar sistem di berbagai dokumen (seragamkan pengalihan keluar melalui berkas logout.php terpusat) status : done
+037. Pemanggilan berkas pendukung data produk berulang dan pemuatan kueri ganda pada katalog (optimalkan alur pemanggilan berkas dan hilangkan kueri redundan) status : done
+038. Pengaturan parameter kuki sesi dipanggil setelah inisialisasi sesi aktif (pindahkan pemanggilan session_set_cookie_params sebelum session_start) status : done
+
+### Nell
+039. Kueri berparameter dinamis menggunakan variadic unpacking dan manipulasi tipe data kompleks (sederhanakan alur prepared statement standar yang terstruktur) status : done
+040. Dualisme sumber data gambar antara array asosiatif dan kolom tabel basis data (tetapkan kolom tabel produk sebagai satu-satunya sumber data gambar) status : done
+041. Mekanisme pengalihan batas waktu sesi menggunakan pemotongan string SCRIPT_NAME yang rentan galat (standarisasi pengalihan sesi menggunakan jalur absolut atau path terstruktur) status : done
+042. Ketiadaan proteksi token CSRF pada formulir transaksi dan manipulasi data (terapkan verifikasi token CSRF pada seluruh formulir berstatus POST) status : done
+
+### Fahri
+043. Duplikasi fungsi dialog konfirmasi tindakan pengguna pada berkas JavaScript (sederhanakan menjadi fungsi konfirmasi generik terpadu) status : done
+044. Duplikasi komponen pemilih tema antarmuka pada berbagai dokumen (integrasikan pemilih tema ke dalam bar navigasi utama) status : done
+045. Variabel penampung batas percobaan login tidak terdefinisi pada alur login (perbaiki mekanisme rate limiting atau bersihkan blok kode bermasalah) status : pending
+046. Penggunaan fungsi CONCAT SQL pada penyaringan pencarian tabel modul CRUD (sederhanakan penggabungan wildcard pencarian di sisi PHP) status : done
+047. Struktur basis data transaksi belum memenuhi kaidah normalisasi (buat tabel relasi penjualan_detail dan pembelian_detail) status : done
+
 ---
 
 ## 3. Halaman Toko & Kasir (Home)

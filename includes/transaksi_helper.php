@@ -1,5 +1,7 @@
 <?php
-function init_transaksi_tables($koneksi) {
+
+function init_transaksi_tables($koneksi)
+{
     if (!$koneksi) {
         return;
     }
@@ -69,7 +71,8 @@ function init_transaksi_tables($koneksi) {
     }
 }
 
-function format_uang($angka) {
+function format_uang($angka)
+{
     return "$" . number_format((float)$angka, 2);
 }
 
@@ -199,4 +202,53 @@ function batal_penjualan($koneksi, $id_penjualan) {
         mysqli_rollback($koneksi);
         return false;
     }
+}
+
+function hitung_pesanan($products, $source, $directid, $directqty, $cart)
+{
+    $items = [];
+    $subtotal = 0.0;
+    $shipping = 5.00;
+
+    if ($source === "direct" && $directid > 0 && isset($products[$directid])) {
+        $p = $products[$directid];
+        $qty = min($directqty, $p['stock']);
+        if ($qty > 0) {
+            $itemtotal = $p['price'] * $qty;
+            $subtotal = $itemtotal;
+            $items[] = [
+                "id" => $p['id'],
+                "name" => $p['name'],
+                "qty" => $qty,
+                "price" => $p['price'],
+                "total" => $itemtotal
+            ];
+        }
+    } elseif (!empty($cart)) {
+        foreach ($cart as $cid => $qty) {
+            if (isset($products[$cid]) && $products[$cid]['stock'] >= $qty) {
+                $p = $products[$cid];
+                $realqty = min((int)$qty, $p['stock']);
+                if ($realqty > 0) {
+                    $itemtotal = $p['price'] * $realqty;
+                    $subtotal += $itemtotal;
+                    $items[] = [
+                        "id" => $p['id'],
+                        "name" => $p['name'],
+                        "qty" => $realqty,
+                        "price" => $p['price'],
+                        "total" => $itemtotal
+                    ];
+                }
+            }
+        }
+    }
+
+    return [
+        "items" => $items,
+        "subtotal" => $subtotal,
+        "shipping" => $shipping,
+        "total" => $subtotal + $shipping,
+        "directqty" => $directqty
+    ];
 }

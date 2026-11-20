@@ -94,24 +94,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body class="marketpage themelight">
 
-    <div class="topbar">
-        <div class="brand">darkfonder.net</div>
-        <div class="themeswitcher">
-            <span class="themelabel">theme</span>
-            <select id="themepick" class="themeselect" onchange="switchtheme(this.value)">
-                <option value="themelight">light</option>
-                <option value="themedark">dark</option>
-            </select>
-        </div>
+    <?php require __DIR__ . '/../../partials/topbar.php'; ?>
 
-        <div class="topnav">
-            <a href="../../home/dashboard.php" class="navlink">store</a>
-            <a href="../admin.php" class="navlink">admin</a>
-            <form method="post" action="../../logout.php" class="logoutform">
-                <button type="submit" class="logoutbtn">logout</button>
-            </form>
-        </div>
-    </div>
 
     <div class="layout">
         <div class="sidebar">

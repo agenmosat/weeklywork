@@ -10,6 +10,7 @@ session_set_cookie_params([
 
 require_once __DIR__ . '/guard.php';
 
+
 if (isset($_GET['logout'])) {
     session_destroy();
     header("Location: ../index.php");
@@ -37,23 +38,8 @@ if ($checktable && mysqli_num_rows($checktable) > 0) {
 </head>
 <body class="marketpage themelight">
 
-    <div class="topbar">
-        <div class="brand">darkfonder.net</div>
-        <div class="themeswitcher">
-            <span class="themelabel">theme</span>
-            <select id="themepick" class="themeselect" onchange="switchtheme(this.value)">
-                <option value="themelight">light</option>
-                <option value="themedark">dark</option>
-            </select>
-        </div>
-        <div class="topnav">
-            <a href="../home/dashboard.php" class="navlink">store</a>
-            <a href="admin.php" class="navlink">admin</a>
-            <form method="post" action="../logout.php" class="logoutform">
-                <button type="submit" class="logoutbtn">logout</button>
-            </form>
-        </div>
-    </div>
+    <?php require __DIR__ . '/../partials/topbar.php'; ?>
+
 
     <div class="layout">
         <div class="sidebar">
@@ -65,7 +51,7 @@ if ($checktable && mysqli_num_rows($checktable) > 0) {
             <a href="penjualan/penjualan.php" class="sidelink">sales</a>
             <a href="pembelian/pembelian.php" class="sidelink">purchases</a>
             <a href="checklist.php" class="sidelink">checklist</a>
-            <div class="sidetitle">reports</div>
+<div class="sidetitle">reports</div>
             <a href="laporan_penjualan.php" class="sidelink">sales report</a>
             <a href="laporan_pembelian.php" class="sidelink">purchase report</a>
             <a href="laporan_stok.php" class="sidelink">stock report</a>
