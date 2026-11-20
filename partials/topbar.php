@@ -25,6 +25,8 @@ if (file_exists('config/database.php')) {
         <a href="<?php echo $topbarbase; ?>home/dashboard.php" class="navlink">store</a>
         <?php if (isset($_SESSION['role']) && $_SESSION['role'] === "admin"): ?>
             <a href="<?php echo $topbarbase; ?>admin/admin.php" class="navlink">admin</a>
+        <?php elseif (isset($_SESSION['role']) && $_SESSION['role'] === "cashier"): ?>
+            <a href="<?php echo $topbarbase; ?>admin/cashier/cashier.php" class="navlink">cashier</a>
         <?php endif; ?>
         <a href="<?php echo $topbarbase; ?>home/cart.php" class="navlink cartlink">cart <span class="cartcount"><?php echo $topbarcartcount; ?></span></a>
         <?php if (isset($_SESSION['user'])): ?>
