@@ -1,17 +1,10 @@
 <?php
 require_once __DIR__ . '/../includes/session.php';
 require_once __DIR__ . '/../includes/items.php';
-
-session_set_cookie_params([
-    'httponly' => true,
-    'secure' => isset($_SERVER['HTTPS']),
-    'samesite' => 'Lax'
-]);
-
-require_once __DIR__ . '/../includes/items.php';
+require_once __DIR__ . '/../includes/transaksihelper.php';
 
 if (!isset($_SESSION['user'])) {
-    header("Location: ../index.php");
+    header("Location: ../index.php?login=1");
     exit();
 }
 
@@ -32,39 +25,19 @@ $source = isset($_POST['source']) ? $_POST['source'] : "cart";
 $directid = isset($_POST['direct_id']) ? (int)$_POST['direct_id'] : 0;
 $directqty = isset($_POST['direct_qty']) ? max(1, (int)$_POST['direct_qty']) : 1;
 
-$subtotal = 0.0;
-$shipping = 5.00;
-
-if ($source === "direct" && $directid > 0 && isset($products[$directid])) {
-    $p = $products[$directid];
-    $directqty = min($directqty, $p['stock']);
-    $subtotal = $p['price'] * $directqty;
-} elseif (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
-    foreach ($_SESSION['cart'] as $cid => $qty) {
-        if (isset($products[$cid])) {
-            $p = $products[$cid];
-            $realqty = min((int)$qty, $p['stock']);
-            $subtotal += $p['price'] * $realqty;
-        }
-    }
-}
-
-$total = $subtotal + $shipping;
+$result = hitung_pesanan($products, $source, $directid,$directqty, $_SESSION['cart'] ?? []);
+$subtotal = $result['subtotal'];
+$shipping = $result['shipping'];
+$total = $result['total'];
+$directqty = $result['directqty'];
 
 if ($subtotal <= 0) {
     header("Location: cart.php");
     exit();
 }
+$pagetitle = "payment - darkfonder.net";
+require __DIR__ . '/../partials/header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>payment - darkfonder.net</title>
-    <link rel="stylesheet" href="../assets/style.css?v=3">
-</head>
-<body class="marketpage themelight">
 
     <?php require __DIR__ . '/../partials/topbar.php'; ?>
 
@@ -139,7 +112,4 @@ if ($subtotal <= 0) {
         </div>
     </div>
 
-<script src="../assets/main.js"></script>
-
-</body>
-</html>
+<?php require __DIR__ . '/../partials/footer.php'; ?>

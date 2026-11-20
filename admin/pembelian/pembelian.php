@@ -1,22 +1,33 @@
 <?php
 require_once __DIR__ . '/../guard.php';
 require_once __DIR__ . '/../../config/database.php';
-require_once __DIR__ . '/../../includes/transaksi_helper.php';
+require_once __DIR__ . '/../../includes/csrf.php';
+require_once __DIR__ . '/../../includes/transaksihelper.php';
 
 init_transaksi_tables($koneksi);
 
 $cari = trim($_GET['cari'] ?? '');
+$chk_st = mysqli_query($koneksi, "SHOW COLUMNS FROM pembelian LIKE 'status'");
+$cols = ($chk_st && mysqli_num_rows($chk_st) > 0)
+    ? 'p.id_pembelian, p.nomor_transaksi, p.tanggal, p.total, p.status, s.nama_supplier'
+    : 'p.id_pembelian, p.nomor_transaksi, p.tanggal, p.total, s.nama_supplier';
+
 if ($cari !== '') {
-    $stmt = mysqli_prepare($koneksi, 'SELECT p.id_pembelian, p.nomor_transaksi, p.tanggal, p.total, s.nama_supplier FROM pembelian p LEFT JOIN supplier s ON p.id_supplier = s.id WHERE p.nomor_transaksi LIKE ? OR s.nama_supplier LIKE ? ORDER BY p.id_pembelian DESC');
+    $stmt = mysqli_prepare($koneksi, "SELECT $cols FROM pembelian p LEFT JOIN supplier s ON p.id_supplier = s.id_supplier WHERE p.nomor_transaksi LIKE ? OR s.nama_supplier LIKE ? ORDER BY p.id_pembelian DESC");
     $searchterm = "%" . $cari . "%";
     mysqli_stmt_bind_param($stmt, 'ss', $searchterm, $searchterm);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
 } else {
-    $result = mysqli_query($koneksi, 'SELECT p.id_pembelian, p.nomor_transaksi, p.tanggal, p.total, s.nama_supplier FROM pembelian p LEFT JOIN supplier s ON p.id_supplier = s.id ORDER BY p.id_pembelian DESC');
+    $result = mysqli_query($koneksi, "SELECT $cols FROM pembelian p LEFT JOIN supplier s ON p.id_supplier = s.id_supplier ORDER BY p.id_pembelian DESC");
 }
 
-$pesan = ['tambah' => 'purchase transaction saved successfully.'][$_GET['status'] ?? ''] ?? '';
+$pesan = [
+    'tambah' => 'purchase transaction saved successfully.',
+    'batal' => 'purchase transaction cancelled successfully.',
+    'error_stok_kurang' => 'cannot cancel purchase: current stock is insufficient.',
+    'gagal' => 'failed to cancel purchase transaction.'
+][$_GET['status'] ?? ''] ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,16 +42,7 @@ $pesan = ['tambah' => 'purchase transaction saved successfully.'][$_GET['status'
     <?php require __DIR__ . '/../../partials/topbar.php'; ?>
 
     <div class="layout">
-        <div class="sidebar">
-            <div class="sidetitle">admin menu</div>
-            <a href="../admin.php" class="sidelink">dashboard</a>
-            <a href="../product/product.php" class="sidelink">product</a>
-            <a href="../cashier/cashier.php" class="sidelink">cashier</a>
-            <a href="../supplier/supplier.php" class="sidelink">supplier</a>
-            <a href="../penjualan/penjualan.php" class="sidelink">sales</a>
-            <a href="pembelian.php" class="sidelink">purchases</a>
-            <a href="../checklist.php" class="sidelink">checklist</a>
-        </div>
+        <?php require __DIR__ . '/../../partials/sidebaradmin.php'; ?>
 
         <div class="content">
             <div class="heading">purchase transactions</div>
@@ -56,7 +58,7 @@ $pesan = ['tambah' => 'purchase transaction saved successfully.'][$_GET['status'
                         <input type="text" name="cari" class="forminput" placeholder="search transactions..." value="<?= htmlspecialchars($cari) ?>">
                         <button type="submit" class="enterbtn">search</button>
                     </form>
-                    <a href="pembelian_tambah.php" class="sidelink">+ add purchase</a>
+                    <a href="pembeliantambah.php" class="sidelink">+ add purchase</a>
                 </div>
 
                 <table class="carttable">
@@ -66,6 +68,7 @@ $pesan = ['tambah' => 'purchase transaction saved successfully.'][$_GET['status'
                         <th class="cartcell">date</th>
                         <th class="cartcell">supplier</th>
                         <th class="cartcell">total</th>
+                        <th class="cartcell">status</th>
                         <th class="cartcell">action</th>
                     </tr>
                     <?php if ($result && mysqli_num_rows($result) > 0): ?>
@@ -77,13 +80,29 @@ $pesan = ['tambah' => 'purchase transaction saved successfully.'][$_GET['status'
                             <td class="cartcell"><?= htmlspecialchars($row['nama_supplier'] ?? 'unknown') ?></td>
                             <td class="cartcell"><?= format_uang($row['total']) ?></td>
                             <td class="cartcell">
-                                <a href="pembelian_detail.php?id=<?= (int) $row['id_pembelian'] ?>" class="cartbtn">detail</a>
+                                <?php if (($row['status'] ?? '') === 'batal'): ?>
+                                    <span class="pillno">batal</span>
+                                <?php else: ?>
+                                    <span class="pillok">selesai</span>
+                                <?php endif; ?>
+                            </td>
+                            <td class="cartcell">
+                                <div class="actionrow">
+                                    <a href="pembeliandetail.php?id=<?= (int) $row['id_pembelian'] ?>" class="cartbtn">detail</a>
+                                    <?php if (($row['status'] ?? '') !== 'batal'): ?>
+                                        <form method="post" action="pembelianbatal.php" style="display:inline" onsubmit="return confirm('cancel this purchase?');">
+                                            <?= csrf_field() ?>
+                                            <input type="hidden" name="id" value="<?= (int) $row['id_pembelian'] ?>">
+                                            <button type="submit" class="enterbtn btndel">cancel</button>
+                                        </form>
+                                    <?php endif; ?>
+                                </div>
                             </td>
                         </tr>
                         <?php endwhile; ?>
                     <?php else: ?>
                         <tr class="cartrow">
-                            <td class="cartcell" colspan="6">no purchase transactions found.</td>
+                            <td class="cartcell" colspan="7">no purchase transactions found.</td>
                         </tr>
                     <?php endif; ?>
                 </table>

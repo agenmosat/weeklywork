@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/guard.php';
 require_once __DIR__ . '/../config/database.php';
-require_once __DIR__ . '/../includes/transaksi_helper.php';
+require_once __DIR__ . '/../includes/transaksihelper.php';
 
 init_transaksi_tables($koneksi);
 
@@ -45,16 +45,7 @@ if ($lsq) {
     <?php require __DIR__ . '/../partials/topbar.php'; ?>
 
     <div class="layout">
-        <div class="sidebar">
-            <div class="sidetitle">admin menu</div>
-            <a href="admin.php" class="sidelink">dashboard</a>
-            <a href="product/product.php" class="sidelink">product</a>
-            <a href="cashier/cashier.php" class="sidelink">cashier</a>
-            <a href="supplier/supplier.php" class="sidelink">supplier</a>
-            <a href="penjualan/penjualan.php" class="sidelink">sales</a>
-            <a href="pembelian/pembelian.php" class="sidelink">purchases</a>
-            <a href="checklist.php" class="sidelink">checklist</a>
-        </div>
+        <?php require __DIR__ . '/../partials/sidebaradmin.php'; ?>
 
         <div class="content">
             <div class="heading">system & database checklist</div>

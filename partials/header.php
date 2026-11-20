@@ -1,21 +1,21 @@
+<?php
+$headerbase = '';
+if (file_exists('assets/style.css')) {
+    $headerbase = '';
+} elseif (file_exists('../assets/style.css')) {
+    $headerbase = '../';
+} elseif (file_exists('../../assets/style.css')) {
+    $headerbase = '../../';
+}
+$pagetitle = $pagetitle ?? 'darkfonder.net';
+$bodyclass = $bodyclass ?? 'marketpage themelight';
+?>
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><?= htmlspecialchars($judul ?? 'Aplikasi') ?></title>
-
-  <!-- Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- local ceeses -->
-<!--  <link href="assets/css/style.css" rel="stylesheet"> -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= htmlspecialchars($pagetitle) ?></title>
+    <link rel="stylesheet" href="<?= $headerbase ?>assets/style.css?v=3">
 </head>
-<body>
-
-<nav class="navbar navbar-dark bg-primary">
-  <div class="container">
-    <a class="navbar-brand" href="index.php">Toko Maju Jaya</a>
-  </div>
-</nav>
-
-<div class="container mt-4">
+<body class="<?= htmlspecialchars($bodyclass) ?>">

@@ -43,11 +43,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($stock === '' || !ctype_digit($stock)) {
         $error = 'stok wajib angka bulat >= 0.';
     } else {
-        $colcheck = mysqli_query($koneksi, "SHOW COLUMNS FROM products LIKE 'image'");
-        if ($colcheck && mysqli_num_rows($colcheck) === 0) {
-            mysqli_query($koneksi, "ALTER TABLE products ADD COLUMN image VARCHAR(255) DEFAULT 'images/glock17.png'");
-        }
-
         $stmt = mysqli_prepare($koneksi, 'INSERT INTO products (name, price, stock, category, description, image) VALUES (?, ?, ?, ?, ?, ?)');
         if ($stmt) {
             mysqli_stmt_bind_param($stmt, 'sdisss', $name, $price, $stock, $category, $description, $image);
@@ -71,31 +66,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body class="marketpage themelight">
 
-    <div class="topbar">
-        <div class="brand">darkfonder.net</div>
-        <div class="themeswitcher">
-            <span class="themelabel">theme</span>
-            <select id="themepick" class="themeselect" onchange="switchtheme(this.value)">
-                <option value="themelight">light</option>
-                <option value="themedark">dark</option>
-            </select>
-        </div>
-
-        <div class="topnav">
-            <a href="../../home/dashboard.php" class="navlink">store</a>
-            <a href="../admin.php" class="navlink">admin</a>
-            <a href="../../logout.php" class="navlink">logout</a>
-        </div>
-    </div>
+    <?php require __DIR__ . '/../../partials/topbar.php'; ?>
 
     <div class="layout">
-        <div class="sidebar">
-            <div class="sidetitle">admin menu</div>
-            <a href="../admin.php" class="sidelink">dashboard</a>
-            <a href="product.php" class="sidelink">product</a>
-            <a href="../cashier/cashier.php" class="sidelink">cashier</a>
-            <a href="../supplier/supplier.php" class="sidelink">supplier</a>
-        </div>
+        <?php require __DIR__ . '/../../partials/sidebaradmin.php'; ?>
 
         <div class="content">
             <div class="heading">crud product - add</div>

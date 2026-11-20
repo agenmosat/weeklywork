@@ -16,7 +16,14 @@ if ($cari !== '') {
     $result = mysqli_query($koneksi, 'SELECT id_supplier, nama_supplier, kota FROM supplier ORDER BY id_supplier');
 }
 
-$pesan = ['tambah' => 'supplier berhasil ditambahkan.', 'edit' => 'supplier berhasil diubah.', 'hapus' => 'supplier berhasil dihapus.'][$_GET['status'] ?? ''] ?? '';
+$status = $_GET['status'] ?? $_GET['pesan'] ?? '';
+$pesan = [
+    'tambah' => 'supplier berhasil ditambahkan.',
+    'edit' => 'supplier berhasil diubah.',
+    'hapus' => 'supplier berhasil dihapus.',
+    'error_relasi' => 'data supplier tidak dapat dihapus karena sudah memiliki riwayat transaksi.',
+    'gagal_relasi' => 'data supplier tidak dapat dihapus karena sudah memiliki riwayat transaksi.'
+][$status] ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,34 +35,10 @@ $pesan = ['tambah' => 'supplier berhasil ditambahkan.', 'edit' => 'supplier berh
 </head>
 <body class="marketpage themelight">
 
-    <div class="topbar">
-        <div class="brand">darkfonder.net</div>
-        <div class="themeswitcher">
-            <span class="themelabel">theme</span>
-            <select id="themepick" class="themeselect" onchange="switchtheme(this.value)">
-                <option value="themelight">light</option>
-                <option value="themedark">dark</option>
-            </select>
-        </div>
-
-        <div class="topnav">
-            <a href="../../home/dashboard.php" class="navlink">store</a>
-            <a href="../admin.php" class="navlink">admin</a>
-            <a href="../../logout.php" class="navlink">logout</a>
-        </div>
-    </div>
+    <?php require __DIR__ . '/../../partials/topbar.php'; ?>
 
     <div class="layout">
-        <div class="sidebar">
-            <div class="sidetitle">admin menu</div>
-            <a href="../admin.php" class="sidelink">dashboard</a>
-            <a href="../product/product.php" class="sidelink">product</a>
-            <a href="../cashier/cashier.php" class="sidelink">cashier</a>
-            <a href="supplier.php" class="sidelink">supplier</a>
-            <a href="../penjualan/penjualan.php" class="sidelink">sales</a>
-            <a href="../pembelian/pembelian.php" class="sidelink">purchases</a>
-            <a href="../checklist.php" class="sidelink">checklist</a>
-        </div>
+        <?php require __DIR__ . '/../../partials/sidebaradmin.php'; ?>
 
         <div class="content">
             <div class="heading">crud supplier</div>
