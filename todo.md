@@ -38,16 +38,16 @@ Dokumen ini memuat seluruh rekapitulasi tugas, perbaikan bug, penyelarasan kurik
 ## 2. Isu Pembagian Tim 
 
 ### Dinda
-027. Duplikasi kerangka awal dokumen HTML pada setiap halaman (pisahkan ke template modular header.php) status : pending
-028. Duplikasi penutup dokumen HTML dan script pada setiap halaman (pisahkan ke template modular footer.php) status : pending
+027. Duplikasi kerangka awal dokumen HTML pada setiap halaman (pisahkan ke template modular header.php) status : done
+028. Duplikasi penutup dokumen HTML dan script pada setiap halaman (pisahkan ke template modular footer.php) status : done
 029. Duplikasi markup bar navigasi atas pada antarmuka admin dan modul CRUD (terapkan pemanggilan terpusat melalui partials/topbar.php) status : done
-030. Duplikasi markup navigasi menu bilah sisi pada seluruh modul administrasi (terapkan template modular bilah sisi admin) status : pending
+030. Duplikasi markup navigasi menu bilah sisi pada seluruh modul administrasi (terapkan template modular bilah sisi admin) status : done
 
 ### Alfredo
 031. Kueri penyemaian data awal basis data menggunakan UNION ALL dan subkueri bertingkat (sederhanakan menggunakan perintah INSERT INTO VALUES standar) status : done
 032. Kueri penghapusan data duplikat menggunakan penggabungan multi-tabel yang rumit (sederhanakan mekanisme pembersihan data tabel) status : done
-033. Manipulasi struktur tabel menggunakan perintah DDL ALTER TABLE pada saat pemrosesan formulir (pindahkan definisi kolom ke skema basis data utama) status : pending
-034. Eksekusi pembuatan tabel dinamis pada alur pembuatan faktur pembayaran (pindahkan inisialisasi tabel pesanan ke skrip migrasi basis data) status : pending
+033. Manipulasi struktur tabel menggunakan perintah DDL ALTER TABLE pada saat pemrosesan formulir (pindahkan definisi kolom ke skema basis data utama) status : done
+034. Eksekusi pembuatan tabel dinamis pada alur pembuatan faktur pembayaran (pindahkan inisialisasi tabel pesanan ke skrip migrasi basis data) status : done
 
 ### Gery
 035. Redundansi logika kalkulasi subtotal dan validasi item belanja pada modul transaksi (satukan ke fungsi helper kalkulasi terpusat) status : done
@@ -64,7 +64,7 @@ Dokumen ini memuat seluruh rekapitulasi tugas, perbaikan bug, penyelarasan kurik
 ### Fahri
 043. Duplikasi fungsi dialog konfirmasi tindakan pengguna pada berkas JavaScript (sederhanakan menjadi fungsi konfirmasi generik terpadu) status : done
 044. Duplikasi komponen pemilih tema antarmuka pada berbagai dokumen (integrasikan pemilih tema ke dalam bar navigasi utama) status : done
-045. Variabel penampung batas percobaan login tidak terdefinisi pada alur login (perbaiki mekanisme rate limiting atau bersihkan blok kode bermasalah) status : pending
+045. Variabel penampung batas percobaan login tidak terdefinisi pada alur login (perbaiki mekanisme rate limiting atau bersihkan blok kode bermasalah) status : done
 046. Penggunaan fungsi CONCAT SQL pada penyaringan pencarian tabel modul CRUD (sederhanakan penggabungan wildcard pencarian di sisi PHP) status : done
 047. Struktur basis data transaksi belum memenuhi kaidah normalisasi (buat tabel relasi penjualan_detail dan pembelian_detail) status : done
 
@@ -84,10 +84,10 @@ Dokumen ini memuat seluruh rekapitulasi tugas, perbaikan bug, penyelarasan kurik
 054. Penghapusan data pemasok (supplier) tidak memvalidasi riwayat transaksi pembelian (pasang validasi pengecekan relasi nota pembelian sebelum eksekusi penghapusan supplier) status : done
 
 ### Modul Laporan & Rekapitulasi Bisnis 
-055. Ketiadaan modul laporan rekapitulasi penjualan per periode (buat halaman laporan_penjualan.php dengan filter rentang tanggal, agregasi total, dan rincian transaksi) status : done
-056. Ketiadaan modul laporan rekapitulasi pembelian per periode (buat halaman laporan_pembelian.php dengan filter tanggal dan rekapitulasi biaya belanja ke pemasok) status : done
-057. Ketiadaan modul laporan pemantauan sisa stok inventaris (buat halaman laporan_stok.php yang menampilkan saldo terkini dan filter peringatan stok minimum) status : done
-058. Ketiadaan modul laporan estimasi laba kotor toko (buat halaman laporan_laba.php yang mengkalkulasi selisih omzet penjualan terhadap harga modal beli produk) status : done
+055. Ketiadaan modul laporan rekapitulasi penjualan per periode (buat halaman laporanpenjualan.php dengan filter rentang tanggal, agregasi total, dan rincian transaksi) status : done
+056. Ketiadaan modul laporan rekapitulasi pembelian per periode (buat halaman laporanpembelian.php dengan filter tanggal dan rekapitulasi biaya belanja ke pemasok) status : done
+057. Ketiadaan modul laporan pemantauan sisa stok inventaris (buat halaman laporanstok.php yang menampilkan saldo terkini dan filter peringatan stok minimum) status : done
+058. Ketiadaan modul laporan estimasi laba kotor toko (buat halaman laporanlaba.php yang mengkalkulasi selisih omzet penjualan terhadap harga modal beli produk) status : done
 059. Ketiadaan fasilitas cetak dokumen fisik pada seluruh halaman laporan (tambahkan tombol cetak dengan integrasi window.print dan stylesheet khusus media cetak) status : done
 
 ### Manajemen Pengguna, Otorisasi, & Sesi

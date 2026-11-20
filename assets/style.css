@@ -330,7 +330,8 @@ body.themedark .error { background-color: #3B1F1F; }
 }
 
 .logoutform {
-    display: inline;
+    display: inline-flex;
+    align-items: center;
     margin: 0;
     padding: 0;
 }
@@ -338,30 +339,23 @@ body.themedark .error { background-color: #3B1F1F; }
 .logoutbtn {
     background: none;
     border: none;
-    color: var(--linkcolor);
-    font-size: 11px;
+    color: rgba(255,255,255,0.88);
+    font-size: 13px;
+    font-weight: 500;
     font-family: inherit;
     cursor: pointer;
-    padding: 0;
-    display: inline;
+    padding: 6px 10px;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
     line-height: inherit;
 }
 
-.logoutbtn::before {
-    content: "[";
-    color: var(--textmain);
-    margin-right: 2px;
-}
-
-.logoutbtn::after {
-    content: "]";
-    color: var(--textmain);
-    margin-left: 2px;
-}
-
 .logoutbtn:hover {
-    color: var(--linkhover);
+    color: #fff;
     text-decoration: underline;
+    text-decoration-color: rgba(255,255,255,0.4);
+    text-underline-offset: 3px;
 }
 
 .themeswitcher {

@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../includes/session.php';
 require_once __DIR__ . '/../includes/items.php';
-require_once __DIR__ . '/../includes/transaksi_helper.php';
+require_once __DIR__ . '/../includes/transaksihelper.php';
 
 if (!isset($_SESSION['user'])) {
     header("Location: ../index.php");
@@ -35,16 +35,9 @@ if ($subtotal <= 0) {
     header("Location: cart.php");
     exit();
 }
+$pagetitle = "payment - darkfonder.net";
+require __DIR__ . '/../partials/header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>payment - darkfonder.net</title>
-    <link rel="stylesheet" href="../assets/style.css?v=3">
-</head>
-<body class="marketpage themelight">
 
     <?php require __DIR__ . '/../partials/topbar.php'; ?>
 
@@ -119,7 +112,4 @@ if ($subtotal <= 0) {
         </div>
     </div>
 
-<script src="../assets/main.js"></script>
-
-</body>
-</html>
+<?php require __DIR__ . '/../partials/footer.php'; ?>

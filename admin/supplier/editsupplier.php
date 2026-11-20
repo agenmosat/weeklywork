@@ -67,13 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php require __DIR__ . '/../../partials/topbar.php'; ?>
 
     <div class="layout">
-        <div class="sidebar">
-            <div class="sidetitle">admin menu</div>
-            <a href="../admin.php" class="sidelink">dashboard</a>
-            <a href="../product/product.php" class="sidelink">product</a>
-            <a href="../cashier/cashier.php" class="sidelink">cashier</a>
-            <a href="supplier.php" class="sidelink">supplier</a>
-        </div>
+        <?php require __DIR__ . '/../../partials/sidebaradmin.php'; ?>
 
         <div class="content">
             <div class="heading">crud supplier - edit #<?= (int) $id_supplier ?></div>

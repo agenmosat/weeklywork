@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../includes/session.php';
 require_once __DIR__ . '/../includes/items.php';
 require_once __DIR__ . '/../includes/gateway.php';
-require_once __DIR__ . '/../includes/transaksi_helper.php';
+require_once __DIR__ . '/../includes/transaksihelper.php';
 
 if (!isset($_SESSION['user'])) {
     header("Location: ../index.php");
@@ -54,17 +54,6 @@ foreach ($purchaseditems as $item) {
     }
 }
 
-mysqli_query($koneksi, "CREATE TABLE IF NOT EXISTS pesanan (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nomor_pesanan VARCHAR(50) NOT NULL,
-    nama_pembeli VARCHAR(100) NOT NULL,
-    alamat TEXT NOT NULL,
-    total DECIMAL(10,2) NOT NULL,
-    metode_pembayaran VARCHAR(50) NOT NULL,
-    status_pembayaran VARCHAR(50) NOT NULL,
-    tanggal DATETIME DEFAULT CURRENT_TIMESTAMP
-)");
-
 $fulladdress = $address . ", " . $city;
 $stmtpesanan = mysqli_prepare($koneksi, "INSERT INTO pesanan (nomor_pesanan, nama_pembeli, alamat, total, metode_pembayaran, status_pembayaran) VALUES (?, ?, ?, ?, ?, ?)");
 if ($stmtpesanan) {
@@ -75,16 +64,9 @@ if ($stmtpesanan) {
 if ($source === "cart") {
     unset($_SESSION['cart']);
 }
+$pagetitle = "order receipt - darkfonder.net";
+require __DIR__ . '/../partials/header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>order receipt - darkfonder.net</title>
-    <link rel="stylesheet" href="../assets/style.css?v=3">
-</head>
-<body class="marketpage themelight">
 
     <?php require __DIR__ . '/../partials/topbar.php'; ?>
 
@@ -163,7 +145,4 @@ if ($source === "cart") {
         </div>
     </div>
 
-<script src="../assets/main.js"></script>
-
-</body>
-</html>
+<?php require __DIR__ . '/../partials/footer.php'; ?>

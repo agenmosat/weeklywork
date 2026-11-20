@@ -22,16 +22,9 @@ if ($id <= 0 || !isset($products[$id])) {
 } else {
     $product = $products[$id];
 }
+$pagetitle = ($notfound ? "404 not found" : $product['name']) . " - darkfonder.net";
+require __DIR__ . '/../partials/header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $notfound ? "404 not found" : htmlspecialchars($product['name']); ?> - darkfonder.net</title>
-    <link rel="stylesheet" href="../assets/style.css?v=3">
-</head>
-<body class="marketpage themelight">
 
     <?php require __DIR__ . '/../partials/topbar.php'; ?>
 
@@ -85,7 +78,4 @@ if ($id <= 0 || !isset($products[$id])) {
         </div>
     </div>
 
-<script src="../assets/main.js"></script>
-
-</body>
-</html>
+<?php require __DIR__ . '/../partials/footer.php'; ?>
