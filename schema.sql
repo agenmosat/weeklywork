@@ -12,7 +12,7 @@ DROP TABLE IF EXISTS users;
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL UNIQUE,
+    username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     role VARCHAR(50) NOT NULL DEFAULT 'cashier',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -45,7 +45,6 @@ CREATE TABLE customers (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     phone VARCHAR(20),
-    email VARCHAR(100),
     address TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -86,9 +85,9 @@ CREATE TABLE stock_movements (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
-INSERT INTO users (name, email, password, role) VALUES
-('Administrator', 'admin@example.com', '$2y$12$rvxiPNaTRPv4YEz.6YgbVu7zVdDL90zP1pzm35iFG79lzDRtC.p1u', 'admin'),
-('Kasir Satu', 'kasir1@example.com', '$2y$12$aMCPEfOnFaub6wgdVCmuNOSEuCtJZgy44HPFaZo2VyH3pA8LXWVeW', 'cashier');
+INSERT INTO users (name,username, password, role) VALUES
+('Administrator', 'admin', '$2y$12$rvxiPNaTRPv4YEz.6YgbVu7zVdDL90zP1pzm35iFG79lzDRtC.p1u', 'admin'),
+('Kasir Satu', 'kasir1', '$2y$12$aMCPEfOnFaub6wgdVCmuNOSEuCtJZgy44HPFaZo2VyH3pA8LXWVeW', 'cashier');
 
 INSERT INTO categories (id, name, description) VALUES
 (1, 'Semen', 'Kategori aneka semen dan perekat'),
@@ -158,6 +157,6 @@ INSERT INTO products (category_id, code, name, description, unit, price, stock, 
 (23, 'GEN-001', 'Genset 50 KVA', 'Generator listrik darurat 50 kva', 'Unit', 110000000.00, 3, 1, 'images/alat/genset50kva.webp', 'active'),
 (23, 'GEN-002', 'Genset 100 KVA', 'Generator listrik industri 100 kva', 'Unit', 1950000000.00, 2, 1, 'images/alat/genset100kva.webp', 'active');
 
-INSERT INTO customers (name, phone, email, address) VALUES
-('Pelanggan Umum', '081234567890', 'pelanggan@example.com', 'Jl. Merdeka No. 1'),
-('Budi Santoso', '081298765432', 'budi@example.com', 'Jl. Sudirman No. 45');
+INSERT INTO customers (name, phone, address) VALUES
+('Pelanggan Umum', '081234567890', 'Jl. Merdeka No. 1'),
+('Budi Santoso', '081298765432', 'Jl. Sudirman No. 45');
