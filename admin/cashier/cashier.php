@@ -41,7 +41,9 @@ $pesan = ['tambah' => 'kasir berhasil ditambahkan.', 'edit' => 'kasir berhasil d
         <div class="topnav">
             <a href="../../home/dashboard.php" class="navlink">store</a>
             <a href="../admin.php" class="navlink">admin</a>
-            <a href="../../logout.php" class="navlink">logout</a>
+            <form method="post" action="../../logout.php" class="logoutform">
+                <button type="submit" class="logoutbtn">logout</button>
+            </form>
         </div>
     </div>
 

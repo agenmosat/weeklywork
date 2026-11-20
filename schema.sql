@@ -40,7 +40,7 @@ INSERT INTO kasir (nama_kasir, status) VALUES
 ('kasir2', 'nonaktif');
 
 INSERT INTO supplier (nama_supplier, kota) VALUES
-('supplier1', 'kota'),
+('supplier1', 'kota');
 
 CREATE TABLE IF NOT EXISTS penjualan (
     id_penjualan INT AUTO_INCREMENT PRIMARY KEY,
@@ -75,3 +75,33 @@ CREATE TABLE IF NOT EXISTS pembelian_detail (
     qty INT NOT NULL,
     subtotal DECIMAL(10,2) NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS stok (
+    id_stok INT AUTO_INCREMENT PRIMARY KEY,
+    id_product INT NOT NULL,
+    tanggal DATETIME NOT NULL,
+    jumlah_masuk INT NOT NULL DEFAULT 0,
+    jumlah_keluar INT NOT NULL DEFAULT 0,
+    saldo_awal INT NOT NULL DEFAULT 0,
+    saldo_akhir INT NOT NULL DEFAULT 0,
+    no_penjualan VARCHAR(50) NULL,
+    no_pembelian VARCHAR(50) NULL,
+    keterangan VARCHAR(255) NULL
+);
+
+CREATE TABLE IF NOT EXISTS pengguna (
+    id_pengguna INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    nama VARCHAR(100) NOT NULL,
+    role ENUM('admin', 'cashier', 'kasir') NOT NULL,
+    id_kasir INT DEFAULT NULL,
+    status ENUM('aktif', 'nonaktif') DEFAULT 'aktif',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO pengguna (username, password, nama, role, id_kasir, status) VALUES
+('admin', '$2y$12$rvxiPNaTRPv4YEz.6YgbVu7zVdDL90zP1pzm35iFG79lzDRtC.p1u', 'Administrator', 'admin', NULL, 'aktif'),
+('kasir1', '$2y$12$aMCPEfOnFaub6wgdVCmuNOSEuCtJZgy44HPFaZo2VyH3pA8LXWVeW', 'Kasir Satu', 'cashier', 1, 'aktif')
+ON DUPLICATE KEY UPDATE password = VALUES(password), role = VALUES(role), id_kasir = VALUES(id_kasir), status = VALUES(status);
+

@@ -11,7 +11,7 @@ if ($id <= 0) {
     exit;
 }
 
-$stmt = mysqli_prepare($koneksi, 'SELECT p.id_pembelian, p.nomor_transaksi, p.tanggal, p.total, s.nama_supplier, s.kota FROM pembelian p LEFT JOIN supplier s ON p.id_supplier = s.id WHERE p.id_pembelian = ?');
+$stmt = mysqli_prepare($koneksi, 'SELECT p.id_pembelian, p.nomor_transaksi, p.tanggal, p.total, s.nama_supplier, s.kota FROM pembelian p LEFT JOIN supplier s ON p.id_supplier = s.id_supplier WHERE p.id_pembelian = ?');
 mysqli_stmt_bind_param($stmt, 'i', $id);
 mysqli_stmt_execute($stmt);
 $res = mysqli_stmt_get_result($stmt);

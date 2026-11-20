@@ -1,15 +1,25 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-session_set_cookie_params([
-    'httponly' => true,
-    'secure' => isset($_SERVER['HTTPS']),
-    'samesite' => 'Lax'
-]);
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header("Location: index.php");
+    exit;
+}
 
-require_once __DIR__ . '/includes/csrf.php';
+$_SESSION = [];
 
+if (ini_get("session.use_cookies")) {
+    $params = session_get_cookie_params();
+    setcookie(session_name(), '', time() - 42000,
+        $params["path"], $params["domain"],
+        $params["secure"], $params["httponly"]
+    );
+}
+
+session_regenerate_id(true);
 session_destroy();
 
-header("Location: index.php");
+header("Location: index.php?status=logout");
 exit;
