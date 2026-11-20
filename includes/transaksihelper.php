@@ -54,11 +54,12 @@ function init_transaksi_tables($koneksi)
         username VARCHAR(50) NOT NULL UNIQUE,
         password VARCHAR(255) NOT NULL,
         nama VARCHAR(100) NOT NULL,
-        role ENUM('admin', 'cashier', 'kasir') NOT NULL,
+        role ENUM('admin', 'cashier', 'kasir', 'user') NOT NULL,
         id_kasir INT DEFAULT NULL,
         status ENUM('aktif', 'nonaktif') DEFAULT 'aktif',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )");
+    mysqli_query($koneksi, "ALTER TABLE pengguna MODIFY role ENUM('admin', 'cashier', 'kasir', 'user') NOT NULL");
     $chk_admin = mysqli_query($koneksi, "SELECT id_pengguna FROM pengguna WHERE username = 'admin' LIMIT 1");
     if ($chk_admin && mysqli_num_rows($chk_admin) === 0) {
         $hash_admin = password_hash('admin123', PASSWORD_BCRYPT);
@@ -68,6 +69,11 @@ function init_transaksi_tables($koneksi)
     if ($chk_kasir && mysqli_num_rows($chk_kasir) === 0) {
         $hash_kasir = password_hash('kasir123', PASSWORD_BCRYPT);
         mysqli_query($koneksi, "INSERT INTO pengguna (username, password, nama, role, id_kasir, status) VALUES ('kasir1', '$hash_kasir', 'Kasir Satu', 'cashier', 1, 'aktif')");
+    }
+    $chk_user = mysqli_query($koneksi, "SELECT id_pengguna FROM pengguna WHERE username = 'user' LIMIT 1");
+    if ($chk_user && mysqli_num_rows($chk_user) === 0) {
+        $hash_user = password_hash('user123', PASSWORD_BCRYPT);
+        mysqli_query($koneksi, "INSERT INTO pengguna (username, password, nama, role, id_kasir, status) VALUES ('user', '$hash_user', 'Customer User', 'user', NULL, 'aktif')");
     }
 }
 

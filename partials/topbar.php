@@ -29,10 +29,13 @@ if (file_exists('config/database.php')) {
         <a href="<?php echo $topbarbase; ?>home/cart.php" class="navlink cartlink">cart <span class="cartcount"><?php echo $topbarcartcount; ?></span></a>
         <?php if (isset($_SESSION['user'])): ?>
             <span class="userbadge"><?php echo htmlspecialchars($_SESSION['user']); ?></span>
+            <form method="post" action="<?php echo $topbarbase . 'logout.php'; ?>" class="logoutform">
+                <button type="submit" class="logoutbtn">logout</button>
+            </form>
+        <?php else: ?>
+            <span class="userbadge">guest</span>
+            <a href="<?php echo $topbarbase; ?>index.php?login=1" class="navlink">login</a>
         <?php endif; ?>
-        <form method="post" action="<?php echo $topbarbase . 'logout.php'; ?>" class="logoutform">
-            <button type="submit" class="logoutbtn">logout</button>
-        </form>
         <div class="themeswitcher">
             <select id="themepick" class="themeselect" onchange="switchtheme(this.value)" aria-label="theme">
                 <option value="themelight">light</option>

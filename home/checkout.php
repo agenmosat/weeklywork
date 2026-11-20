@@ -3,19 +3,15 @@ require_once __DIR__ . '/../includes/session.php';
 require_once __DIR__ . '/../includes/items.php';
 require_once __DIR__ . '/../includes/transaksihelper.php';
 
-if (!isset($_SESSION['user'])) {
-    header("Location: ../index.php");
-    exit();
-}
-
-if (isset($_GET['logout'])) {
-    session_destroy();
-    header("Location: ../index.php");
-    exit();
-}
-
 $directid = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 $directqty = isset($_GET['qty']) ?  max(1, (int)$_GET['qty']) : 1;
+
+if (!isset($_SESSION['user'])) {
+    $redirect_url = 'home/checkout.php' . ($directid > 0 ? '?id=' . $directid . '&qty=' . $directqty : '');
+    $_SESSION['redirect_url'] = $redirect_url;
+    header("Location: ../index.php?login=1&redirect=checkout");
+    exit();
+}
 $source = ($directid > 0 && isset($products[$directid])) ? "direct" : "cart";
 
 $result = hitung_pesanan($products, $source, $directid, $directqty, $_SESSION['cart'] ?? []);
