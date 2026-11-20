@@ -3,11 +3,11 @@ require_once __DIR__ . '/../includes/session.php';
 require_once __DIR__ . '/../includes/items.php';
 require_once __DIR__ . '/../includes/transaksihelper.php';
 
-$directid = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+$directid = isset($_GET['id']) ? urlde($_GET['id']) : 0;
 $directqty = isset($_GET['qty']) ?  max(1, (int)$_GET['qty']) : 1;
 
 if (!isset($_SESSION['user'])) {
-    $redirect_url = 'home/checkout.php' . ($directid > 0 ? '?id=' . $directid . '&qty=' . $directqty : '');
+    $redirect_url = 'home/checkout.php' . ($directid > 0 ? '?id=' . urlen($directid) . '&qty=' . $directqty : '');
     $_SESSION['redirect_url'] = $redirect_url;
     header("Location: ../index.php?login=1&redirect=checkout");
     exit();
