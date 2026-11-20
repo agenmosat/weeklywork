@@ -1,6 +1,3 @@
-CREATE DATABASE IF NOT EXISTS toko;
-USE toko;
-
 DROP TABLE IF EXISTS stock_movements;
 DROP TABLE IF EXISTS sale_details;
 DROP TABLE IF EXISTS sales;

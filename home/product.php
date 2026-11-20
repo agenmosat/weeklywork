@@ -9,7 +9,7 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
-$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+$id = isset($_GET['id']) ? urlde($_GET['id']) : 0;
 $notfound = false;
 
 if ($id <= 0 || !isset($products[$id])) {
@@ -57,7 +57,7 @@ require __DIR__ . '/../partials/header.php';
                         <?php if ($product['stock'] > 0): ?>
                             <form action="cart.php" method="post" class="qtyform">
                                 <?= csrf_field(); ?>
-                                <input type="hidden" name="id" value="<?php echo $product['id']; ?>">
+                                <input type="hidden" name="id" value="<?php echo htmlspecialchars(urlen($product['id'])); ?>">
                                 <div class="qtybox">
                                     <label class="formlabel">select quantity:</label>
                                     <input type="number" name="qty" value="1" min="1" max="<?php echo $product['stock']; ?>" class="qtyinput" required>

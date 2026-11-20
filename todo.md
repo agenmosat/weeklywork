@@ -99,6 +99,6 @@ Dokumen ini memuat seluruh rekapitulasi tugas, perbaikan bug, penyelarasan kurik
 
 ## 4. Instruksi Tambahan Project Manager 
 
-063. Keterpaparan kunci utama produk pada parameter URL publik (terapkan mekanisme penyamaran atau enkripsi URL parameter untuk menyembunyikan primary key produk) status : pending
+063. Keterpaparan kunci utama produk pada parameter URL publik (terapkan mekanisme penyamaran atau enkripsi URL parameter untuk menyembunyikan primary key produk) status : done
 064. Ketiadaan alur verifikasi alamat surat elektronik pengguna (integrasikan mekanisme verifikasi email pada modul registrasi atau profil akun) status : pending
 065. Pustaka antarmuka Bootstrap 5 lokal belum terpasang (sediakan aset Bootstrap CSS dan JS lokal di dalam direktori aset untuk mendukung stabilitas tata letak) status : pending
