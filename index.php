@@ -125,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['enter']) || isset($_
             }
             $_SESSION[$attempts_key]['count']++;
             $_SESSION[$attempts_key]['last'] = $now;
-            $message = "Username atau password salah";
+            $message = "Username or password incorrect";
         }
     }
 }
