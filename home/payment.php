@@ -4,7 +4,7 @@ require_once __DIR__ . '/../includes/items.php';
 require_once __DIR__ . '/../includes/transaksihelper.php';
 
 if (!isset($_SESSION['user'])) {
-    header("Location: ../index.php");
+    header("Location: ../index.php?login=1");
     exit();
 }
 

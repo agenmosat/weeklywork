@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../includes/session.php';
 if (!isset($_SESSION['user'])) {
     $target = file_exists('index.php') ? 'index.php' : (file_exists('../index.php') ? '../index.php' : '../../index.php');
-    header('Location: ' . $target);
+    header('Location: ' . $target . '?login=1');
     exit;
 }
 if (($_SESSION['role'] ?? '') !== 'admin') {
