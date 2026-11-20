@@ -50,9 +50,9 @@ Dokumen ini memuat seluruh rekapitulasi tugas, perbaikan bug, penyelarasan kurik
 034. Eksekusi pembuatan tabel dinamis pada alur pembuatan faktur pembayaran (pindahkan inisialisasi tabel pesanan ke skrip migrasi basis data) status : pending
 
 ### Gery
-035. Redundansi logika kalkulasi subtotal dan validasi item belanja pada modul transaksi (satukan ke fungsi helper kalkulasi terpusat) status : pending
+035. Redundansi logika kalkulasi subtotal dan validasi item belanja pada modul transaksi (satukan ke fungsi helper kalkulasi terpusat) status : done
 036. Duplikasi penanganan proses keluar sistem di berbagai dokumen (seragamkan pengalihan keluar melalui berkas logout.php terpusat) status : done
-037. Pemanggilan berkas pendukung data produk berulang dan pemuatan kueri ganda pada katalog (optimalkan alur pemanggilan berkas dan hilangkan kueri redundan) status : pending
+037. Pemanggilan berkas pendukung data produk berulang dan pemuatan kueri ganda pada katalog (optimalkan alur pemanggilan berkas dan hilangkan kueri redundan) status : done
 038. Pengaturan parameter kuki sesi dipanggil setelah inisialisasi sesi aktif (pindahkan pemanggilan session_set_cookie_params sebelum session_start) status : done
 
 ### Nell
