@@ -52,40 +52,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['enter']) || isset($_
         $username = trim($_POST['username'] ?? $_POST['token'] ?? '');
         $password = (string)($_POST['password'] ?? $_POST['token'] ?? '');
         $login_ok = false;
-
         if (isset($koneksi) && $koneksi && $username !== '') {
-            $stmt = mysqli_prepare($koneksi, "SELECT id_pengguna, username, password, nama, role, id_kasir, status FROM pengguna WHERE username = ? LIMIT 1");
-            if ($stmt) {
-                mysqli_stmt_bind_param($stmt, "s", $username);
-                mysqli_stmt_execute($stmt);
-                $res = mysqli_stmt_get_result($stmt);
-                if ($row = mysqli_fetch_assoc($res)) {
-                    if ($row['status'] === 'aktif' && password_verify($password, $row['password'])) {
-                        $login_ok = true;
-                        if (isset($_SESSION[$attempts_key])) {
-                            unset($_SESSION[$attempts_key]);
-                        }
-                        $_SESSION['user'] = $row['username'];
-                        $_SESSION['username'] = $row['username'];
-                        $_SESSION['role'] = $row['role'];
-                        $_SESSION['id_pengguna'] = (int)$row['id_pengguna'];
-                        $_SESSION['id_kasir'] = !empty($row['id_kasir']) ? (int)$row['id_kasir'] : null;
-                        if ($row['role'] === 'admin') {
-                            header("Location: admin/admin.php");
-                        } else {
-                            $redirect = $_SESSION['redirect_url'] ?? '';
-                            unset($_SESSION['redirect_url']);
-                            if ($redirect !== '' && !str_starts_with($redirect, 'http')) {
-                                header("Location: " . $redirect);
-                            } else {
-                                header("Location: home/dashboard.php");
-                            }
-                        }
-                        exit();
-                    }
+    $stmt = mysqli_prepare($koneksi, "SELECT id, username, password, name, role FROM users WHERE username = ? LIMIT 1");
+    if ($stmt) {
+        mysqli_stmt_bind_param($stmt, "s", $username);
+        mysqli_stmt_execute($stmt);
+        $res = mysqli_stmt_get_result($stmt);
+        if ($row = mysqli_fetch_assoc($res)) {
+            if (password_verify($password, $row['password'])) {
+                $login_ok = true;
+                if (isset($_SESSION[$attempts_key])) {
+                    unset($_SESSION[$attempts_key]);
                 }
+                $_SESSION['user'] = $row['username'];
+                $_SESSION['username'] = $row['username'];
+                $_SESSION['role'] = $row['role'];
+                $_SESSION['id_pengguna'] = (int)$row['id'];
+                if ($row['role'] === 'admin') {
+                    header("Location: admin/admin.php");
+                } else {
+                    header("Location: home/dashboard.php");
+                }
+                exit();
             }
         }
+    }
+}
 
         if (!$login_ok) {
             if (defined('ADMIN_TOKEN') && ADMIN_TOKEN !== "" && ($username === ADMIN_TOKEN || $password === ADMIN_TOKEN)) {
@@ -133,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['enter']) || isset($_
             }
             $_SESSION[$attempts_key]['count']++;
             $_SESSION[$attempts_key]['last'] = $now;
-            $message = "Username atau password salah";
+            $message = "Username or password incorrect";
         }
     }
 }
