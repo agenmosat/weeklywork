@@ -43,8 +43,19 @@ function confirmoff() {
     return confirm("are you sure you want to deactivate this cashier?");
 }
 
+function markactivelinks() {
+    var here = (location.pathname.split("/").pop() || "index.php").toLowerCase();
+    document.querySelectorAll(".navlink, .sidelink").forEach(function (a) {
+        var href = (a.getAttribute("href") || "").split("?")[0].split("/").pop().toLowerCase();
+        if (href && href === here) {
+            a.classList.add("is-active");
+        }
+    });
+}
+
 if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", inittheme);
+    document.addEventListener("DOMContentLoaded", function () { inittheme(); markactivelinks(); });
 } else {
     inittheme();
+    markactivelinks();
 }

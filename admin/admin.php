@@ -2,12 +2,6 @@
 require_once __DIR__ . '/../includes/session.php';
 require_once __DIR__ . '/../config/database.php';
 
-session_set_cookie_params([
-    'httponly' => true,
-    'secure' => isset($_SERVER['HTTPS']),
-    'samesite' => 'Lax'
-]);
-
 if (!isset($_SESSION['user'])) {
     header("Location: ../index.php");
     exit();
@@ -45,21 +39,7 @@ if ($checktable && mysqli_num_rows($checktable) > 0) {
 </head>
 <body class="marketpage themelight">
 
-    <div class="topbar">
-        <div class="brand">darkfonder.net</div>
-        <div class="themeswitcher">
-            <span class="themelabel">theme</span>
-            <select id="themepick" class="themeselect" onchange="switchtheme(this.value)">
-                <option value="themelight">light</option>
-                <option value="themedark">dark</option>
-            </select>
-        </div>
-        <div class="topnav">
-            <a href="../home/dashboard.php" class="navlink">store</a>
-            <a href="admin.php" class="navlink">admin</a>
-            <a href="../logout.php" class="navlink">logout</a>
-        </div>
-    </div>
+    <?php require __DIR__ . '/../partials/topbar.php'; ?>
 
     <div class="layout">
         <div class="sidebar">
@@ -71,6 +51,9 @@ if ($checktable && mysqli_num_rows($checktable) > 0) {
             <a href="penjualan/penjualan.php" class="sidelink">sales</a>
             <a href="pembelian/pembelian.php" class="sidelink">purchases</a>
             <a href="checklist.php" class="sidelink">checklist</a>
+            <div class="sidetitle">account</div>
+            <a href="../home/dashboard.php" class="sidelink">view store</a>
+            <a href="../logout.php" class="sidelink">logout</a>
         </div>
 
         <div class="content">

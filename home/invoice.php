@@ -3,11 +3,6 @@ require_once __DIR__ . '/../includes/session.php';
 require_once __DIR__ . '/../includes/items.php';
 require_once __DIR__ . '/../includes/gateway.php';
 require_once __DIR__ . '/../includes/transaksi_helper.php';
-session_set_cookie_params([
-    'httponly' => true,
-    'secure' => isset($_SERVER['HTTPS']),
-    'samesite' => 'Lax'
-]);
 
 if (!isset($_SESSION['user'])) {
     header("Location: ../index.php");
