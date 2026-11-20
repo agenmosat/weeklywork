@@ -36,7 +36,7 @@ CREATE TABLE pesanan (
 );
 
 INSERT INTO products (name, price, stock, category, description, image) VALUES
-('nama', 000.00, 00, 'category', 'description', 'image');
+('nama', 000.00, 00, 'category', 'description', 'image/no-image.webp');
 
 INSERT INTO kasir (nama_kasir, status) VALUES
 ('kasir1', 'aktif'),
