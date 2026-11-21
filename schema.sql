@@ -6,15 +6,15 @@ DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS customers;
 DROP TABLE IF EXISTS users;
 
-CREATE TABLE IF NOT EXISTS pengguna (
-  id_pengguna   INT AUTO_INCREMENT PRIMARY KEY,
-  username      VARCHAR(30)  NOT NULL UNIQUE,
-  password      VARCHAR(255) NOT NULL,
-  nama_lengkap  VARCHAR(50)  NOT NULL,
-  role          ENUM('admin','kasir') DEFAULT 'kasir',
-  id_kasir      INT NULL,
-  status        ENUM('aktif','nonaktif') DEFAULT 'aktif',
-  dibuat_pada   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE IF NOT EXISTS users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(30)  NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  name VARCHAR(50)  NOT NULL,
+  role ENUM('admin','kasir') DEFAULT 'kasir',
+  id_kasir INT NULL,
+  status ENUM('aktif','nonaktif') DEFAULT 'aktif',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE categories (
@@ -84,7 +84,7 @@ CREATE TABLE stock_movements (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
-INSERT INTO pengguna (username, password, nama_lengkap, role, id_kasir, status)
+INSERT INTO users (username, password, name, role, id_kasir, status)
 VALUES (
   'admin',
   '$2y$10$RyFoVYnot0wdhwwO1s5xeeprLka1KLvg.cR0seFstrmG338MtKdtG',
@@ -98,7 +98,7 @@ ON DUPLICATE KEY UPDATE
   role         = VALUES(role),
   status       = VALUES(status);
 
-INSERT INTO pengguna (username, password, nama_lengkap, role, id_kasir, status)
+INSERT INTO users (username, password, nama_lengkap, role, id_kasir, status)
 VALUES (
   'kasir1',
   '$2y$10$xzZL9oLAghDYz3nBrZpyWOx/JAZdE9SsYC7yyFKjTXcQAfi00LK02',
