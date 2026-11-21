@@ -6,13 +6,15 @@ DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS customers;
 DROP TABLE IF EXISTS users;
 
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    role VARCHAR(50) NOT NULL DEFAULT 'cashier',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE IF NOT EXISTS users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(30)  NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  name VARCHAR(50)  NOT NULL,
+  role ENUM('admin','kasir') DEFAULT 'kasir',
+  id_kasir INT NULL,
+  status ENUM('aktif','nonaktif') DEFAULT 'aktif',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE categories (
@@ -82,9 +84,34 @@ CREATE TABLE stock_movements (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
-INSERT INTO users (name,username, password, role) VALUES
-('Administrator', 'admin', '$2y$12$rvxiPNaTRPv4YEz.6YgbVu7zVdDL90zP1pzm35iFG79lzDRtC.p1u', 'admin'),
-('Kasir Satu', 'kasir1', '$2y$12$aMCPEfOnFaub6wgdVCmuNOSEuCtJZgy44HPFaZo2VyH3pA8LXWVeW', 'cashier');
+INSERT INTO users (username, password, name, role, id_kasir, status)
+VALUES (
+  'admin',
+  '$2y$10$RyFoVYnot0wdhwwO1s5xeeprLka1KLvg.cR0seFstrmG338MtKdtG',
+  'Pemilik Toko',
+  'admin',
+  NULL,
+  'aktif'
+)
+ON DUPLICATE KEY UPDATE
+  nama_lengkap = VALUES(nama_lengkap),
+  role         = VALUES(role),
+  status       = VALUES(status);
+
+INSERT INTO users (username, password, nama_lengkap, role, id_kasir, status)
+VALUES (
+  'kasir1',
+  '$2y$10$xzZL9oLAghDYz3nBrZpyWOx/JAZdE9SsYC7yyFKjTXcQAfi00LK02',
+  'Kasir Satu',
+  'kasir',
+  1,
+  'aktif'
+)
+ON DUPLICATE KEY UPDATE
+  nama_lengkap = VALUES(nama_lengkap),
+  role         = VALUES(role),
+  id_kasir     = VALUES(id_kasir),
+  status       = VALUES(status);
 
 INSERT INTO categories (id, name, description) VALUES
 (1, 'Semen', 'Kategori aneka semen dan perekat'),
