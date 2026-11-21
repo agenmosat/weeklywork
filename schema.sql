@@ -98,7 +98,7 @@ ON DUPLICATE KEY UPDATE
   role         = VALUES(role),
   status       = VALUES(status);
 
-INSERT INTO users (username, password, nama_lengkap, role, id_kasir, status)
+INSERT INTO users (username, password, name, role, id_kasir, status)
 VALUES (
   'kasir1',
   '$2y$10$xzZL9oLAghDYz3nBrZpyWOx/JAZdE9SsYC7yyFKjTXcQAfi00LK02',
