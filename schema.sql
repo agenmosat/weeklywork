@@ -94,7 +94,7 @@ VALUES (
   'aktif'
 )
 ON DUPLICATE KEY UPDATE
-  nama_lengkap = VALUES(nama_lengkap),
+  name = VALUES(nama_lengkap),
   role         = VALUES(role),
   status       = VALUES(status);
 
@@ -108,7 +108,7 @@ VALUES (
   'aktif'
 )
 ON DUPLICATE KEY UPDATE
-  nama_lengkap = VALUES(nama_lengkap),
+  name = VALUES(nama_lengkap),
   role         = VALUES(role),
   id_kasir     = VALUES(id_kasir),
   status       = VALUES(status);
