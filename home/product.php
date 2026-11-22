@@ -48,10 +48,15 @@ require __DIR__ . '/../partials/header.php';
                     <div class="detailinfo">
                         <div class="detailtitle"><?php echo htmlspecialchars($product['name']); ?></div>
                         <div class="detailprice">Rp <?php echo number_format($product['price'], 0, ',', '.'); ?><?php echo $isalatberat ? ' / unit' : ''; ?></div>
+                        <div class="itemmeta" style="margin-bottom:8px">
+                            <span class="itemcity"><?php echo htmlspecialchars($product['lokasi']); ?></span> &bull; 
+                            <span class="itemrating">&#9733; <?php echo number_format($product['rating'], 1); ?></span> &bull; 
+                            <span class="itemsold">terjual <?php echo number_format($product['terjual'], 0, ',', '.'); ?></span>
+                        </div>
                         <div class="detaildesc"><?php echo htmlspecialchars($product['desc']); ?></div>
                         <div class="detailstatus">
                             <?php if ($product['stock'] > 0): ?>
-                                <?php echo $isalatberat ? 'unit alat berat siap operasi (pool peralatan: Surabaya)' : 'stok tersedia: ' . $product['stock'] . ' ' . htmlspecialchars($product['unit'] ?? 'buah') . ' siap kirim dari gudang'; ?>
+                                <?php echo $isalatberat ? 'unit alat berat siap operasi (pool peralatan: ' . htmlspecialchars($product['lokasi']) . ')' : 'stok tersedia: ' . $product['stock'] . ' ' . htmlspecialchars($product['unit'] ?? 'buah') . ' siap kirim dari gudang ' . htmlspecialchars($product['lokasi']); ?>
                             <?php else: ?>
                                 stok saat ini habis
                             <?php endif; ?>

@@ -36,7 +36,7 @@
     --tableheader: #F0F2F2;
     --shadow: 0 1px 3px rgba(15,17,17,0.08);
     --shadowhover: 0 4px 14px rgba(15,17,17,0.14);
-    --radius: 10px;
+    --radius: 0;
     --radius-sm: 6px;
     --font: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
 }
@@ -528,7 +528,7 @@ body.themedark .tagitem { background-color: #1F3B33; }
     height: 150px;
     background-color: var(--bgcard);
     border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
+    border-radius: 0;
     margin-bottom: 10px;
     display: flex;
     align-items: center;

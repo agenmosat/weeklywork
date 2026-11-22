@@ -47,9 +47,9 @@ $ispaid = ($method !== "cash on delivery" && $gatewaysuccess);
 $statuspembayaran = $ispaid ? "lunas" : ($method === "cash on delivery" ? "menunggu cod" : "belum lunas");
 
 foreach ($purchaseditems as $item) {
-    $stmtstock = mysqli_prepare($koneksi, "UPDATE products SET stock = GREATEST(0, stock - ?) WHERE id = ?");
+    $stmtstock = mysqli_prepare($koneksi, "UPDATE products SET stock = GREATEST(0, stock - ?), terjual = terjual + ? WHERE id = ?");
     if ($stmtstock) {
-        mysqli_stmt_bind_param($stmtstock, "ii", $item['qty'], $item['id']);
+        mysqli_stmt_bind_param($stmtstock, "iii", $item['qty'], $item['qty'], $item['id']);
         mysqli_stmt_execute($stmtstock);
     }
 }

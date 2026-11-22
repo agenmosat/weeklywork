@@ -35,6 +35,9 @@ CREATE TABLE products (
     category VARCHAR(50) NOT NULL DEFAULT 'General',
     description TEXT,
     unit VARCHAR(50) DEFAULT 'pcs',
+    lokasi VARCHAR(50) DEFAULT 'Surabaya',
+    rating DECIMAL(2,1) DEFAULT 4.9,
+    terjual INT DEFAULT 0,
     image VARCHAR(255) DEFAULT 'images/glock17.png',
     status VARCHAR(50) NOT NULL DEFAULT 'active'
 );

@@ -41,4 +41,11 @@ if ($chk_prod && mysqli_num_rows($chk_prod) === 0) {
             }
         }
     }
+} else {
+    $chk_col = @mysqli_query($koneksi, "SHOW COLUMNS FROM products LIKE 'lokasi'");
+    if ($chk_col && mysqli_num_rows($chk_col) === 0) {
+        @mysqli_query($koneksi, "ALTER TABLE products ADD COLUMN lokasi VARCHAR(50) DEFAULT 'Surabaya'");
+        @mysqli_query($koneksi, "ALTER TABLE products ADD COLUMN rating DECIMAL(2,1) DEFAULT 4.9");
+        @mysqli_query($koneksi, "ALTER TABLE products ADD COLUMN terjual INT DEFAULT 0");
+    }
 }

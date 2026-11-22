@@ -23,7 +23,7 @@ if (file_exists('config/database.php')) {
     </form>
     <div class="topnav">
         <a href="<?php echo $topbarbase; ?>home/dashboard.php" class="navlink">katalog</a>
-        <a href="<?php echo $topbarbase; ?>home/about.php" class="navlink">tentang kami</a>
+        <a href="<?php echo $topbarbase; ?>home/about.php" class="navlink">tentang</a>
         <?php if (isset($_SESSION['role']) && $_SESSION['role'] === "admin"): ?>
             <a href="<?php echo $topbarbase; ?>admin/admin.php" class="navlink">admin</a>
         <?php endif; ?>

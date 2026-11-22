@@ -65,6 +65,9 @@ if ($result) {
             "price" => (float)$row['price'],
             "stock" => (int)$row['stock'],
             "unit" => !empty($row['unit']) ? $row['unit'] : "buah",
+            "lokasi" => !empty($row['lokasi']) ? $row['lokasi'] : "Surabaya",
+            "rating" => isset($row['rating']) ? (float)$row['rating'] : 4.9,
+            "terjual" => isset($row['terjual']) ? (int)$row['terjual'] : 0,
             "category" => $row['category'],
             "image" => $img,
             "desc" => $row['description']
@@ -113,9 +116,9 @@ require __DIR__ . '/../partials/header.php';
                             <a href="product.php?id=<?php echo urlen($p['id']); ?>" class="itemname"><?php echo htmlspecialchars($p['name']); ?></a>
                             <div class="itemprice">Rp <?php echo number_format($p['price'], 0, ',', '.'); ?><?php echo $isalatberat ? ' <span class="unitlabel">/ unit</span>' : ''; ?></div>
                             <div class="itemmeta">
-                                <span class="itemcity">Surabaya</span> &bull; 
-                                <span class="itemrating">&#9733; 4.9</span> &bull; 
-                                <span class="itemsold">terjual <?php echo ($p['id'] * 13) + 35; ?></span>
+                                <span class="itemcity"><?php echo htmlspecialchars($p['lokasi']); ?></span> &bull; 
+                                <span class="itemrating">&#9733; <?php echo number_format($p['rating'], 1); ?></span> &bull; 
+                                <span class="itemsold">terjual <?php echo number_format($p['terjual'], 0, ',', '.'); ?></span>
                             </div>
                             <div class="detaildesc"><?php echo $isalatberat ? 'unit sewa siap operasi' : 'stok: ' . $p['stock'] . ' ' . htmlspecialchars($p['unit']); ?></div>
                             <div class="itemactions">

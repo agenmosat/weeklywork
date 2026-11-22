@@ -7,6 +7,10 @@ $error = '';
 $name = '';
 $price = '';
 $stock = '';
+$unit = 'buah';
+$lokasi = 'Surabaya';
+$rating = '4.9';
+$terjual = '0';
 $category = '';
 $description = '';
 $image = '';
@@ -22,6 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['name'] ?? '');
     $price = trim((string) ($_POST['price'] ?? ''));
     $stock = trim((string) ($_POST['stock'] ?? ''));
+    $unit = trim($_POST['unit'] ?? 'buah');
+    $lokasi = trim($_POST['lokasi'] ?? 'Surabaya');
+    $rating = trim((string) ($_POST['rating'] ?? '4.9'));
+    $terjual = trim((string) ($_POST['terjual'] ?? '0'));
     $category = trim($_POST['category'] ?? '');
     $description = trim($_POST['description'] ?? '');
     $image = trim($_POST['image'] ?? '');
@@ -55,9 +63,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             mysqli_query($koneksi, "ALTER TABLE products ADD COLUMN image VARCHAR(255) DEFAULT 'images/glock17.png'");
         }
 
-        $stmt = mysqli_prepare($koneksi, 'UPDATE products SET name = ?, price = ?, stock = ?, category = ?, description = ?, image = ? WHERE id = ?');
+        $stmt = mysqli_prepare($koneksi, 'UPDATE products SET name = ?, price = ?, stock = ?, unit = ?, lokasi = ?, rating = ?, terjual = ?, category = ?, description = ?, image = ? WHERE id = ?');
         if ($stmt) {
-            mysqli_stmt_bind_param($stmt, 'sdisssi', $name, $price, $stock, $category, $description, $image, $id);
+            $f_price = (float) $price;
+            $i_stock = (int) $stock;
+            $f_rating = (float) $rating;
+            $i_terjual = (int) $terjual;
+            mysqli_stmt_bind_param($stmt, 'sdisdsisssi', $name, $f_price, $i_stock, $unit, $lokasi, $f_rating, $i_terjual, $category, $description, $image, $id);
             if (mysqli_stmt_execute($stmt)) {
                 header('Location: product.php?status=edit');
                 exit;
@@ -83,6 +95,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $row['name'];
     $price = $row['price'];
     $stock = $row['stock'];
+    $unit = $row['unit'] ?? 'buah';
+    $lokasi = $row['lokasi'] ?? 'Surabaya';
+    $rating = $row['rating'] ?? '4.9';
+    $terjual = $row['terjual'] ?? '0';
     $category = $row['category'];
     $description = $row['description'];
     $image = $row['image'] ?? 'images/glock17.png';
@@ -126,6 +142,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="formrow">
                         <label class="formlabel" for="stock">stok</label>
                         <input class="forminput" type="number" id="stock" name="stock" min="0" value="<?= htmlspecialchars($stock) ?>" required>
+                    </div>
+                    <div class="formrow">
+                        <label class="formlabel" for="unit">satuan</label>
+                        <input class="forminput" type="text" id="unit" name="unit" maxlength="50" value="<?= htmlspecialchars($unit) ?>" placeholder="sak / buah / batang / m3">
+                    </div>
+                    <div class="formrow">
+                        <label class="formlabel" for="lokasi">lokasi kota</label>
+                        <input class="forminput" type="text" id="lokasi" name="lokasi" maxlength="50" value="<?= htmlspecialchars($lokasi) ?>" placeholder="Surabaya">
+                    </div>
+                    <div class="formrow">
+                        <label class="formlabel" for="rating">rating</label>
+                        <input class="forminput" type="number" id="rating" name="rating" step="0.1" min="0" max="5" value="<?= htmlspecialchars($rating) ?>" placeholder="4.9">
+                    </div>
+                    <div class="formrow">
+                        <label class="formlabel" for="terjual">jumlah terjual</label>
+                        <input class="forminput" type="number" id="terjual" name="terjual" min="0" value="<?= htmlspecialchars($terjual) ?>" placeholder="0">
                     </div>
                     <div class="formrow">
                         <label class="formlabel" for="category">kategori</label>

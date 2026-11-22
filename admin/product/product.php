@@ -64,6 +64,10 @@ $pesan = [
                         <th class="cartcell">name</th>
                         <th class="cartcell">price</th>
                         <th class="cartcell">stock</th>
+                        <th class="cartcell">unit</th>
+                        <th class="cartcell">location</th>
+                        <th class="cartcell">rating</th>
+                        <th class="cartcell">sold</th>
                         <th class="cartcell">category</th>
                         <th class="cartcell">action</th>
                     </tr>
@@ -77,6 +81,10 @@ $pesan = [
                         <td class="cartcell"><?= htmlspecialchars($p['name']) ?></td>
                         <td class="cartcell"><?= htmlspecialchars(number_format((float) $p['price'], 2)) ?></td>
                         <td class="cartcell"><?= (int) $p['stock'] ?></td>
+                        <td class="cartcell"><?= htmlspecialchars($p['unit'] ?? 'buah') ?></td>
+                        <td class="cartcell"><?= htmlspecialchars($p['lokasi'] ?? 'Surabaya') ?></td>
+                        <td class="cartcell">&#9733; <?= htmlspecialchars($p['rating'] ?? '4.9') ?></td>
+                        <td class="cartcell"><?= (int) ($p['terjual'] ?? 0) ?></td>
                         <td class="cartcell"><?= htmlspecialchars($p['category']) ?></td>
                         <td class="cartcell">
                             <div class="actionrow">
