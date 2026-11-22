@@ -117,7 +117,7 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
         }
     }
 }
-$pagetitle = "keranjang belanja - TB. Maju Jaya";
+$pagetitle = "keranjang belanja - fivefonders.net";
 require __DIR__ . '/../partials/header.php';
 ?>
 

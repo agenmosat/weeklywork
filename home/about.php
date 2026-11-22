@@ -35,7 +35,7 @@ $members = [
     ]
 ];
 
-$pagetitle = "tentang kami - TB. Maju Jaya";
+$pagetitle = "tentang kami - fivefonders.net";
 require __DIR__ . '/../partials/header.php';
 ?>
 
@@ -48,9 +48,9 @@ require __DIR__ . '/../partials/header.php';
             <div class="heading">tentang kami</div>
 
             <div class="emptybox">
-                <div class="sidetitle">tentang TB. Maju Jaya</div>
+                <div class="sidetitle">tentang fivefonders.net</div>
                 <div class="detaildesc">
-                    TB. Maju Jaya adalah platform penyedia bahan bangunan dan penyewaan alat berat terpercaya untuk mendukung berbagai kebutuhan konstruksi dan proyek bangunan anda.
+                    fivefonders.net adalah platform penyedia bahan bangunan dan penyewaan alat berat terpercaya untuk mendukung berbagai kebutuhan konstruksi dan proyek bangunan anda.
                 </div>
             </div>
 

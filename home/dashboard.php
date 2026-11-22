@@ -71,7 +71,7 @@ if ($result) {
         ];
     }
 }
-$pagetitle = "katalog bahan bangunan - TB. Maju Jaya";
+$pagetitle = "katalog bahan bangunan - fivefonders.net";
 require __DIR__ . '/../partials/header.php';
 ?>
 

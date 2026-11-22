@@ -18,7 +18,7 @@ if ($id <= 0 || !isset($products[$id])) {
 } else {
     $product = $products[$id];
 }
-$pagetitle = ($notfound ? "404 tidak ditemukan" : $product['name']) . " - TB. Maju Jaya";
+$pagetitle = ($notfound ? "404 tidak ditemukan" : $product['name']) . " - fivefonders.net";
 require __DIR__ . '/../partials/header.php';
 ?>
 

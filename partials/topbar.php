@@ -16,7 +16,7 @@ if (file_exists('config/database.php')) {
 }
 ?>
 <div class="topbar">
-    <a href="<?php echo $topbarbase; ?>home/dashboard.php" class="brand">TB. Maju Jaya</a>
+    <a href="<?php echo $topbarbase; ?>home/dashboard.php" class="brand">fivefonders<span class="branddot">.</span>net</a>
     <form action="<?php echo $topbarbase; ?>home/dashboard.php" method="get" class="searchbox">
         <input type="text" name="q" placeholder="cari bahan bangunan..." class="searchinput" value="<?php echo htmlspecialchars($topbarquery); ?>">
         <button type="submit" class="searchbtn">cari</button>

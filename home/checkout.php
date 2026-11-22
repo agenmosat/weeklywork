@@ -26,7 +26,7 @@ if (empty($checkoutitems)) {
     exit();
 }
 
-$pagetitle = "pengiriman pesanan - TB. Maju Jaya";
+$pagetitle = "pengiriman pesanan - fivefonders.net";
 require __DIR__ . '/../partials/header.php';
 ?>
 

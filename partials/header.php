@@ -7,7 +7,7 @@ if (file_exists('assets/style.css')) {
 } elseif (file_exists('../../assets/style.css')) {
     $headerbase = '../../';
 }
-$pagetitle = $pagetitle ?? 'TB. Maju Jaya';
+$pagetitle = $pagetitle ?? 'fivefonders.net';
 $bodyclass = $bodyclass ?? 'marketpage themelight';
 ?>
 <!DOCTYPE html>

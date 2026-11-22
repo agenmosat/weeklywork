@@ -64,7 +64,7 @@ if ($stmtpesanan) {
 if ($source === "cart") {
     unset($_SESSION['cart']);
 }
-$pagetitle = "nota pesanan - TB. Maju Jaya";
+$pagetitle = "nota pesanan - fivefonders.net";
 require __DIR__ . '/../partials/header.php';
 ?>
 

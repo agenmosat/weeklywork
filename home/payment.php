@@ -35,7 +35,7 @@ if ($subtotal <= 0) {
     header("Location: cart.php");
     exit();
 }
-$pagetitle = "metode pembayaran - TB. Maju Jaya";
+$pagetitle = "metode pembayaran - fivefonders.net";
 require __DIR__ . '/../partials/header.php';
 ?>
 
