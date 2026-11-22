@@ -5,30 +5,35 @@ require_once __DIR__ . '/../includes/items.php';
 $members = [
     [
         'name' => 'Nell',
+        'word' => '"pls kodingkan dulu le"',
         'role' => 'project manager & techinal writer',
         'desc' => 'mengkoordinasikan pengerjaan proyek dan integrasi sistem',
         'image' => '../images/team/nell.webp'
     ],
     [
         'name' => 'Gery',
+        'word' => '"mengapa kalian ke branch saya"',
         'role' => 'programmer & system analyst',
         'desc' => 'mengembangkan arsitektur backend dan basis data',
         'image' => '../images/team/gery.webp'
     ],
     [
         'name' => 'Alfredo',
+        'word' => '"kalo salah tinggal undo"',
         'role' => 'database manager & devops',
         'desc' => 'mengembangkan fungsionalitas dan logika database',
         'image' => '../images/team/alred.webp'
     ],
     [
         'name' => 'Fahri',
+        'word' => '"mass we token antum taro mana"',
         'role' => 'qa tester & ui/ux designer',
         'desc' => 'menguji kualitas proyek dan memberitahu ketepatan',
         'image' => '../images/team/fahri.webp'
     ],
     [
         'name' => 'Dinda',
+        'word' => '"ini gimana caranya dah"',
         'role' => 'programmer & ui/ux designer',
         'desc' => 'mengembangkan tata letak halaman dan dokumentasi',
         'image' => '../images/team/dinda.webp'
@@ -64,6 +69,8 @@ require __DIR__ . '/../partials/header.php';
                             <img src="<?php echo htmlspecialchars($m['image']); ?>" alt="<?php echo htmlspecialchars($m['name']); ?>" class="memberphoto" onerror="this.src='../images/no-image.webp'">
                         </div>
                         <div class="membername"><?php echo htmlspecialchars($m['name']); ?></div>
+                        <div class="memberword"><?php echo htmlspecialchars($m['word']); ?></div>
+                        <br>
                         <div class="memberrole"><?php echo htmlspecialchars($m['role']); ?></div>
                         <div class="memberdesc"><?php echo htmlspecialchars($m['desc']); ?></div>
                     </div>

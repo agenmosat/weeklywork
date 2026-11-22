@@ -1,8 +1,3 @@
-/* darkfonder - building materials storefront
-   palette: navy + orange + neutral greys
-   desktop-first, elderly-friendly, low eye strain
-   surfaces separated by tone + spacing, not heavy borders */
-
 * {
     box-sizing: border-box;
 }
@@ -87,7 +82,6 @@ body {
 a { color: var(--linkcolor); text-decoration: none; }
 a:hover { color: var(--linkhover); text-decoration: none; }
 
-/* ---------- login ---------- */
 .page {
     background-color: var(--bgpage);
     display: flex;
@@ -188,13 +182,12 @@ body.themedark .error { background-color: #3B1F1F; }
 }
 
 .enterbtn:active {
-    transform: scale(0.98); /* Efek tombol agak mengecil saat ditekan */
+    transform: scale(0.98); 
 }
 
 .enterbtn:hover { background-color: var(--accent); border-color: var(--accent); }
 .enterbtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-/* ---------- storefront ---------- */
 .marketpage {
     background-color: var(--bgpage);
     color: var(--textmain);
@@ -389,7 +382,6 @@ body.themedark .error { background-color: #3B1F1F; }
 
 .themeselect:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 
-/* layout */
 .layout {
     display: flex;
     min-height: calc(100vh - 68px);
@@ -488,7 +480,6 @@ body.themedark .error { background-color: #3B1F1F; }
 
 body.themedark .heading { color: var(--brand); background: none; }
 
-/* product grid */
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
@@ -676,7 +667,6 @@ body.themedark .itemprice { color: var(--textmain); }
     margin: 0 auto 16px auto;
 }
 
-/* detail page */
 .detailbox {
     display: flex;
     gap: 32px;
@@ -736,7 +726,6 @@ body.themedark .itemprice { color: var(--textmain); }
 
 .qtyinput:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 
-/* cart */
 .cartbox {
     border: 1px solid var(--border);
     border-radius: var(--radius);
@@ -768,7 +757,7 @@ body.themedark .itemprice { color: var(--textmain); }
 .cartrow { border-bottom: 1px solid var(--border); }
 .cartrow:hover { background-color: var(--bgsoft); }
 .cartcell
- { padding: 14px; font-size: 14px; color: var(--textmain); border: none; }
+{ padding: 14px; font-size: 14px; color: var(--textmain); border: none; }
 
 .cartrow:last-child .cartcell { border-bottom: none; }
 
@@ -777,7 +766,6 @@ body.themedark .itemprice { color: var(--textmain); }
 .cartcell { padding: 14px; font-size: 14px; color: var(--textmain); border: none; }
 .cartrow:last-child .cartcell { border-bottom: none; }
 
-/* === TAMBAHKAN DI SINI (UNTUK NOMOR 2) === */
 .carttable .cartrow .cartcell:nth-child(3),
 .carttable .cartrow .cartcell:nth-child(4),
 .carttable .cartrow .cartcell:nth-child(5) {
@@ -788,7 +776,6 @@ body.themedark .itemprice { color: var(--textmain); }
     text-align: right;
 }
 
-/* forms */
 .formbox { margin: 0; }
 .formrow { margin-bottom: 16px; }
 .formlabel { display: block; font-size: 15px; font-weight: 600; color: var(--textmain); margin-bottom: 6px; }
@@ -807,7 +794,6 @@ body.themedark .itemprice { color: var(--textmain); }
 
 .forminput:focus-visible { border-color: var(--accent); outline: 2px solid var(--accent); outline-offset: 1px; }
 
-/* summary / payment */
 .summarybox {
     width: 280px;
     background-color: var(--bgcard);
@@ -895,7 +881,6 @@ body.themedark .itemprice { color: var(--textmain); }
     color: var(--textmain);
 }
 
-/* pagination */
 .pagination { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 28px; flex-wrap: wrap; }
 
 .pagelink {
@@ -928,16 +913,13 @@ body.themedark .itemprice { color: var(--textmain); }
 .actionrow form { display: inline-flex; gap: 8px; align-items: center; }
 .actionrow .forminput { max-width: 220px; padding: 8px 12px; }
 
-/* utility */
 .cornerlink { display: none; }
 
-/* focus */
 a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
 }
 
-/* dark mode cleanup */
 body.themedark .topbar { border-bottom: none; }
 body.themedark .sidebar { border: 1px solid var(--border); }
 body.themedark .item { border: 1px solid var(--border); }
@@ -947,7 +929,6 @@ body.themedark .summarytitle { border-bottom: 1px solid var(--border); }
 body.themedark .title { border: none; }
 body.themedark .card { border: 1px solid var(--border); box-shadow: var(--shadow); }
 
-/* print */
 @media print {
     .topbar, .sidebar, .actionrow, .themeswitcher, .backlink, .cornerlink, .filterbox, .filterform, .printbtn, form, button {
         display: none !important;
@@ -1170,6 +1151,12 @@ body.themedark .card { border: 1px solid var(--border); box-shadow: var(--shadow
     margin-bottom: 4px;
 }
 
+.memberword {
+    font-size: 13px;
+    color: var(--textdim);
+    line-height: 1.4;
+}
+
 .memberrole {
     font-size: 14px;
     font-weight: bold;
@@ -1179,7 +1166,7 @@ body.themedark .card { border: 1px solid var(--border); box-shadow: var(--shadow
 }
 
 .memberdesc {
-    font-size: 13px;
+    font-size: 12px;
     color: var(--textdim);
     line-height: 1.4;
 }
