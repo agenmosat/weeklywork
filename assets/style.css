@@ -660,7 +660,7 @@ body.themedark .itemprice { color: var(--textmain); }
 }
 
 .aboutimage {
-    max-width: 625px;
+    max-width: 675px;
     width: 100%;
     height: auto;
     display: block;
@@ -1154,7 +1154,7 @@ body.themedark .card { border: 1px solid var(--border); box-shadow: var(--shadow
 .memberword {
     font-size: 13px;
     color: var(--textdim);
-    line-height: 1.4;
+    margin-bottom: 16px;
 }
 
 .memberrole {

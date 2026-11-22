@@ -56,7 +56,7 @@ require __DIR__ . '/../partials/header.php';
                 <img src="../images/teamimage.webp" alt="tim fivefonders.net" class="aboutimage">
                 <div class="sidetitle">tentang fivefonders.net</div>
                 <div class="detaildesc">
-                    fivefonders.net adalah platform penyedia bahan bangunan dan penyewaan alat berat terpercaya untuk mendukung berbagai kebutuhan konstruksi dan proyek bangunan anda.
+                    fivefonders.net adalah aplikasi platform marketplace modern yang dirancang untuk menghubungkan penjual (UMKM maupun individu) dengan pembeli dalam satu ekosistem transaksi yang cepat, transparan, dan aman. Proyek ini dibangun secara kolaboratif oleh tim beranggotakan 5 orang dengan fokus pada pengalaman pengguna (user experience) yang intuitif, keamanan transaksi melalui sistem rekening bersama (escrow), serta efisiensi manajemen toko bagi penjual..
                 </div>
             </div>
 
@@ -70,7 +70,6 @@ require __DIR__ . '/../partials/header.php';
                         </div>
                         <div class="membername"><?php echo htmlspecialchars($m['name']); ?></div>
                         <div class="memberword"><?php echo htmlspecialchars($m['word']); ?></div>
-                        <br>
                         <div class="memberrole"><?php echo htmlspecialchars($m['role']); ?></div>
                         <div class="memberdesc"><?php echo htmlspecialchars($m['desc']); ?></div>
                     </div>
