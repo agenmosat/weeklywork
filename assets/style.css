@@ -526,7 +526,7 @@ body.themedark .tagitem { background-color: #1F3B33; }
 .imagebox {
     width: 100%;
     height: 150px;
-    background-color: var(--bgsoft);
+    background-color: var(--bgcard);
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
     margin-bottom: 10px;
@@ -536,6 +536,7 @@ body.themedark .tagitem { background-color: #1F3B33; }
     color: var(--textmute);
     font-size: 13px;
     overflow: hidden;
+    padding: 6px;
 }
 
 .productimage { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
@@ -556,10 +557,39 @@ body.themedark .tagitem { background-color: #1F3B33; }
     font-size: 18px;
     color: var(--textmain);
     font-weight: 800;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
 
 body.themedark .itemprice { color: var(--textmain); }
+
+.unitlabel {
+    font-size: 12px;
+    font-weight: normal;
+    color: var(--textdim);
+}
+
+.itemmeta {
+    font-size: 11px;
+    color: var(--textdim);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.itemcity {
+    color: var(--textdim);
+}
+
+.itemrating {
+    color: var(--accentdark);
+    font-weight: bold;
+}
+
+.itemsold {
+    color: var(--textmute);
+}
 
 .detaildesc { font-size: 14px; color: var(--textdim); line-height: 1.5; margin-bottom: 10px; }
 .detaildesc::before { content: none; }

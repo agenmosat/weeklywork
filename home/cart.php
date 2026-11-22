@@ -117,7 +117,7 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
         }
     }
 }
-$pagetitle = "shopping cart - darkfonder.net";
+$pagetitle = "keranjang belanja - TB. Maju Jaya";
 require __DIR__ . '/../partials/header.php';
 ?>
 
@@ -127,47 +127,47 @@ require __DIR__ . '/../partials/header.php';
         <?php require __DIR__ . '/../partials/sidebar.php'; ?>
 
         <div class="content">
-            <div class="heading">shopping cart</div>
+            <div class="heading">keranjang belanja</div>
 
             <?php if (empty($cartitems)): ?>
                 <div class="emptybox">
-                    <div class="sidetitle">your cart is currently empty</div>
-                    <div class="detaildesc">you have no items in your cart. find something you like in our marketplace!</div>
-                    <a href="dashboard.php" class="buybtn">browse marketplace</a>
+                    <div class="sidetitle">keranjang belanja anda kosong</div>
+                    <div class="detaildesc">belum ada bahan bangunan atau alat berat yang dipilih. silakan cari produk di katalog kami.</div>
+                    <a href="dashboard.php" class="buybtn">lihat katalog</a>
                 </div>
             <?php else: ?>
                 <form action="cart.php" method="post" class="cartbox">
                     <?= csrf_field(); ?>
                     <table class="carttable">
                         <tr class="cartheader">
-                            <th class="cartcell">item</th>
-                            <th class="cartcell">price</th>
-                            <th class="cartcell">quantity</th>
+                            <th class="cartcell">nama produk</th>
+                            <th class="cartcell">harga satuan</th>
+                            <th class="cartcell">jumlah</th>
                             <th class="cartcell">subtotal</th>
-                            <th class="cartcell">action</th>
+                            <th class="cartcell">aksi</th>
                         </tr>
                         <?php foreach ($cartitems as $c): ?>
                             <tr class="cartrow">
                                 <td class="cartcell"><?php echo htmlspecialchars($c['name']); ?></td>
-                                <td class="cartcell">$<?php echo number_format($c['price'], 2); ?></td>
+                                <td class="cartcell">Rp <?php echo number_format($c['price'], 0, ',', '.'); ?></td>
                                 <td class="cartcell">
                                     <input type="number" name="qty[<?php echo $c['id']; ?>]" value="<?php echo $c['qty']; ?>" min="1" max="<?php echo $c['stock']; ?>" class="qtyinput">
                                 </td>
-                                <td class="cartcell">$<?php echo number_format($c['total'], 2); ?></td>
+                                <td class="cartcell">Rp <?php echo number_format($c['total'], 0, ',', '.'); ?></td>
                                 <td class="cartcell">
-                                    <a href="cart.php?remove=<?php echo htmlspecialchars(urlen($c['id'])); ?>" class="removelink" onclick="return confirmremove();">remove</a>
+                                    <a href="cart.php?remove=<?php echo htmlspecialchars(urlen($c['id'])); ?>" class="removelink" onclick="return confirmremove();">hapus</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
                     </table>
 
-                    <div class="summarytotal">subtotal: $<?php echo number_format($subtotal, 2); ?></div>
+                    <div class="summarytotal">subtotal belanja: Rp <?php echo number_format($subtotal, 0, ',', '.'); ?></div>
 
                     <div class="actionrow">
-                        <a href="dashboard.php" class="backlink">&laquo; continue shopping</a>
-                        <button type="submit" name="updatecart" class="cartbtn">update cart</button>
-                        <a href="cart.php?clear=1" class="cartbtn" onclick="return confirmclear();">clear cart</a>
-                        <a href="checkout.php" class="buybtn">proceed to checkout</a>
+                        <a href="dashboard.php" class="backlink">&laquo; lanjut belanja</a>
+                        <button type="submit" name="updatecart" class="cartbtn">perbarui keranjang</button>
+                        <a href="cart.php?clear=1" class="cartbtn" onclick="return confirmclear();">kosongkan keranjang</a>
+                        <a href="checkout.php" class="buybtn">lanjut ke pembayaran</a>
                     </div>
                 </form>
             <?php endif; ?>

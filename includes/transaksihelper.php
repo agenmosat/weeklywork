@@ -100,7 +100,7 @@ function init_transaksi_tables($koneksi)
 
 function format_uang($angka)
 {
-    return "$" . number_format((float)$angka, 2);
+    return "Rp " . number_format((float)$angka, 0, ',', '.');
 }
 
 function generate_nomor_transaksi($prefix)
@@ -117,7 +117,7 @@ function hitung_pesanan($products, $source, $directid, $directqty, $cart)
 {
     $items = [];
     $subtotal = 0.0;
-    $shipping = 5.00;
+    $shipping = 25000.00;
 
     if ($source === "direct" && $directid > 0 && isset($products[$directid])) {
         $p = $products[$directid];

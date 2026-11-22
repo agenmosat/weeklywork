@@ -43,12 +43,13 @@ $result = mysqli_query($koneksi, "SELECT * FROM products ORDER BY id");
 if ($result) {
     while ($row = mysqli_fetch_assoc($result)) {
         $id = (int) $row['id'];
-        $img = !empty($row['image']) ? $row['image'] : "images/glock17.png";
+        $img = !empty($row['image']) ? $row['image'] : "images/no-image.webp";
         $products[$id] = [
             "id" => $id,
             "name" => $row['name'],
             "price" => (float) $row['price'],
             "stock" => (int) $row['stock'],
+            "unit" => !empty($row['unit']) ? $row['unit'] : "buah",
             "category" => $row['category'],
             "image" => $img,
             "desc" => $row['description'],

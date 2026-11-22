@@ -58,19 +58,20 @@ $filtered = [];
 if ($result) {
     while ($row = mysqli_fetch_assoc($result)) {
         $id = (int)$row['id'];
-        $img = !empty($row['image']) ? $row['image'] : "images/glock17.png";
+        $img = !empty($row['image']) ? $row['image'] : "images/no-image.webp";
         $filtered[] = [
             "id" => $id,
             "name" => $row['name'],
             "price" => (float)$row['price'],
             "stock" => (int)$row['stock'],
+            "unit" => !empty($row['unit']) ? $row['unit'] : "buah",
             "category" => $row['category'],
             "image" => $img,
             "desc" => $row['description']
         ];
     }
 }
-$pagetitle = "darkfonder.net";
+$pagetitle = "katalog bahan bangunan - TB. Maju Jaya";
 require __DIR__ . '/../partials/header.php';
 ?>
 
@@ -83,35 +84,46 @@ require __DIR__ . '/../partials/header.php';
             <div class="heading">
                 <?php
                 if ($searchquery != "") {
-                    echo "search results for: " . htmlspecialchars($searchquery);
+                    echo "hasil pencarian: " . htmlspecialchars($searchquery);
                 } elseif ($category != "") {
-                    echo "category: " . htmlspecialchars($category);
+                    echo "kategori: " . htmlspecialchars($category);
                 } else {
-                    echo "all items";
+                    echo "semua produk";
                 }
                 ?>
             </div>
 
             <?php if (empty($filtered)): ?>
                 <div class="emptybox">
-                    <div class="sidetitle">no items found</div>
-                    <div class="detaildesc">try searching for something else or browse all items.</div>
-                    <a href="dashboard.php" class="buybtn">view all items</a>
+                    <div class="sidetitle">produk tidak ditemukan</div>
+                    <div class="detaildesc">coba cari dengan kata kunci lain atau lihat seluruh katalog produk kami.</div>
+                    <a href="dashboard.php" class="buybtn">lihat semua produk</a>
                 </div>
             <?php else: ?>
                 <div class="grid">
-                    <?php foreach ($filtered as $p): ?>
+                    <?php 
+                    $alatberatlist = ['Excavator', 'Crane', 'Bulldozer', 'Wheel Loader', 'Forklift', 'Dump Truck', 'Concrete Mixer', 'Compactor', 'Motor Grader', 'Asphalt Paver', 'Concrete Pump', 'Genset'];
+                    foreach ($filtered as $p): 
+                        $isalatberat = in_array($p['category'], $alatberatlist);
+                    ?>
                         <div class="item">
-                            <span class="tagitem"><?php echo htmlspecialchars($p['category']); ?></span>
                             <div class="imagebox">
-                                <img src="../<?php echo htmlspecialchars($p['image']); ?>" alt="<?php echo htmlspecialchars($p['name']); ?>" class="productimage">
+                                <img src="../<?php echo htmlspecialchars($p['image']); ?>" alt="<?php echo htmlspecialchars($p['name']); ?>" class="productimage" onerror="this.src='../images/no-image.webp'">
                             </div>
                             <a href="product.php?id=<?php echo urlen($p['id']); ?>" class="itemname"><?php echo htmlspecialchars($p['name']); ?></a>
-                            <div class="itemprice">$<?php echo number_format($p['price'], 2); ?></div>
-                            <div class="detaildesc">stock: <?php echo $p['stock']; ?> units</div>
+                            <div class="itemprice">Rp <?php echo number_format($p['price'], 0, ',', '.'); ?><?php echo $isalatberat ? ' <span class="unitlabel">/ unit</span>' : ''; ?></div>
+                            <div class="itemmeta">
+                                <span class="itemcity">Surabaya</span> &bull; 
+                                <span class="itemrating">&#9733; 4.9</span> &bull; 
+                                <span class="itemsold">terjual <?php echo ($p['id'] * 13) + 35; ?></span>
+                            </div>
+                            <div class="detaildesc"><?php echo $isalatberat ? 'unit sewa siap operasi' : 'stok: ' . $p['stock'] . ' ' . htmlspecialchars($p['unit']); ?></div>
                             <div class="itemactions">
-                                <a href="product.php?id=<?php echo urlen($p['id']); ?>" class="buybtn">view item</a>
-                                <a href="cart.php?add=<?php echo urlen($p['id']); ?>" class="cartbtn">add to cart</a>
+                                <?php if ($isalatberat): ?>
+                                    <a href="product.php?id=<?php echo urlen($p['id']); ?>" class="buybtn">ajukan sewa</a>
+                                <?php else: ?>
+                                    <a href="cart.php?add=<?php echo urlen($p['id']); ?>" class="buybtn">+ keranjang</a>
+                                <?php endif; ?>
                             </div>
                         </div>
                     <?php endforeach; ?>

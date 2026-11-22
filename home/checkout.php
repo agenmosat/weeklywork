@@ -26,7 +26,7 @@ if (empty($checkoutitems)) {
     exit();
 }
 
-$pagetitle = "checkout - darkfonder.net";
+$pagetitle = "pengiriman pesanan - TB. Maju Jaya";
 require __DIR__ . '/../partials/header.php';
 ?>
 
@@ -36,8 +36,8 @@ require __DIR__ . '/../partials/header.php';
         <?php require __DIR__ . '/../partials/sidebar.php'; ?>
 
         <div class="content">
-            <a href="cart.php" class="backlink">&laquo; back to cart</a>
-            <div class="heading">shipping checkout</div>
+            <a href="cart.php" class="backlink">&laquo; kembali ke keranjang</a>
+            <div class="heading">pengiriman pesanan</div>
 
             <form action="payment.php" method="post" class="formbox">
                 <?= csrf_field(); ?>
@@ -49,42 +49,42 @@ require __DIR__ . '/../partials/header.php';
 
                 <div class="detailbox">
                     <div class="detailinfo">
-                        <div class="sidetitle">stealth shipping drop</div>
+                        <div class="sidetitle">alamat pengiriman bahan bangunan</div>
                         <div class="formrow">
-                            <label class="formlabel">receiver handle / name</label>
-                            <input type="text" name="name" class="forminput" value="john doe" required>
+                            <label class="formlabel">nama penerima</label>
+                            <input type="text" name="name" class="forminput" value="Budi Santoso" required>
                         </div>
                         <div class="formrow">
-                            <label class="formlabel">dead drop / delivery address</label>
-                            <input type="text" name="address" class="forminput" value="123 market street" required>
+                            <label class="formlabel">alamat lengkap (rumah / proyek konstruksi)</label>
+                            <input type="text" name="address" class="forminput" value="Jl. Raya Darmo No. 45" required>
                         </div>
                         <div class="formrow">
-                            <label class="formlabel">city and zip code</label>
-                            <input type="text" name="city" class="forminput" value="springfield 97477" required>
+                            <label class="formlabel">kota dan kode pos</label>
+                            <input type="text" name="city" class="forminput" value="Surabaya, 60241" required>
                         </div>
 
-                        <div class="sidetitle">vacuum stealth packaging</div>
+                        <div class="sidetitle">pilihan armada pengiriman</div>
                         <div class="formrow">
                             <label>
-                                <input type="radio" name="shippingmethod" value="standard" checked> stealth tracked dispatch - $5.00
+                                <input type="radio" name="shippingmethod" value="standard" checked> armada pengiriman toko (pick-up / truk) - Rp <?php echo number_format($shipping, 0, ',', '.'); ?>
                             </label>
                         </div>
                     </div>
 
                     <div class="summarybox">
-                        <div class="summarytitle">order summary</div>
+                        <div class="summarytitle">ringkasan pesanan</div>
                         <?php foreach ($checkoutitems as $ci) : ?>
                             <div class="summaryrow">
                                 <span><?php echo htmlspecialchars($ci['name']); ?> (x<?php echo $ci['qty']; ?>)</span>
-                                <span>$<?php echo number_format($ci['total'], 2); ?></span>
+                                <span>Rp <?php echo number_format($ci['total'], 0, ',', '.'); ?></span>
                             </div>
                         <?php endforeach; ?>
                         <div class="summaryrow">
-                            <span>shipping fee</span>
-                            <span>$<?php echo number_format($shipping, 2); ?></span>
+                            <span>ongkos kirim armada</span>
+                            <span>Rp <?php echo number_format($shipping, 0, ',', '.'); ?></span>
                         </div>
-                        <div class="summarytotal">total: $<?php echo number_format($total, 2); ?></div>
-                        <button type="submit" class="buybtn">proceed to payment</button>
+                        <div class="summarytotal">total pembayaran: Rp <?php echo number_format($total, 0, ',', '.'); ?></div>
+                        <button type="submit" class="buybtn">lanjut ke pembayaran</button>
                     </div>
                 </div>
             </form>

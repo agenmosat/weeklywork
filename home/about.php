@@ -35,7 +35,7 @@ $members = [
     ]
 ];
 
-$pagetitle = "about us - darkfonder.net";
+$pagetitle = "tentang kami - TB. Maju Jaya";
 require __DIR__ . '/../partials/header.php';
 ?>
 
@@ -45,12 +45,12 @@ require __DIR__ . '/../partials/header.php';
         <?php require __DIR__ . '/../partials/sidebar.php'; ?>
 
         <div class="content">
-            <div class="heading">about us</div>
+            <div class="heading">tentang kami</div>
 
             <div class="emptybox">
-                <div class="sidetitle">tentang darkfonder</div>
+                <div class="sidetitle">tentang TB. Maju Jaya</div>
                 <div class="detaildesc">
-                    darkfonder.net adalah platform penyedia bahan bangunan dan penyewaan alat berat terpercaya untuk mendukung berbagai kebutuhan konstruksi dan proyek bangunan anda.
+                    TB. Maju Jaya adalah platform penyedia bahan bangunan dan penyewaan alat berat terpercaya untuk mendukung berbagai kebutuhan konstruksi dan proyek bangunan anda.
                 </div>
             </div>
 

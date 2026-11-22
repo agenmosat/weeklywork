@@ -38,13 +38,13 @@ if (empty($purchaseditems)) {
     header("Location: cart.php");
     exit();
 }
-$ordernumber = "onion" . rand(10000, 99999);
+$ordernumber = "TB-" . date("Ymd") . "-" . rand(100, 999);
 $gatewayres = processgatewaypayment($ordernumber, $total, $method, $name);
 $txnid = $gatewayres['transaction_id'] ?? ("TXN" . rand(10000, 99999));
 $escrowhash = $gatewayres['escrow_hash'] ?? "";
 $gatewaysuccess = $gatewayres['success'] ?? false;
 $ispaid = ($method !== "cash on delivery" && $gatewaysuccess);
-$statuspembayaran = $ispaid ? "paid (escrow)" : ($method === "cash on delivery" ? "pending" : "failed");
+$statuspembayaran = $ispaid ? "lunas" : ($method === "cash on delivery" ? "menunggu cod" : "belum lunas");
 
 foreach ($purchaseditems as $item) {
     $stmtstock = mysqli_prepare($koneksi, "UPDATE products SET stock = GREATEST(0, stock - ?) WHERE id = ?");
@@ -64,7 +64,7 @@ if ($stmtpesanan) {
 if ($source === "cart") {
     unset($_SESSION['cart']);
 }
-$pagetitle = "order receipt - darkfonder.net";
+$pagetitle = "nota pesanan - TB. Maju Jaya";
 require __DIR__ . '/../partials/header.php';
 ?>
 
@@ -76,34 +76,28 @@ require __DIR__ . '/../partials/header.php';
         <div class="content">
             <div class="receiptbox">
                 <div class="receiptstatus">
-                    <?php echo $ispaid ? "order confirmed: encrypted in darkweb escrow" : "order placed: waiting dead drop payment"; ?>
+                    <?php echo $ispaid ? "pesanan berhasil: pembayaran telah lunas" : "pesanan berhasil: menunggu pembayaran di tempat (cod)"; ?>
                 </div>
-                <div class="heading">order receipt</div>
+                <div class="heading">nota pesanan</div>
 
                 <div class="receiptrow">
-                    <span class="detaildesc">order identifier</span>
-                    <span class="itemname">#<?php echo htmlspecialchars($ordernumber); ?></span>
+                    <span class="detaildesc">nomor pesanan</span>
+                    <span class="itemname">No. <?php echo htmlspecialchars($ordernumber); ?></span>
                 </div>
                 <div class="receiptrow">
-                    <span class="detaildesc">gateway transaction id</span>
+                    <span class="detaildesc">id transaksi</span>
                     <span class="itemname"><?php echo htmlspecialchars($txnid); ?></span>
                 </div>
-                <?php if ($escrowhash !== ""): ?>
-                    <div class="receiptrow">
-                        <span class="detaildesc">escrow hash</span>
-                        <span class="detaildesc"><?php echo htmlspecialchars($escrowhash); ?></span>
-                    </div>
-                <?php endif; ?>
                 <div class="receiptrow">
-                    <span class="detaildesc">receiver handle</span>
+                    <span class="detaildesc">nama penerima</span>
                     <span class="detaildesc"><?php echo htmlspecialchars($name); ?></span>
                 </div>
                 <div class="receiptrow">
-                    <span class="detaildesc">drop coordinates</span>
+                    <span class="detaildesc">alamat pengiriman</span>
                     <span class="detaildesc"><?php echo htmlspecialchars($fulladdress); ?></span>
                 </div>
                 <div class="receiptrow">
-                    <span class="detaildesc">purchased items</span>
+                    <span class="detaildesc">daftar barang</span>
                     <span class="detaildesc">
                         <?php
                         $itemnames = [];
@@ -115,31 +109,31 @@ require __DIR__ . '/../partials/header.php';
                     </span>
                 </div>
                 <div class="receiptrow">
-                    <span class="detaildesc">subtotal</span>
-                    <span class="detaildesc">$<?php echo number_format($subtotal, 2); ?></span>
+                    <span class="detaildesc">subtotal belanja</span>
+                    <span class="detaildesc">Rp <?php echo number_format($subtotal, 0, ',', '.'); ?></span>
                 </div>
                 <div class="receiptrow">
-                    <span class="detaildesc">stealth shipping</span>
-                    <span class="detaildesc">$<?php echo number_format($shipping, 2); ?></span>
+                    <span class="detaildesc">ongkos kirim armada</span>
+                    <span class="detaildesc">Rp <?php echo number_format($shipping, 0, ',', '.'); ?></span>
                 </div>
                 <div class="receiptrow">
-                    <span class="itemname">total</span>
-                    <span class="detailprice">$<?php echo number_format($total, 2); ?></span>
+                    <span class="itemname">total pembayaran</span>
+                    <span class="detailprice">Rp <?php echo number_format($total, 0, ',', '.'); ?></span>
                 </div>
                 <div class="receiptrow">
-                    <span class="detaildesc">payment method</span>
+                    <span class="detaildesc">metode pembayaran</span>
                     <span class="detaildesc"><?php echo htmlspecialchars($method); ?></span>
                 </div>
                 <div class="receiptrow">
-                    <span class="detaildesc">escrow status</span>
+                    <span class="detaildesc">status transaksi</span>
                     <span class="detailstatus">
-                        <?php echo $ispaid ? "locked in multi-sig escrow" : "pending cash settlement"; ?>
+                        <?php echo $ispaid ? "lunas" : "menunggu pembayaran tunai"; ?>
                     </span>
                 </div>
 
                 <div class="actionrow">
-                    <a href="dashboard.php" class="buybtn">continue shopping</a>
-                    <button type="button" onclick="window.print()" class="cartbtn">print invoice</button>
+                    <a href="dashboard.php" class="buybtn">kembali belanja</a>
+                    <button type="button" onclick="window.print()" class="cartbtn">cetak nota</button>
                 </div>
             </div>
         </div>
