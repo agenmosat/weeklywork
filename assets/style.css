@@ -1127,6 +1127,7 @@ body.themedark .card { border: 1px solid var(--border); box-shadow: var(--shadow
 .teamgrid {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 16px;
     margin-top: 12px;
 }
