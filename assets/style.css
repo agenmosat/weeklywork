@@ -184,6 +184,11 @@ body.themedark .error { background-color: #3B1F1F; }
     font-weight: 700;
     cursor: pointer;
     font-family: var(--font);
+    transition: background-color 0.15s ease, transform 0.1s ease; /* Tambahan transisi */
+}
+
+.enterbtn:active {
+    transform: scale(0.98); /* Efek tombol agak mengecil saat ditekan */
 }
 
 .enterbtn:hover { background-color: var(--accent); border-color: var(--accent); }
@@ -613,7 +618,7 @@ body.themedark .itemprice { color: var(--textmain); }
 .backlink:hover { color: var(--linkhover); text-decoration: none; }
 
 .emptybox {
-    border: 1px solid var(--border);
+    border: 2px dashed var(--borderstrong);
     border-radius: var(--radius);
     padding: 40px 24px;
     background-color: var(--bgcard);
@@ -621,6 +626,13 @@ body.themedark .itemprice { color: var(--textmain); }
     color: var(--textdim);
     font-size: 15px;
     box-shadow: var(--shadow);
+}
+
+.emptybox::before {
+    content: "📁 ";
+    display: block;
+    font-size: 24px;
+    margin-bottom: 8px;
 }
 
 /* detail page */
@@ -714,10 +726,26 @@ body.themedark .itemprice { color: var(--textmain); }
 
 .cartrow { border-bottom: 1px solid var(--border); }
 .cartrow:hover { background-color: var(--bgsoft); }
-
-.cartcell { padding: 14px; font-size: 14px; color: var(--textmain); border: none; }
+.cartcell
+ { padding: 14px; font-size: 14px; color: var(--textmain); border: none; }
 
 .cartrow:last-child .cartcell { border-bottom: none; }
+
+.cartrow { border-bottom: 1px solid var(--border); }
+.cartrow:hover { background-color: var(--bgsoft); }
+.cartcell { padding: 14px; font-size: 14px; color: var(--textmain); border: none; }
+.cartrow:last-child .cartcell { border-bottom: none; }
+
+/* === TAMBAHKAN DI SINI (UNTUK NOMOR 2) === */
+.carttable .cartrow .cartcell:nth-child(3),
+.carttable .cartrow .cartcell:nth-child(4),
+.carttable .cartrow .cartcell:nth-child(5) {
+    text-align: right;
+}
+
+.priceinput, .subtotalinput {
+    text-align: right;
+}
 
 /* forms */
 .formbox { margin: 0; }
