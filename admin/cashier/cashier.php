@@ -28,36 +28,10 @@ $pesan = ['tambah' => 'kasir berhasil ditambahkan.', 'edit' => 'kasir berhasil d
 </head>
 <body class="marketpage themelight">
 
-    <div class="topbar">
-        <div class="brand">darkfonder.net</div>
-        <div class="themeswitcher">
-            <span class="themelabel">theme</span>
-            <select id="themepick" class="themeselect" onchange="switchtheme(this.value)">
-                <option value="themelight">light</option>
-                <option value="themedark">dark</option>
-            </select>
-        </div>
-
-        <div class="topnav">
-            <a href="../../home/dashboard.php" class="navlink">store</a>
-            <a href="../admin.php" class="navlink">admin</a>
-            <form method="post" action="../../logout.php" class="logoutform">
-                <button type="submit" class="logoutbtn">logout</button>
-            </form>
-        </div>
-    </div>
+    <?php require __DIR__ . '/../../partials/topbar.php'; ?>
 
     <div class="layout">
-        <div class="sidebar">
-            <div class="sidetitle">admin menu</div>
-            <a href="../admin.php" class="sidelink">dashboard</a>
-            <a href="../product/product.php" class="sidelink">product</a>
-            <a href="cashier.php" class="sidelink">cashier</a>
-            <a href="../supplier/supplier.php" class="sidelink">supplier</a>
-            <a href="../penjualan/penjualan.php" class="sidelink">sales</a>
-            <a href="../pembelian/pembelian.php" class="sidelink">purchases</a>
-            <a href="../checklist.php" class="sidelink">checklist</a>
-        </div>
+        <?php require __DIR__ . '/../../partials/sidebaradmin.php'; ?>
 
         <div class="content">
             <div class="heading">crud cashier</div>

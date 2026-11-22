@@ -2,10 +2,6 @@
 require_once __DIR__ . '/../includes/session.php';
 require_once __DIR__ . '/../includes/items.php';
 
-if (!isset($_SESSION['user'])) {
-    header("Location: ../index.php");
-    exit();
-}
 
 if (isset($_GET['logout'])) {
     session_destroy();
@@ -117,16 +113,9 @@ function pageurl($p) {
     $query['page'] = $p;
     return 'dashboard.php?' . http_build_query($query);
 }
+$pagetitle = "darkfonder.net";
+require __DIR__ . '/../partials/header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>darkfonder.net</title>
-    <link rel="stylesheet" href="../assets/style.css?v=3">
-</head>
-<body class="marketpage themelight">
 
     <?php require __DIR__ . '/../partials/topbar.php'; ?>
 
@@ -160,12 +149,12 @@ function pageurl($p) {
                             <div class="imagebox">
                                 <img src="../<?php echo htmlspecialchars($p['image']); ?>" alt="<?php echo htmlspecialchars($p['name']); ?>" class="productimage">
                             </div>
-                            <a href="product.php?id=<?php echo $p['id']; ?>" class="itemname"><?php echo htmlspecialchars($p['name']); ?></a>
+                            <a href="product.php?id=<?php echo urlen($p['id']); ?>" class="itemname"><?php echo htmlspecialchars($p['name']); ?></a>
                             <div class="itemprice">$<?php echo number_format($p['price'], 2); ?></div>
                             <div class="detaildesc">stock: <?php echo $p['stock']; ?> units</div>
                             <div class="itemactions">
-                                <a href="product.php?id=<?php echo $p['id']; ?>" class="buybtn">view item</a>
-                                <a href="cart.php?add=<?php echo $p['id']; ?>" class="cartbtn">add to cart</a>
+                                <a href="product.php?id=<?php echo urlen($p['id']); ?>" class="buybtn">view item</a>
+                                <a href="cart.php?add=<?php echo urlen($p['id']); ?>" class="cartbtn">add to cart</a>
                             </div>
                         </div>
                     <?php endforeach; ?>
@@ -192,7 +181,4 @@ function pageurl($p) {
         </div>
     </div>
 
-<script src="../assets/main.js"></script>
-
-</body>
-</html>
+<?php require __DIR__ . '/../partials/footer.php'; ?>

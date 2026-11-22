@@ -89,13 +89,13 @@ weeklywork/
 │   │
 │   ├── penjualan/            # Modul Transaksi Penjualan Kasir (POS)
 │   │   ├── penjualan.php     # Riwayat seluruh transaksi penjualan offline
-│   │   ├── penjualan_tambah.php # Form transaksi kasir (memotong stok otomatis)
-│   │   └── penjualan_detail.php # Rincian item yang dibeli per nota transaksi
+│   │   ├── penjualantambah.php # Form transaksi kasir (memotong stok otomatis)
+│   │   └── penjualandetail.php # Rincian item yang dibeli per nota transaksi
 │   │
 │   └── pembelian/            # Modul Pengadaan Stok dari Supplier
 │       ├── pembelian.php     # Riwayat pengadaan / pembelian barang masuk
-│       ├── pembelian_tambah.php # Form penerimaan barang (menambah stok otomatis)
-│       └── pembelian_detail.php # Rincian item pembelian per nomor transaksi
+│       ├── pembeliantambah.php # Form penerimaan barang (menambah stok otomatis)
+│       └── pembeliandetail.php # Rincian item pembelian per nomor transaksi
 │
 ├── api/                      # ENDPOINT LAYANAN REST / JSON
 │   └── payment.php           # Mock endpoint untuk pemrosesan pembayaran gateway
@@ -124,7 +124,7 @@ weeklywork/
 │   ├── gateway.php           # Simulator gateway pembayaran escrow
 │   ├── items.php             # Pemuat data produk terpadu dari database ke memori
 │   ├── session.php           # Konfigurasi cookie aman dan batas waktu sesi aktif (30 menit)
-│   └── transaksi_helper.php  # Pembangkit nomor transaksi, inisialisasi tabel, format mata uang
+│   └── transaksihelper.php   # Pembangkit nomor transaksi, inisialisasi tabel, format mata uang
 │
 └── partials/                 # FRAGMEN TEMPLATE MODULAR
     ├── header.php            # Kerangka pembuka HTML (dalam standarisasi tim)
@@ -362,7 +362,7 @@ Diperuntukkan khusus bagi staf atau manajer sistem:
 
 Modul ini mensimulasikan operasional kasir toko fisik:
 - **`penjualan.php`**: Menampilkan riwayat transaksi penjualan offline lengkap dengan fitur pencarian berdasarkan nomor nota atau nama pelanggan.
-- **`penjualan_tambah.php`**:
+- **`penjualantambah.php`**:
   - Form pencatatan penjualan langsung ke pelanggan.
   - Memilih produk dari dropdown yang otomatis mengisi nilai harga dan kalkulasi subtotal menggunakan script `assets/transaksi.js`.
   - Melakukan validasi ketersediaan stok produk sebelum eksekusi.
@@ -371,7 +371,7 @@ Modul ini mensimulasikan operasional kasir toko fisik:
     ```sql
     UPDATE products SET stock = stock - ? WHERE id = ?
     ```
-- **`penjualan_detail.php`**: Menampilkan rincian barang, jumlah qty, harga satuan, dan subtotal dari transaksi penjualan tertentu.
+- **`penjualandetail.php`**: Menampilkan rincian barang, jumlah qty, harga satuan, dan subtotal dari transaksi penjualan tertentu.
 
 ---
 
@@ -379,14 +379,14 @@ Modul ini mensimulasikan operasional kasir toko fisik:
 
 Modul untuk mencatat masuknya suplai barang dari vendor luar:
 - **`pembelian.php`**: Riwayat transaksi pembelian stok dari supplier rekanan.
-- **`pembelian_tambah.php`**:
+- **`pembeliantambah.php`**:
   - Form penerimaan stok barang: memilih supplier, memilih produk yang dipasok, kuantitas masuk, dan harga beli per unit.
   - Menyimpan transaksi ke tabel `pembelian` dan `pembelian_detail`.
   - **Secara otomatis menambah stok barang di gudang**:
     ```sql
     UPDATE products SET stock = stock + ? WHERE id = ?
     ```
-- **`pembelian_detail.php`**: Rincian transaksi barang yang telah diterima dari supplier.
+- **`pembeliandetail.php`**: Rincian transaksi barang yang telah diterima dari supplier.
 
 ---
 

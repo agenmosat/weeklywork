@@ -38,21 +38,21 @@ Dokumen ini memuat seluruh rekapitulasi tugas, perbaikan bug, penyelarasan kurik
 ## 2. Isu Pembagian Tim 
 
 ### Dinda
-027. Duplikasi kerangka awal dokumen HTML pada setiap halaman (pisahkan ke template modular header.php) status : pending
-028. Duplikasi penutup dokumen HTML dan script pada setiap halaman (pisahkan ke template modular footer.php) status : pending
+027. Duplikasi kerangka awal dokumen HTML pada setiap halaman (pisahkan ke template modular header.php) status : done
+028. Duplikasi penutup dokumen HTML dan script pada setiap halaman (pisahkan ke template modular footer.php) status : done
 029. Duplikasi markup bar navigasi atas pada antarmuka admin dan modul CRUD (terapkan pemanggilan terpusat melalui partials/topbar.php) status : done
-030. Duplikasi markup navigasi menu bilah sisi pada seluruh modul administrasi (terapkan template modular bilah sisi admin) status : pending
+030. Duplikasi markup navigasi menu bilah sisi pada seluruh modul administrasi (terapkan template modular bilah sisi admin) status : done
 
 ### Alfredo
-031. Query isi data awal database terlalu rumit pakai UNION ALL (ganti pakai INSERT INTO biasa) status : done
-032. Query hapus data duplikat terlalu rumit pakai join tabel (sederhanakan cara bersihkannya) status : done
-033. Form produk masih pakai ALTER TABLE (pindahkan pembuatan kolom langsung ke file database schema.sql) status : done
-034. Proses invoice masih otomatis bikin tabel baru (pindahkan pembuatan tabel pesanan ke file database schema.sql) status : done
+031. Kueri penyemaian data awal basis data menggunakan UNION ALL dan subkueri bertingkat (sederhanakan menggunakan perintah INSERT INTO VALUES standar) status : done
+032. Kueri penghapusan data duplikat menggunakan penggabungan multi-tabel yang rumit (sederhanakan mekanisme pembersihan data tabel) status : done
+033. Manipulasi struktur tabel menggunakan perintah DDL ALTER TABLE pada saat pemrosesan formulir (pindahkan definisi kolom ke skema basis data utama) status : pending
+034. Eksekusi pembuatan tabel dinamis pada alur pembuatan faktur pembayaran (pindahkan inisialisasi tabel pesanan ke skrip migrasi basis data) status : pending
 
 ### Gery
-035. Redundansi logika kalkulasi subtotal dan validasi item belanja pada modul transaksi (satukan ke fungsi helper kalkulasi terpusat) status : pending
+035. Redundansi logika kalkulasi subtotal dan validasi item belanja pada modul transaksi (satukan ke fungsi helper kalkulasi terpusat) status : done
 036. Duplikasi penanganan proses keluar sistem di berbagai dokumen (seragamkan pengalihan keluar melalui berkas logout.php terpusat) status : done
-037. Pemanggilan berkas pendukung data produk berulang dan pemuatan kueri ganda pada katalog (optimalkan alur pemanggilan berkas dan hilangkan kueri redundan) status : pending
+037. Pemanggilan berkas pendukung data produk berulang dan pemuatan kueri ganda pada katalog (optimalkan alur pemanggilan berkas dan hilangkan kueri redundan) status : done
 038. Pengaturan parameter kuki sesi dipanggil setelah inisialisasi sesi aktif (pindahkan pemanggilan session_set_cookie_params sebelum session_start) status : done
 
 ### Nell
@@ -64,7 +64,7 @@ Dokumen ini memuat seluruh rekapitulasi tugas, perbaikan bug, penyelarasan kurik
 ### Fahri
 043. Duplikasi fungsi dialog konfirmasi tindakan pengguna pada berkas JavaScript (sederhanakan menjadi fungsi konfirmasi generik terpadu) status : done
 044. Duplikasi komponen pemilih tema antarmuka pada berbagai dokumen (integrasikan pemilih tema ke dalam bar navigasi utama) status : done
-045. Variabel penampung batas percobaan login tidak terdefinisi pada alur login (perbaiki mekanisme rate limiting atau bersihkan blok kode bermasalah) status : pending
+045. Variabel penampung batas percobaan login tidak terdefinisi pada alur login (perbaiki mekanisme rate limiting atau bersihkan blok kode bermasalah) status : done
 046. Penggunaan fungsi CONCAT SQL pada penyaringan pencarian tabel modul CRUD (sederhanakan penggabungan wildcard pencarian di sisi PHP) status : done
 047. Struktur basis data transaksi belum memenuhi kaidah normalisasi (buat tabel relasi penjualan_detail dan pembelian_detail) status : done
 
@@ -84,10 +84,10 @@ Dokumen ini memuat seluruh rekapitulasi tugas, perbaikan bug, penyelarasan kurik
 054. Penghapusan data pemasok (supplier) tidak memvalidasi riwayat transaksi pembelian (pasang validasi pengecekan relasi nota pembelian sebelum eksekusi penghapusan supplier) status : done
 
 ### Modul Laporan & Rekapitulasi Bisnis 
-055. Ketiadaan modul laporan rekapitulasi penjualan per periode (buat halaman laporan_penjualan.php dengan filter rentang tanggal, agregasi total, dan rincian transaksi) status : done
-056. Ketiadaan modul laporan rekapitulasi pembelian per periode (buat halaman laporan_pembelian.php dengan filter tanggal dan rekapitulasi biaya belanja ke pemasok) status : done
-057. Ketiadaan modul laporan pemantauan sisa stok inventaris (buat halaman laporan_stok.php yang menampilkan saldo terkini dan filter peringatan stok minimum) status : done
-058. Ketiadaan modul laporan estimasi laba kotor toko (buat halaman laporan_laba.php yang mengkalkulasi selisih omzet penjualan terhadap harga modal beli produk) status : done
+055. Ketiadaan modul laporan rekapitulasi penjualan per periode (buat halaman laporanpenjualan.php dengan filter rentang tanggal, agregasi total, dan rincian transaksi) status : done
+056. Ketiadaan modul laporan rekapitulasi pembelian per periode (buat halaman laporanpembelian.php dengan filter tanggal dan rekapitulasi biaya belanja ke pemasok) status : done
+057. Ketiadaan modul laporan pemantauan sisa stok inventaris (buat halaman laporanstok.php yang menampilkan saldo terkini dan filter peringatan stok minimum) status : done
+058. Ketiadaan modul laporan estimasi laba kotor toko (buat halaman laporanlaba.php yang mengkalkulasi selisih omzet penjualan terhadap harga modal beli produk) status : done
 059. Ketiadaan fasilitas cetak dokumen fisik pada seluruh halaman laporan (tambahkan tombol cetak dengan integrasi window.print dan stylesheet khusus media cetak) status : done
 
 ### Manajemen Pengguna, Otorisasi, & Sesi
@@ -99,6 +99,6 @@ Dokumen ini memuat seluruh rekapitulasi tugas, perbaikan bug, penyelarasan kurik
 
 ## 4. Instruksi Tambahan Project Manager 
 
-063. Keterpaparan kunci utama produk pada parameter URL publik (terapkan mekanisme penyamaran atau enkripsi URL parameter untuk menyembunyikan primary key produk) status : pending
+063. Keterpaparan kunci utama produk pada parameter URL publik (terapkan mekanisme penyamaran atau enkripsi URL parameter untuk menyembunyikan primary key produk) status : done
 064. Ketiadaan alur verifikasi alamat surat elektronik pengguna (integrasikan mekanisme verifikasi email pada modul registrasi atau profil akun) status : pending
 065. Pustaka antarmuka Bootstrap 5 lokal belum terpasang (sediakan aset Bootstrap CSS dan JS lokal di dalam direktori aset untuk mendukung stabilitas tata letak) status : pending

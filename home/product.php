@@ -2,10 +2,6 @@
 require_once __DIR__ . '/../includes/session.php';
 require_once __DIR__ . '/../includes/items.php';
 
-if (!isset($_SESSION['user'])) {
-    header("Location: ../index.php");
-    exit();
-}
 
 if (isset($_GET['logout'])) {
     session_destroy();
@@ -13,7 +9,7 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
-$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+$id = isset($_GET['id']) ? urlde($_GET['id']) : 0;
 $notfound = false;
 
 if ($id <= 0 || !isset($products[$id])) {
@@ -22,16 +18,9 @@ if ($id <= 0 || !isset($products[$id])) {
 } else {
     $product = $products[$id];
 }
+$pagetitle = ($notfound ? "404 not found" : $product['name']) . " - darkfonder.net";
+require __DIR__ . '/../partials/header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $notfound ? "404 not found" : htmlspecialchars($product['name']); ?> - darkfonder.net</title>
-    <link rel="stylesheet" href="../assets/style.css?v=3">
-</head>
-<body class="marketpage themelight">
 
     <?php require __DIR__ . '/../partials/topbar.php'; ?>
 
@@ -68,7 +57,7 @@ if ($id <= 0 || !isset($products[$id])) {
                         <?php if ($product['stock'] > 0): ?>
                             <form action="cart.php" method="post" class="qtyform">
                                 <?= csrf_field(); ?>
-                                <input type="hidden" name="id" value="<?php echo $product['id']; ?>">
+                                <input type="hidden" name="id" value="<?php echo htmlspecialchars(urlen($product['id'])); ?>">
                                 <div class="qtybox">
                                     <label class="formlabel">select quantity:</label>
                                     <input type="number" name="qty" value="1" min="1" max="<?php echo $product['stock']; ?>" class="qtyinput" required>
@@ -85,7 +74,4 @@ if ($id <= 0 || !isset($products[$id])) {
         </div>
     </div>
 
-<script src="../assets/main.js"></script>
-
-</body>
-</html>
+<?php require __DIR__ . '/../partials/footer.php'; ?>

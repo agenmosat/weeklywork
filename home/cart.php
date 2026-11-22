@@ -2,10 +2,6 @@
 require_once __DIR__ . '/../includes/session.php';
 require_once __DIR__ . '/../includes/items.php';
 
-if (!isset($_SESSION['user'])) {
-    header("Location: ../index.php");
-    exit();
-}
 
 if (isset($_GET['logout'])) {
     session_destroy();
@@ -16,14 +12,14 @@ if (isset($_GET['logout'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_verify();
     if (isset($_POST['action'])) {
-        $itemid = (int)$_POST['id'];
+        $itemid = isset($_POST['id']) ? urlde($_POST['id']) : 0;
         $itemqty = isset($_POST['qty']) ? max(1, (int)$_POST['qty']) : 1;
         if (isset($products[$itemid])) {
             $availablestock = $products[$itemid]['stock'];
             if ($availablestock > 0) {
                 if ($_POST['action'] === "buy") {
                     $buyqty = min($itemqty, $availablestock);
-                    header("Location: checkout.php?id=" . $itemid . "&qty=" . $buyqty);
+                    header("Location: checkout.php?id=" . urlen($itemid) . "&qty=" . $buyqty);
                     exit();
                 }
                 if (!isset($_SESSION['cart'])) {
@@ -61,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 if (isset($_GET['add'])) {
-    $addid = (int)$_GET['add'];
+    $addid = urlde($_GET['add']);
     if (isset($products[$addid])) {
         $availablestock = $products[$addid]['stock'];
         if ($availablestock > 0) {
@@ -79,7 +75,7 @@ if (isset($_GET['add'])) {
 }
 
 if (isset($_GET['remove'])) {
-    $removeid = (int)$_GET['remove'];
+    $removeid = urlde($_GET['remove']);
     if (isset($_SESSION['cart'][$removeid])) {
         unset($_SESSION['cart'][$removeid]);
     }
@@ -121,16 +117,9 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
         }
     }
 }
+$pagetitle = "shopping cart - darkfonder.net";
+require __DIR__ . '/../partials/header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>shopping cart - darkfonder.net</title>
-    <link rel="stylesheet" href="../assets/style.css?v=3">
-</head>
-<body class="marketpage themelight">
 
     <?php require __DIR__ . '/../partials/topbar.php'; ?>
 
@@ -166,7 +155,7 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
                                 </td>
                                 <td class="cartcell">$<?php echo number_format($c['total'], 2); ?></td>
                                 <td class="cartcell">
-                                    <a href="cart.php?remove=<?php echo $c['id']; ?>" class="removelink" onclick="return confirmremove();">remove</a>
+                                    <a href="cart.php?remove=<?php echo htmlspecialchars(urlen($c['id'])); ?>" class="removelink" onclick="return confirmremove();">remove</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -185,7 +174,4 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
         </div>
     </div>
 
-<script src="../assets/main.js"></script>
-
-</body>
-</html>
+<?php require __DIR__ . '/../partials/footer.php'; ?>

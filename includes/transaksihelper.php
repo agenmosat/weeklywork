@@ -1,5 +1,7 @@
 <?php
-function init_transaksi_tables($koneksi) {
+
+function init_transaksi_tables($koneksi)
+{
     if (!$koneksi) {
         return;
     }
@@ -52,11 +54,12 @@ function init_transaksi_tables($koneksi) {
         username VARCHAR(50) NOT NULL UNIQUE,
         password VARCHAR(255) NOT NULL,
         nama VARCHAR(100) NOT NULL,
-        role ENUM('admin', 'cashier', 'kasir') NOT NULL,
+        role ENUM('admin', 'cashier', 'kasir', 'user') NOT NULL,
         id_kasir INT DEFAULT NULL,
         status ENUM('aktif', 'nonaktif') DEFAULT 'aktif',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )");
+    mysqli_query($koneksi, "ALTER TABLE pengguna MODIFY role ENUM('admin', 'cashier', 'kasir', 'user') NOT NULL");
     $chk_admin = mysqli_query($koneksi, "SELECT id_pengguna FROM pengguna WHERE username = 'admin' LIMIT 1");
     if ($chk_admin && mysqli_num_rows($chk_admin) === 0) {
         $hash_admin = password_hash('admin123', PASSWORD_BCRYPT);
@@ -67,17 +70,79 @@ function init_transaksi_tables($koneksi) {
         $hash_kasir = password_hash('kasir123', PASSWORD_BCRYPT);
         mysqli_query($koneksi, "INSERT INTO pengguna (username, password, nama, role, id_kasir, status) VALUES ('kasir1', '$hash_kasir', 'Kasir Satu', 'cashier', 1, 'aktif')");
     }
+    $chk_user = mysqli_query($koneksi, "SELECT id_pengguna FROM pengguna WHERE username = 'user' LIMIT 1");
+    if ($chk_user && mysqli_num_rows($chk_user) === 0) {
+        $hash_user = password_hash('user123', PASSWORD_BCRYPT);
+        mysqli_query($koneksi, "INSERT INTO pengguna (username, password, nama, role, id_kasir, status) VALUES ('user', '$hash_user', 'Customer User', 'user', NULL, 'aktif')");
+    }
 }
 
-function format_uang($angka) {
+function format_uang($angka)
+{
     return "$" . number_format((float)$angka, 2);
 }
 
-function hitung_total_transaksi($harga, $qty) {
+function generate_nomor_transaksi($prefix)
+{
+    return strtoupper($prefix) . "-" . date("YmdHis") . "-" . rand(100, 999);
+}
+
+function hitung_total_transaksi($harga, $qty)
+{
     return (float)$harga * (int)$qty;
 }
 
-function buat_nomor($koneksi, $prefix, $tabel, $kolom) {
+function hitung_pesanan($products, $source, $directid, $directqty, $cart)
+{
+    $items = [];
+    $subtotal = 0.0;
+    $shipping = 5.00;
+
+    if ($source === "direct" && $directid > 0 && isset($products[$directid])) {
+        $p = $products[$directid];
+        $qty = min($directqty, $p['stock']);
+        if ($qty > 0) {
+            $itemtotal = $p['price'] * $qty;
+            $subtotal = $itemtotal;
+            $items[] = [
+                "id" => $p['id'],
+                "name" => $p['name'],
+                "qty" => $qty,
+                "price" => $p['price'],
+                "total" => $itemtotal
+            ];
+        }
+    } elseif (!empty($cart)) {
+        foreach ($cart as $cid => $qty) {
+            if (isset($products[$cid]) && $products[$cid]['stock'] >= $qty) {
+                $p = $products[$cid];
+                $realqty = min((int)$qty, $p['stock']);
+                if ($realqty > 0) {
+                    $itemtotal = $p['price'] * $realqty;
+                    $subtotal += $itemtotal;
+                    $items[] = [
+                        "id" => $p['id'],
+                        "name" => $p['name'],
+                        "qty" => $realqty,
+                        "price" => $p['price'],
+                        "total" => $itemtotal
+                    ];
+                }
+            }
+        }
+    }
+
+    return [
+        "items" => $items,
+        "subtotal" => $subtotal,
+        "shipping" => $shipping,
+        "total" => $subtotal + $shipping,
+        "directqty" => $directqty
+    ];
+}
+
+function buat_nomor($koneksi, $prefix, $tabel, $kolom)
+{
     $clean_prefix = rtrim(strtoupper(trim($prefix)), '-') . '-';
     if (!$koneksi) {
         return $clean_prefix . '0001';
@@ -94,7 +159,8 @@ function buat_nomor($koneksi, $prefix, $tabel, $kolom) {
     return $clean_prefix . sprintf('%04d', $next);
 }
 
-function saldo_stok_terakhir($koneksi, $id_product) {
+function saldo_stok_terakhir($koneksi, $id_product)
+{
     $id = (int)$id_product;
     if (!$koneksi || $id <= 0) {
         return 0;
@@ -110,7 +176,8 @@ function saldo_stok_terakhir($koneksi, $id_product) {
     return 0;
 }
 
-function catat_mutasi_stok($koneksi, $id_product, $masuk, $keluar, $no_pj = null, $no_pb = null, $keterangan = '') {
+function catat_mutasi_stok($koneksi, $id_product, $masuk, $keluar, $no_pj = null, $no_pb = null, $keterangan = '')
+{
     $id = (int)$id_product;
     $masuk = (int)$masuk;
     $keluar = (int)$keluar;
@@ -131,7 +198,8 @@ function catat_mutasi_stok($koneksi, $id_product, $masuk, $keluar, $no_pj = null
     return false;
 }
 
-function batal_pembelian($koneksi, $id_pembelian) {
+function batal_pembelian($koneksi, $id_pembelian)
+{
     $id = (int)$id_pembelian;
     if (!$koneksi || $id <= 0) {
         return false;
@@ -168,7 +236,8 @@ function batal_pembelian($koneksi, $id_pembelian) {
     }
 }
 
-function batal_penjualan($koneksi, $id_penjualan) {
+function batal_penjualan($koneksi, $id_penjualan)
+{
     $id = (int)$id_penjualan;
     if (!$koneksi || $id <= 0) {
         return false;

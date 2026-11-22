@@ -16,26 +16,31 @@ if (file_exists('config/database.php')) {
 }
 ?>
 <div class="topbar">
-    <div class="brand">darkfonder.net</div>
+    <a href="<?php echo $topbarbase; ?>home/dashboard.php" class="brand">darkfonder<span class="branddot">.</span>net</a>
     <form action="<?php echo $topbarbase; ?>home/dashboard.php" method="get" class="searchbox">
-        <input type="text" name="q" placeholder="search items..." class="searchinput" value="<?php echo htmlspecialchars($topbarquery); ?>">
+        <input type="text" name="q" placeholder="search building materials..." class="searchinput" value="<?php echo htmlspecialchars($topbarquery); ?>">
         <button type="submit" class="searchbtn">search</button>
     </form>
-    <div class="themeswitcher">
-        <span class="themelabel">theme</span>
-        <select id="themepick" class="themeselect" onchange="switchtheme(this.value)">
-            <option value="themelight">light</option>
-            <option value="themedark">dark</option>
-        </select>
-    </div>
     <div class="topnav">
         <a href="<?php echo $topbarbase; ?>home/dashboard.php" class="navlink">store</a>
         <?php if (isset($_SESSION['role']) && $_SESSION['role'] === "admin"): ?>
             <a href="<?php echo $topbarbase; ?>admin/admin.php" class="navlink">admin</a>
         <?php endif; ?>
-        <a href="<?php echo $topbarbase; ?>home/cart.php" class="navlink">cart (<?php echo $topbarcartcount; ?>)</a>
-        <form method="post" action="<?php echo $topbarbase . 'logout.php'; ?>" class="logoutform">
-            <button type="submit" class="logoutbtn">logout</button>
-        </form>
+        <a href="<?php echo $topbarbase; ?>home/cart.php" class="navlink cartlink">cart <span class="cartcount"><?php echo $topbarcartcount; ?></span></a>
+        <?php if (isset($_SESSION['user'])): ?>
+            <span class="userbadge"><?php echo htmlspecialchars($_SESSION['user']); ?></span>
+            <form method="post" action="<?php echo $topbarbase . 'logout.php'; ?>" class="logoutform">
+                <button type="submit" class="logoutbtn">logout</button>
+            </form>
+        <?php else: ?>
+            <span class="userbadge">guest</span>
+            <a href="<?php echo $topbarbase; ?>index.php?login=1" class="navlink">login</a>
+        <?php endif; ?>
+        <div class="themeswitcher">
+            <select id="themepick" class="themeselect" onchange="switchtheme(this.value)" aria-label="theme">
+                <option value="themelight">light</option>
+                <option value="themedark">dark</option>
+            </select>
+        </div>
     </div>
 </div>
