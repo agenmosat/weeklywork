@@ -10,32 +10,32 @@ function init_transaksi_tables($koneksi)
         nomor_transaksi VARCHAR(50) NOT NULL UNIQUE,
         tanggal DATETIME DEFAULT CURRENT_TIMESTAMP,
         nama_pelanggan VARCHAR(100) NOT NULL,
-        total DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+        total DECIMAL(15,2) NOT NULL DEFAULT 0.00,
         status VARCHAR(20) NOT NULL DEFAULT 'selesai'
     )");
     mysqli_query($koneksi, "CREATE TABLE IF NOT EXISTS penjualan_detail (
         id_detail INT AUTO_INCREMENT PRIMARY KEY,
         id_penjualan INT NOT NULL,
         id_product INT NOT NULL,
-        harga DECIMAL(10,2) NOT NULL,
+        harga DECIMAL(15,2) NOT NULL,
         qty INT NOT NULL,
-        subtotal DECIMAL(10,2) NOT NULL
+        subtotal DECIMAL(15,2) NOT NULL
     )");
     mysqli_query($koneksi, "CREATE TABLE IF NOT EXISTS pembelian (
         id_pembelian INT AUTO_INCREMENT PRIMARY KEY,
         nomor_transaksi VARCHAR(50) NOT NULL UNIQUE,
         tanggal DATETIME DEFAULT CURRENT_TIMESTAMP,
         id_supplier INT NOT NULL,
-        total DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+        total DECIMAL(15,2) NOT NULL DEFAULT 0.00,
         status VARCHAR(20) NOT NULL DEFAULT 'selesai'
     )");
     mysqli_query($koneksi, "CREATE TABLE IF NOT EXISTS pembelian_detail (
         id_detail INT AUTO_INCREMENT PRIMARY KEY,
         id_pembelian INT NOT NULL,
         id_product INT NOT NULL,
-        harga_beli DECIMAL(10,2) NOT NULL,
+        harga_beli DECIMAL(15,2) NOT NULL,
         qty INT NOT NULL,
-        subtotal DECIMAL(10,2) NOT NULL
+        subtotal DECIMAL(15,2) NOT NULL
     )");
     mysqli_query($koneksi, "CREATE TABLE IF NOT EXISTS stok (
         id_stok INT AUTO_INCREMENT PRIMARY KEY,
@@ -48,6 +48,27 @@ function init_transaksi_tables($koneksi)
         no_penjualan VARCHAR(50) NULL,
         no_pembelian VARCHAR(50) NULL,
         keterangan VARCHAR(255) NULL
+    )");
+    mysqli_query($koneksi, "CREATE TABLE IF NOT EXISTS kasir (
+        id_kasir INT AUTO_INCREMENT PRIMARY KEY,
+        nama_kasir VARCHAR(50) UNIQUE NOT NULL,
+        status ENUM('aktif','nonaktif') DEFAULT 'aktif',
+        tanggal_keluar DATE DEFAULT NULL
+    )");
+    mysqli_query($koneksi, "CREATE TABLE IF NOT EXISTS supplier (
+        id_supplier INT AUTO_INCREMENT PRIMARY KEY,
+        nama_supplier VARCHAR(50) UNIQUE NOT NULL,
+        kota VARCHAR(30) DEFAULT NULL
+    )");
+    mysqli_query($koneksi, "CREATE TABLE IF NOT EXISTS pesanan (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        nomor_pesanan VARCHAR(50) NOT NULL,
+        nama_pembeli VARCHAR(100) NOT NULL,
+        alamat TEXT NOT NULL,
+        total DECIMAL(15,2) NOT NULL,
+        metode_pembayaran VARCHAR(50) NOT NULL,
+        status_pembayaran VARCHAR(50) NOT NULL,
+        tanggal DATETIME DEFAULT CURRENT_TIMESTAMP
     )");
     mysqli_query($koneksi, "CREATE TABLE IF NOT EXISTS pengguna (
         id_pengguna INT AUTO_INCREMENT PRIMARY KEY,

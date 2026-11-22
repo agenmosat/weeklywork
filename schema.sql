@@ -26,12 +26,17 @@ CREATE TABLE categories (
 
 CREATE TABLE products (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL UNIQUE,
-    price DECIMAL(10,2) NOT NULL,
-    stock INT NOT NULL,
-    category VARCHAR(50) NOT NULL,
-    description TEXT NOT NULL,
-    image VARCHAR(255) DEFAULT 'images/glock17.png'
+    category_id INT DEFAULT NULL,
+    code VARCHAR(50) DEFAULT NULL,
+    name VARCHAR(150) NOT NULL UNIQUE,
+    price DECIMAL(15,2) NOT NULL DEFAULT 0.00,
+    stock INT NOT NULL DEFAULT 0,
+    minimum_stock INT NOT NULL DEFAULT 0,
+    category VARCHAR(50) NOT NULL DEFAULT 'General',
+    description TEXT,
+    unit VARCHAR(50) DEFAULT 'pcs',
+    image VARCHAR(255) DEFAULT 'images/glock17.png',
+    status VARCHAR(50) NOT NULL DEFAULT 'active'
 );
 
 CREATE TABLE customers (
@@ -48,7 +53,7 @@ CREATE TABLE sales (
     user_id INT,
     invoice_number VARCHAR(50) NOT NULL UNIQUE,
     sale_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    total DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    total DECIMAL(15,2) NOT NULL DEFAULT 0.00,
     payment_status VARCHAR(50) NOT NULL DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE SET NULL,
@@ -60,8 +65,8 @@ CREATE TABLE sale_details (
     sale_id INT NOT NULL,
     product_id INT NOT NULL,
     quantity INT NOT NULL,
-    price DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-    subtotal DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    price DECIMAL(15,2) NOT NULL DEFAULT 0.00,
+    subtotal DECIMAL(15,2) NOT NULL DEFAULT 0.00,
     FOREIGN KEY (sale_id) REFERENCES sales(id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
@@ -174,6 +179,42 @@ INSERT INTO products (category_id, code, name, description, unit, price, stock, 
 (22, 'PUM-001', 'Concrete Pump Truck', 'Truk pompa cor beton cair', 'Unit', 1450000000.00, 1, 1, 'images/alat/concrate.webp', 'active'),
 (23, 'GEN-001', 'Genset 50 KVA', 'Generator listrik darurat 50 kva', 'Unit', 110000000.00, 3, 1, 'images/alat/genset50kva.webp', 'active'),
 (23, 'GEN-002', 'Genset 100 KVA', 'Generator listrik industri 100 kva', 'Unit', 1950000000.00, 2, 1, 'images/alat/genset100kva.webp', 'active');
+
+UPDATE products p JOIN categories c ON p.category_id = c.id SET p.category = c.name;
+
+CREATE TABLE IF NOT EXISTS kasir (
+    id_kasir INT AUTO_INCREMENT PRIMARY KEY,
+    nama_kasir VARCHAR(50) UNIQUE NOT NULL,
+    status ENUM('aktif','nonaktif') DEFAULT 'aktif',
+    tanggal_keluar DATE DEFAULT NULL
+);
+
+CREATE TABLE IF NOT EXISTS supplier (
+    id_supplier INT AUTO_INCREMENT PRIMARY KEY,
+    nama_supplier VARCHAR(50) UNIQUE NOT NULL,
+    kota VARCHAR(30) DEFAULT NULL
+);
+
+CREATE TABLE IF NOT EXISTS pesanan (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nomor_pesanan VARCHAR(50) NOT NULL,
+    nama_pembeli VARCHAR(100) NOT NULL,
+    alamat TEXT NOT NULL,
+    total DECIMAL(15,2) NOT NULL,
+    metode_pembayaran VARCHAR(50) NOT NULL,
+    status_pembayaran VARCHAR(50) NOT NULL,
+    tanggal DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO kasir (id_kasir, nama_kasir, status) VALUES
+(1, 'Kasir Satu', 'aktif')
+ON DUPLICATE KEY UPDATE nama_kasir = VALUES(nama_kasir);
+
+INSERT INTO supplier (id_supplier, nama_supplier, kota) VALUES
+(1, 'PT Semen Indonesia', 'Gresik'),
+(2, 'PT Pasir Sejahtera', 'Lumajang'),
+(3, 'PT United Tractors', 'Jakarta')
+ON DUPLICATE KEY UPDATE nama_supplier = VALUES(nama_supplier);
 
 INSERT INTO customers (name, phone, address) VALUES
 ('Pelanggan Umum', '081234567890', 'Jl. Merdeka No. 1'),

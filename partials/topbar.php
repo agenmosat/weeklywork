@@ -28,7 +28,8 @@ if (file_exists('config/database.php')) {
         <?php endif; ?>
         <a href="<?php echo $topbarbase; ?>home/cart.php" class="navlink cartlink">cart <span class="cartcount"><?php echo $topbarcartcount; ?></span></a>
         <?php if (isset($_SESSION['user'])): ?>
-            <span class="userbadge"><?php echo htmlspecialchars($_SESSION['user']); ?></span>
+            <?php $topuser = is_array($_SESSION['user']) ? ($_SESSION['user']['username'] ?? 'user') : $_SESSION['user']; ?>
+            <span class="userbadge"><?php echo htmlspecialchars($topuser); ?></span>
             <form method="post" action="<?php echo $topbarbase . 'logout.php'; ?>" class="logoutform">
                 <button type="submit" class="logoutbtn">logout</button>
             </form>
