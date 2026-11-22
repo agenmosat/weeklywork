@@ -1,7 +1,7 @@
 # halo kawan2 karna minggu ini tidak ada tugas jadi kita akan revamp ui ajah :v
 1. hal yang kita harus tambahankan/revamp (issued by pak EGA)
     1. about us page pake muka kita (status : done) 
-    2. dibanding halaman mending scrolling (status : issued)
+    2. dibanding halaman mending scrolling (status : done)
     3. login user admin malah jadi  user biasa (status : issued)
     4. harganya tolong mikir mas (status : issued)
 

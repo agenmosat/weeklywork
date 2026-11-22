@@ -12,10 +12,6 @@ if (isset($_GET['logout'])) {
 $searchquery = isset($_GET['q']) ? trim($_GET['q']) : "";
 $category = isset($_GET['cat']) ? trim($_GET['cat']) : "";
 $sort = isset($_GET['sort']) ? trim($_GET['sort']) : "";
-$page = max(1, (int)($_GET['page'] ?? 1));
-$perpage = 6;
-$offset = ($page - 1) * $perpage;
-
 $searchterm = "%" . $searchquery . "%";
 
 if ($searchquery !== "" && $category !== "") {
@@ -37,40 +33,7 @@ if ($sort === "low") {
     $orderstr = " ORDER BY name ASC";
 }
 
-$countsql = "SELECT COUNT(*) AS total FROM products" . $wherestr;
-$totalitems = 0;
-
-if ($searchquery !== "" && $category !== "") {
-    $stmt = mysqli_prepare($koneksi, $countsql);
-    mysqli_stmt_bind_param($stmt, "sss", $searchterm, $searchterm, $category);
-    mysqli_stmt_execute($stmt);
-    $countres = mysqli_stmt_get_result($stmt);
-} elseif ($searchquery !== "") {
-    $stmt = mysqli_prepare($koneksi, $countsql);
-    mysqli_stmt_bind_param($stmt, "ss", $searchterm, $searchterm);
-    mysqli_stmt_execute($stmt);
-    $countres = mysqli_stmt_get_result($stmt);
-} elseif ($category !== "") {
-    $stmt = mysqli_prepare($koneksi, $countsql);
-    mysqli_stmt_bind_param($stmt, "s", $category);
-    mysqli_stmt_execute($stmt);
-    $countres = mysqli_stmt_get_result($stmt);
-} else {
-    $countres = mysqli_query($koneksi, $countsql);
-}
-
-if ($countres) {
-    $totalrow = mysqli_fetch_assoc($countres);
-    $totalitems = (int) $totalrow['total'];
-}
-
-$totalpages = max(1, (int)ceil($totalitems / $perpage));
-if ($page > $totalpages) {
-    $page = $totalpages;
-    $offset = ($page - 1) * $perpage;
-}
-
-$datasql = "SELECT * FROM products" . $wherestr . $orderstr . " LIMIT " . (int)$perpage . " OFFSET " . (int)$offset;
+$datasql = "SELECT * FROM products" . $wherestr . $orderstr;
 
 if ($searchquery !== "" && $category !== "") {
     $stmt = mysqli_prepare($koneksi, $datasql);
@@ -106,12 +69,6 @@ if ($result) {
             "desc" => $row['description']
         ];
     }
-}
-
-function pageurl($p) {
-    $query = $_GET;
-    $query['page'] = $p;
-    return 'dashboard.php?' . http_build_query($query);
 }
 $pagetitle = "darkfonder.net";
 require __DIR__ . '/../partials/header.php';
@@ -160,23 +117,9 @@ require __DIR__ . '/../partials/header.php';
                     <?php endforeach; ?>
                 </div>
 
-                <?php if ($totalpages > 1): ?>
-                    <div class="pagination">
-                        <?php if ($page > 1): ?>
-                            <a href="<?php echo htmlspecialchars(pageurl($page - 1)); ?>" class="pagelink">&laquo; prev</a>
-                        <?php endif; ?>
-                        <?php for ($i = 1; $i <= $totalpages; $i++): ?>
-                            <?php if ($i === $page): ?>
-                                <span class="pageactive"><?php echo $i; ?></span>
-                            <?php else: ?>
-                                <a href="<?php echo htmlspecialchars(pageurl($i)); ?>" class="pagelink"><?php echo $i; ?></a>
-                            <?php endif; ?>
-                        <?php endfor; ?>
-                        <?php if ($page < $totalpages): ?>
-                            <a href="<?php echo htmlspecialchars(pageurl($page + 1)); ?>" class="pagelink">next &raquo;</a>
-                        <?php endif; ?>
-                    </div>
-                <?php endif; ?>
+                <div class="scrollbox">
+                    <button type="button" onclick="window.scrollTo(0,0)" class="scrollbtn">kembali ke atas &uarr;</button>
+                </div>
             <?php endif; ?>
         </div>
     </div>

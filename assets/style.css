@@ -1142,3 +1142,30 @@ body.themedark .card { border: 1px solid var(--border); box-shadow: var(--shadow
     line-height: 1.4;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
+.scrollbox {
+    text-align: center;
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+
+.scrollbtn {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: var(--bgcard);
+    border: 1px solid var(--border);
+    color: var(--textdim);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.scrollbtn:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
