@@ -2,12 +2,12 @@
 1. hal yang kita harus tambahankan/revamp (issued by pak EGA)
     1. about us page pake muka kita (status : done) 
     2. dibanding halaman mending scrolling (status : done)
-    3. login user admin malah jadi  user biasa (status : issued)
-    4. harganya tolong mikir mas (status : issued)
+    3. login user admin malah jadi  user biasa (status : cannot be fixed :< )
+    4. harganya tolong mikir mas (status : done)
 
 2. yang ini issues dari kita2 (tambahin aja kalo ada) :v
     1. uinya yang darkmode masih terlalu kasar (by n, status : issued)
-    2. page pembayarannya masih make yang jual senjata (by n, status : issued)
+    2. page pembayarannya masih make yang jual senjata (by n, status : done)
 
 3. issues dari ai :/ (fixed oleh pm (no ai karna ez))
     1. bersihin sisa teks darknet di checkout dan produk (stealth packaging, verified stash, onion order, glock17) (status : done)
