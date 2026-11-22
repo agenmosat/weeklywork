@@ -26,18 +26,12 @@ CREATE TABLE categories (
 
 CREATE TABLE products (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    category_id INT,
-    code VARCHAR(50) NOT NULL UNIQUE,
-    name VARCHAR(150) NOT NULL,
-    description TEXT,
-    unit VARCHAR(50) NOT NULL,
-    price DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-    stock INT NOT NULL DEFAULT 0,
-    minimum_stock INT NOT NULL DEFAULT 0,
-    image VARCHAR(255) DEFAULT 'image/no-image.webp',
-    status VARCHAR(50) NOT NULL DEFAULT 'active',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
+    name VARCHAR(100) NOT NULL UNIQUE,
+    price DECIMAL(10,2) NOT NULL,
+    stock INT NOT NULL,
+    category VARCHAR(50) NOT NULL,
+    description TEXT NOT NULL,
+    image VARCHAR(255) DEFAULT 'images/glock17.png'
 );
 
 CREATE TABLE customers (
@@ -94,11 +88,11 @@ VALUES (
   'aktif'
 )
 ON DUPLICATE KEY UPDATE
-  nama_lengkap = VALUES(nama_lengkap),
+  name = VALUES(name),
   role         = VALUES(role),
   status       = VALUES(status);
 
-INSERT INTO users (username, password, nama_lengkap, role, id_kasir, status)
+INSERT INTO users (username, password, name, role, id_kasir, status)
 VALUES (
   'kasir1',
   '$2y$10$xzZL9oLAghDYz3nBrZpyWOx/JAZdE9SsYC7yyFKjTXcQAfi00LK02',
@@ -108,7 +102,7 @@ VALUES (
   'aktif'
 )
 ON DUPLICATE KEY UPDATE
-  nama_lengkap = VALUES(nama_lengkap),
+  name = VALUES(name),
   role         = VALUES(role),
   id_kasir     = VALUES(id_kasir),
   status       = VALUES(status);

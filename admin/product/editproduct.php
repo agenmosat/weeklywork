@@ -50,6 +50,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($stock === '' || !ctype_digit($stock)) {
         $error = 'stok wajib angka bulat >= 0.';
     } else {
+        $colcheck = mysqli_query($koneksi, "SHOW COLUMNS FROM products LIKE 'image'");
+        if ($colcheck && mysqli_num_rows($colcheck) === 0) {
+            mysqli_query($koneksi, "ALTER TABLE products ADD COLUMN image VARCHAR(255) DEFAULT 'images/glock17.png'");
+        }
+
         $stmt = mysqli_prepare($koneksi, 'UPDATE products SET name = ?, price = ?, stock = ?, category = ?, description = ?, image = ? WHERE id = ?');
         if ($stmt) {
             mysqli_stmt_bind_param($stmt, 'sdisssi', $name, $price, $stock, $category, $description, $image, $id);

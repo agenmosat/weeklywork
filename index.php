@@ -14,7 +14,7 @@ $now = time();
 $message = "";
 
 if (isset($_SESSION['user'])) {
-    if (isset($_SESSION['role']) && $_SESSION['role'] === "admin") {
+    if (isset($_SESSION['role']) && $_SESSION['role'] = "admin") {
         header("Location: admin/admin.php");
     } else {
         header("Location: home/dashboard.php");
