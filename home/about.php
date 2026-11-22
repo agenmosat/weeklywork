@@ -47,7 +47,8 @@ require __DIR__ . '/../partials/header.php';
         <div class="content">
             <div class="heading">tentang kami</div>
 
-            <div class="emptybox">
+            <div class="emptybox aboutbox">
+                <img src="../images/teamimage.webp" alt="tim fivefonders.net" class="aboutimage">
                 <div class="sidetitle">tentang fivefonders.net</div>
                 <div class="detaildesc">
                     fivefonders.net adalah platform penyedia bahan bangunan dan penyewaan alat berat terpercaya untuk mendukung berbagai kebutuhan konstruksi dan proyek bangunan anda.

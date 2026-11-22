@@ -664,6 +664,18 @@ body.themedark .itemprice { color: var(--textmain); }
     margin-bottom: 8px;
 }
 
+.aboutbox::before {
+    content: none;
+}
+
+.aboutimage {
+    max-width: 625px;
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto 16px auto;
+}
+
 /* detail page */
 .detailbox {
     display: flex;
