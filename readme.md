@@ -1,3 +1,28 @@
+# oke kawan2 karna ada yang belom tau cara run lokal sini le ditutorin
+1. idupin xampp (atau lampp kalo nuxnux)
+    sudo /opt/lampp/lampp/ startmysql (nuxnux)
+    cd C:\xampp && .\xampp_start.exe (winblot)
+
+2. idupin ekstensi dan jalanin local
+    php -d extensions=mysqli -S localhost:8080
+        sudo apt update && sudo apt install -y php-mysql (nuxnux mint)
+        sudo pacman -S php (nuxnux arch)
+        sudo dnf install -y php-mysqlnd (nuxnux fedora)
+
+3. ke browser ketik di address bar
+    localhost:8080
+
+4. done gitu aja
+
+5. extra : cara matiin
+    ctrl + c (di terminal)
+
+
+
+<>><><><><><><><><><><><>
+
+
+
 # jadi gini le
 ## aturan branch
 - main buat deployment
