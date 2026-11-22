@@ -1158,7 +1158,7 @@ body.themedark .card { border: 1px solid var(--border); box-shadow: var(--shadow
 }
 
 .memberrole {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: bold;
     color: var(--linkcolor);
     text-transform: uppercase;

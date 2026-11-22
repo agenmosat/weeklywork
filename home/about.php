@@ -5,31 +5,31 @@ require_once __DIR__ . '/../includes/items.php';
 $members = [
     [
         'name' => 'Nell',
-        'role' => 'project lead',
+        'role' => 'project manager & techinal writer',
         'desc' => 'mengkoordinasikan pengerjaan proyek dan integrasi sistem',
         'image' => '../images/team/nell.webp'
     ],
     [
         'name' => 'Gery',
-        'role' => 'backend developer',
+        'role' => 'programmer & system analyst',
         'desc' => 'mengembangkan arsitektur backend dan basis data',
         'image' => '../images/team/gery.webp'
     ],
     [
-        'name' => 'Alred',
-        'role' => 'fullstack developer',
-        'desc' => 'mengembangkan fungsionalitas dan logika transaksi',
+        'name' => 'Alfredo',
+        'role' => 'database manager & devops',
+        'desc' => 'mengembangkan fungsionalitas dan logika database',
         'image' => '../images/team/alred.webp'
     ],
     [
         'name' => 'Fahri',
-        'role' => 'ui designer',
-        'desc' => 'merancang antarmuka visual dan pengalaman pengguna',
+        'role' => 'qa tester & ui/ux designer',
+        'desc' => 'menguji kualitas proyek dan memberitahu ketepatan',
         'image' => '../images/team/fahri.webp'
     ],
     [
         'name' => 'Dinda',
-        'role' => 'frontend developer',
+        'role' => 'programmer & ui/ux designer',
         'desc' => 'mengembangkan tata letak halaman dan dokumentasi',
         'image' => '../images/team/dinda.webp'
     ]
