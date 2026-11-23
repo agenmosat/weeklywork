@@ -648,17 +648,6 @@ body.themedark .itemprice { color: var(--textmain); }
     box-shadow: var(--shadow);
 }
 
-.emptybox::before {
-    content: "📁 ";
-    display: block;
-    font-size: 24px;
-    margin-bottom: 8px;
-}
-
-.aboutbox::before {
-    content: none;
-}
-
 .aboutimage {
     max-width: 675px;
     width: 100%;
@@ -992,8 +981,7 @@ body.themedark .card { border: 1px solid var(--border); box-shadow: var(--shadow
     .bannerslide { padding: 20px 22px; min-height: 180px; }
     .bannertitle { font-size: 17px; }
     .quicknav { gap: 6px; padding: 8px; }
-    .quickitem { min-width: 80px; padding: 6px 4px; }
-    .quickicon { font-size: 16px; }
+    .quickitem { min-width: 80px; padding: 8px 6px; }
     .quicklabel { font-size: 10px; }
     .footergrid { gap: 20px; }
 }
@@ -1428,29 +1416,32 @@ body.themedark .promocardtwo {
 .quickitem {
     flex: 1 1 0;
     min-width: 100px;
-    padding: 8px 10px;
+    padding: 10px 14px;
     text-align: center;
     text-decoration: none;
     color: var(--textmain);
-    border: 1px solid var(--border);
-    background-color: var(--bgsoft);
+    border: 1px solid #f6e5be;
+    background-color: #fff9e6;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 4px;
     transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
 .quickitem:hover {
     border-color: var(--accent);
-    background-color: var(--bgcard);
+    background-color: #fff3cd;
     text-decoration: none;
 }
 
-.quickicon {
-    font-size: 20px;
-    line-height: 1;
+body.themedark .quickitem {
+    background-color: #29241b;
+    border-color: #483d27;
+}
+
+body.themedark .quickitem:hover {
+    background-color: #352d1e;
+    border-color: var(--accent);
 }
 
 .quicklabel {

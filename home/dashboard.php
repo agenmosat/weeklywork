@@ -189,31 +189,24 @@ require __DIR__ . '/../partials/header.php';
 
                     <div class="quicknav">
                         <a href="dashboard.php" class="quickitem">
-                            <span class="quickicon">&#128230;</span>
                             <span class="quicklabel">semua produk</span>
                         </a>
                         <a href="dashboard.php?cat=Semen" class="quickitem">
-                            <span class="quickicon">&#129521;</span>
                             <span class="quicklabel">semen &amp; mortar</span>
                         </a>
                         <a href="dashboard.php?cat=Bata" class="quickitem">
-                            <span class="quickicon">&#129522;</span>
                             <span class="quicklabel">bata &amp; batako</span>
                         </a>
                         <a href="dashboard.php?cat=Besi+%26+Baja" class="quickitem">
-                            <span class="quickicon">&#9874;&#65039;</span>
                             <span class="quicklabel">besi &amp; baja</span>
                         </a>
                         <a href="dashboard.php?cat=Excavator" class="quickitem">
-                            <span class="quickicon">&#128668;</span>
                             <span class="quicklabel">sewa alat berat</span>
                         </a>
                         <a href="about.php" class="quickitem">
-                            <span class="quickicon">&#128666;</span>
                             <span class="quicklabel">armada toko</span>
                         </a>
                         <a href="about.php" class="quickitem">
-                            <span class="quickicon">&#128101;</span>
                             <span class="quicklabel">tentang kami</span>
                         </a>
                     </div>
