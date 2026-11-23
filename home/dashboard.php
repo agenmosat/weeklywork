@@ -85,38 +85,142 @@ require __DIR__ . '/../partials/header.php';
 
         <div class="content">
             <?php if ($searchquery === "" && $category === ""): ?>
-                <div class="bannerbox" id="herobanner">
-                    <div class="bannerslider">
-                        <div class="bannerslide active bannerslideone">
-                            <span class="bannertag">promo proyek konstruksi</span>
-                            <div class="bannertitle">Semen, Bata &amp; Material Bangunan Berkualitas</div>
-                            <div class="bannerdesc">Penyedia resmi bahan bangunan standar SNI untuk proyek rumah, gedung, dan infrastruktur dengan jaminan harga grosir langsung dari distributor.</div>
-                            <a href="#katalog" class="bannerbtn" onclick="document.querySelector('.heading').scrollIntoView({behavior:'smooth'}); return false;">belanja sekarang &rarr;</a>
+                <div class="bannersection">
+                    <div class="bannergrid">
+                        <div class="bannermain" id="herobanner">
+                            <div class="bannerslider">
+                                <div class="bannerslide active bannerslideone">
+                                    <div class="bannerslideinner">
+                                        <div class="bannercontent">
+                                            <span class="bannertag">promo proyek konstruksi</span>
+                                            <div class="bannertitle">Semen, Bata &amp; Material Bangunan Berkualitas</div>
+                                            <div class="bannerdesc">Penyedia resmi bahan bangunan standar SNI untuk proyek rumah, gedung, dan infrastruktur dengan jaminan harga grosir langsung dari distributor.</div>
+                                            <a href="#katalog" class="bannerbtn">belanja sekarang &rarr;</a>
+                                        </div>
+                                        <div class="bannerbadge">
+                                            <div class="bannerbadgetext">HEMAT 25%</div>
+                                            <div class="bannerbadgesub">Grosir Semen &amp; Bata</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bannerslide bannerslidetwo">
+                                    <div class="bannerslideinner">
+                                        <div class="bannercontent">
+                                            <span class="bannertag">sewa alat berat</span>
+                                            <div class="bannertitle">Excavator, Crane &amp; Bulldozer Siap Kerja</div>
+                                            <div class="bannerdesc">Rental alat berat harian, mingguan, dan bulanan lengkap dengan operator berpengalaman, bahan bakar, dan jaminan servis di lapangan.</div>
+                                            <a href="dashboard.php?cat=Excavator" class="bannerbtn">lihat katalog alat berat &rarr;</a>
+                                        </div>
+                                        <div class="bannerbadge">
+                                            <div class="bannerbadgetext">OPERATOR SIAP</div>
+                                            <div class="bannerbadgesub">Gratis Mobilisasi</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bannerslide bannerslidethree">
+                                    <div class="bannerslideinner">
+                                        <div class="bannercontent">
+                                            <span class="bannertag">armada pengiriman toko</span>
+                                            <div class="bannertitle">Kirim Cepat Langsung ke Titik Proyek Anda</div>
+                                            <div class="bannerdesc">Armada truk dump dan pick-up toko siap antar material tepat waktu ke seluruh area Surabaya, Sidoarjo, Gresik, dan sekitarnya.</div>
+                                            <a href="about.php" class="bannerbtn">informasi armada toko &rarr;</a>
+                                        </div>
+                                        <div class="bannerbadge">
+                                            <div class="bannerbadgetext">KIRIM CEPAT</div>
+                                            <div class="bannerbadgesub">Same Day Delivery</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bannerslide bannerslidefour">
+                                    <div class="bannerslideinner">
+                                        <div class="bannercontent">
+                                            <span class="bannertag">besi &amp; baja sni</span>
+                                            <div class="bannertitle">Besi Beton Ulir, Polos &amp; Baja Ringan SNI</div>
+                                            <div class="bannerdesc">Stok lengkap besi beton berbagai ukuran dengan sertifikat resmi pabrik. Potong dan bending sesuai spesifikasi proyek Anda.</div>
+                                            <a href="dashboard.php?cat=Besi+%26+Baja" class="bannerbtn">cek harga besi &rarr;</a>
+                                        </div>
+                                        <div class="bannerbadge">
+                                            <div class="bannerbadgetext">STANDAR SNI</div>
+                                            <div class="bannerbadgesub">Toleransi Resmi</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bannerslide bannerslidefive">
+                                    <div class="bannerslideinner">
+                                        <div class="bannercontent">
+                                            <span class="bannertag">paket borongan</span>
+                                            <div class="bannertitle">Belanja Borongan Makin Hemat dan Praktis</div>
+                                            <div class="bannerdesc">Konsultasikan kebutuhan material proyek Anda ke tim fivefonders.net. Dapatkan penawaran harga khusus kontraktor dan arsitek.</div>
+                                            <a href="about.php" class="bannerbtn">konsultasi proyek &rarr;</a>
+                                        </div>
+                                        <div class="bannerbadge">
+                                            <div class="bannerbadgetext">DISKON KHUSUS</div>
+                                            <div class="bannerbadgesub">Kontraktor &amp; Mandor</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="bannerprev" id="bannerprev" aria-label="sebelumnya">&lsaquo;</button>
+                            <button type="button" class="bannernext" id="bannernext" aria-label="selanjutnya">&rsaquo;</button>
+                            <div class="bannerdots">
+                                <button type="button" class="bannerdot active" data-slide="0" aria-label="slide 1"></button>
+                                <button type="button" class="bannerdot" data-slide="1" aria-label="slide 2"></button>
+                                <button type="button" class="bannerdot" data-slide="2" aria-label="slide 3"></button>
+                                <button type="button" class="bannerdot" data-slide="3" aria-label="slide 4"></button>
+                                <button type="button" class="bannerdot" data-slide="4" aria-label="slide 5"></button>
+                            </div>
                         </div>
-                        <div class="bannerslide bannerslidetwo">
-                            <span class="bannertag">sewa alat berat</span>
-                            <div class="bannertitle">Excavator, Crane &amp; Bulldozer Siap Kerja</div>
-                            <div class="bannerdesc">Rental alat berat harian, mingguan, dan bulanan lengkap dengan operator berpengalaman, bahan bakar, dan jaminan servis di lapangan.</div>
-                            <a href="dashboard.php?cat=Excavator" class="bannerbtn">lihat katalog alat berat &rarr;</a>
-                        </div>
-                        <div class="bannerslide bannerslidethree">
-                            <span class="bannertag">armada pengiriman toko</span>
-                            <div class="bannertitle">Kirim Cepat Langsung ke Titik Proyek Anda</div>
-                            <div class="bannerdesc">Armada truk dump dan pick-up toko siap antar material tepat waktu ke seluruh area Surabaya, Sidoarjo, Gresik, dan sekitarnya.</div>
-                            <a href="about.php" class="bannerbtn">informasi armada toko &rarr;</a>
+
+                        <div class="bannerside">
+                            <div class="promocard promocardone">
+                                <span class="promotag">flash deal</span>
+                                <div class="promotitle">Flash Deal Semen Gresik &amp; Tiga Roda</div>
+                                <div class="promodesc">Potongan harga spesial khusus pembelian minimal 50 sak hari ini.</div>
+                                <a href="dashboard.php?cat=Semen" class="promolink">klaim diskon &rarr;</a>
+                            </div>
+                            <div class="promocard promocardtwo">
+                                <span class="promotag">paket kontraktor</span>
+                                <div class="promotitle">Paket Sewa Excavator + Truk Dump</div>
+                                <div class="promodesc">Paket bundling hemat pengerjaan galian dan pembuangan puing.</div>
+                                <a href="dashboard.php?cat=Excavator" class="promolink">lihat paket &rarr;</a>
+                            </div>
                         </div>
                     </div>
-                    <button type="button" class="bannerprev" id="bannerprev" aria-label="sebelumnya">&lsaquo;</button>
-                    <button type="button" class="bannernext" id="bannernext" aria-label="selanjutnya">&rsaquo;</button>
-                    <div class="bannerdots">
-                        <button type="button" class="bannerdot active" data-slide="0" aria-label="slide 1"></button>
-                        <button type="button" class="bannerdot" data-slide="1" aria-label="slide 2"></button>
-                        <button type="button" class="bannerdot" data-slide="2" aria-label="slide 3"></button>
+
+                    <div class="quicknav">
+                        <a href="dashboard.php" class="quickitem">
+                            <span class="quickicon">&#128230;</span>
+                            <span class="quicklabel">semua produk</span>
+                        </a>
+                        <a href="dashboard.php?cat=Semen" class="quickitem">
+                            <span class="quickicon">&#129521;</span>
+                            <span class="quicklabel">semen &amp; mortar</span>
+                        </a>
+                        <a href="dashboard.php?cat=Bata" class="quickitem">
+                            <span class="quickicon">&#129522;</span>
+                            <span class="quicklabel">bata &amp; batako</span>
+                        </a>
+                        <a href="dashboard.php?cat=Besi+%26+Baja" class="quickitem">
+                            <span class="quickicon">&#9874;&#65039;</span>
+                            <span class="quicklabel">besi &amp; baja</span>
+                        </a>
+                        <a href="dashboard.php?cat=Excavator" class="quickitem">
+                            <span class="quickicon">&#128668;</span>
+                            <span class="quicklabel">sewa alat berat</span>
+                        </a>
+                        <a href="about.php" class="quickitem">
+                            <span class="quickicon">&#128666;</span>
+                            <span class="quicklabel">armada toko</span>
+                        </a>
+                        <a href="about.php" class="quickitem">
+                            <span class="quickicon">&#128101;</span>
+                            <span class="quicklabel">tentang kami</span>
+                        </a>
                     </div>
                 </div>
             <?php endif; ?>
 
-            <div class="heading">
+            <div class="heading" id="katalog">
                 <?php
                 if ($searchquery != "") {
                     echo "hasil pencarian: " . htmlspecialchars($searchquery);
