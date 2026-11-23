@@ -75,9 +75,7 @@ require __DIR__ . '/../partials/header.php';
                 <div class="servingtext">Tim dukungan pelanggan kami siap membantu kelancaran pengadaan material konstruksi dan kebutuhan alat berat Anda.</div>
 
                 <ul class="servinglist">
-                    <li class="servingitem"><strong>Layanan WhatsApp</strong>: +62 812-3456-7890 (Respon cepat 08.00 - 17.00 WIB)</li>
-                    <li class="servingitem"><strong>Email Dukungan</strong>: bantuan@fivefonders.net</li>
-                    <li class="servingitem"><strong>Kantor &amp; Gudang Utama</strong>: Jl. Raya Konstruksi No. 45, Rungkut Industri, Surabaya, Jawa Timur</li>
+                    <li class="servingitem"><strong>Layanan Email</strong>: help@fivefonders.net</li>
                     <li class="servingitem"><strong>Jam Operasional</strong>: Senin - Sabtu: 08.00 - 17.00 WIB (Minggu &amp; Hari Libur Nasional tutup)</li>
                 </ul>
             </div>
