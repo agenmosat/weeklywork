@@ -52,10 +52,12 @@ require __DIR__ . '/../partials/header.php';
         <div class="content">
             <div class="heading">tentang kami</div>
 
-            <div class="emptybox aboutbox">
-                <img src="../images/teamimage.webp" alt="tim fivefonders.net" class="aboutimage">
-                <div class="sidetitle">tentang fivefonders.net</div>
-                <div class="detaildesc">
+            <div class="aboutcard">
+                <div class="aboutphoto">
+                    <img src="../images/teamimage.webp" alt="tim fivefonders.net" class="aboutimage">
+                </div>
+                <div class="abouttitle">tentang fivefonders.net</div>
+                <div class="aboutdesc">
                     fivefonders.net adalah aplikasi platform marketplace modern yang dirancang untuk menghubungkan penjual (UMKM maupun individu) dengan pembeli dalam satu ekosistem transaksi yang cepat, transparan, dan aman. Proyek ini dibangun secara kolaboratif oleh tim beranggotakan 5 orang dengan fokus pada pengalaman pengguna (user experience) yang intuitif, keamanan transaksi melalui sistem rekening bersama (escrow), serta efisiensi manajemen toko bagi penjual..
                 </div>
             </div>

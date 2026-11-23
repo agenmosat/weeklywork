@@ -648,12 +648,48 @@ body.themedark .itemprice { color: var(--textmain); }
     box-shadow: var(--shadow);
 }
 
+.aboutcard {
+    border: 1px solid var(--border);
+    background-color: var(--bgcard);
+    padding: 28px 24px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+.aboutphoto {
+    max-width: 680px;
+    margin: 0 auto 20px auto;
+    border: 1px solid var(--border);
+    background-color: var(--bgsoft);
+    padding: 8px;
+    box-shadow: var(--shadow);
+}
+
 .aboutimage {
-    max-width: 675px;
     width: 100%;
     height: auto;
     display: block;
-    margin: 0 auto 16px auto;
+}
+
+.abouttitle {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--textmain);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--accent);
+    display: inline-block;
+}
+
+.aboutdesc {
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--textdim);
+    max-width: 820px;
+    margin: 0 auto;
 }
 
 .detailbox {
@@ -983,6 +1019,8 @@ body.themedark .card { border: 1px solid var(--border); box-shadow: var(--shadow
     .quicknav { gap: 6px; padding: 8px; }
     .quickitem { min-width: 80px; padding: 8px 6px; }
     .quicklabel { font-size: 10px; }
+    .aboutcard { padding: 18px 14px; }
+    .teamcard { max-width: 100%; flex: 1 1 100%; }
     .footergrid { gap: 20px; }
 }
 
@@ -1115,22 +1153,31 @@ body.themedark .card { border: 1px solid var(--border); box-shadow: var(--shadow
 
 .teamcard {
     flex: 1 1 200px;
-    max-width: 240px;
+    max-width: 230px;
     background-color: var(--bgcard);
     border: 1px solid var(--border);
-    padding: 16px;
+    padding: 20px 16px;
     text-align: center;
     box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.teamcard:hover {
+    border-color: var(--accent);
+    box-shadow: var(--shadowhover);
 }
 
 .photoframe {
-    width: 140px;
-    height: 140px;
-    margin: 0 auto 12px auto;
-    padding: 6px;
+    width: 130px;
+    height: 130px;
+    margin: 0 auto 14px auto;
+    padding: 4px;
     background-color: var(--bgsoft);
-    border: 3px solid var(--borderstrong);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1146,29 +1193,37 @@ body.themedark .card { border: 1px solid var(--border); box-shadow: var(--shadow
 
 .membername {
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 800;
     color: var(--textmain);
-    margin-bottom: 4px;
+    margin-bottom: 6px;
 }
 
 .memberword {
-    font-size: 13px;
+    font-size: 12px;
+    font-style: italic;
     color: var(--textdim);
-    margin-bottom: 16px;
+    background-color: var(--bgsoft);
+    border-left: 3px solid var(--accent);
+    padding: 6px 10px;
+    margin-bottom: 12px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .memberrole {
-    font-size: 14px;
-    font-weight: bold;
-    color: var(--linkcolor);
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--accent);
     text-transform: uppercase;
+    letter-spacing: 0.5px;
     margin-bottom: 8px;
 }
 
 .memberdesc {
     font-size: 12px;
     color: var(--textdim);
-    line-height: 1.4;
+    line-height: 1.5;
+    margin-top: auto;
 }
 
 html {
