@@ -123,7 +123,7 @@ require __DIR__ . '/../partials/header.php';
                                             <span class="bannertag">armada pengiriman toko</span>
                                             <div class="bannertitle">Kirim Cepat Langsung ke Titik Proyek Anda</div>
                                             <div class="bannerdesc">Armada truk dump dan pick-up toko siap antar material tepat waktu ke seluruh area Surabaya, Sidoarjo, Gresik, dan sekitarnya.</div>
-                                            <a href="about.php" class="bannerbtn">informasi armada toko &rarr;</a>
+                                            <a href="serving.php#pengiriman" class="bannerbtn">informasi armada toko &rarr;</a>
                                         </div>
                                         <div class="bannerbadge">
                                             <div class="bannerbadgetext">KIRIM CEPAT</div>
@@ -151,7 +151,7 @@ require __DIR__ . '/../partials/header.php';
                                             <span class="bannertag">paket borongan</span>
                                             <div class="bannertitle">Belanja Borongan Makin Hemat dan Praktis</div>
                                             <div class="bannerdesc">Konsultasikan kebutuhan material proyek Anda ke tim fivefonders.net. Dapatkan penawaran harga khusus kontraktor dan arsitek.</div>
-                                            <a href="about.php" class="bannerbtn">konsultasi proyek &rarr;</a>
+                                            <a href="serving.php#kontak" class="bannerbtn">konsultasi proyek &rarr;</a>
                                         </div>
                                         <div class="bannerbadge">
                                             <div class="bannerbadgetext">DISKON KHUSUS</div>
@@ -203,7 +203,7 @@ require __DIR__ . '/../partials/header.php';
                         <a href="dashboard.php?cat=Excavator" class="quickitem">
                             <span class="quicklabel">sewa alat berat</span>
                         </a>
-                        <a href="about.php" class="quickitem">
+                        <a href="serving.php#pengiriman" class="quickitem">
                             <span class="quicklabel">armada toko</span>
                         </a>
                         <a href="about.php" class="quickitem">

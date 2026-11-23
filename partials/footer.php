@@ -14,19 +14,19 @@ if (file_exists('assets/main.js')) {
             <div class="footercol">
                 <div class="footertitle">layanan pelanggan</div>
                 <ul class="footerlist">
-                    <li class="footeritem"><a href="<?= $footerbase ?>home/about.php" class="footerlink">pusat bantuan</a></li>
-                    <li class="footeritem"><a href="<?= $footerbase ?>home/about.php" class="footerlink">cara pemesanan</a></li>
-                    <li class="footeritem"><a href="<?= $footerbase ?>home/about.php" class="footerlink">pengiriman armada</a></li>
-                    <li class="footeritem"><a href="<?= $footerbase ?>home/about.php" class="footerlink">syarat dan ketentuan</a></li>
+                    <li class="footeritem"><a href="<?= $footerbase ?>home/serving.php#bantuan" class="footerlink">pusat bantuan</a></li>
+                    <li class="footeritem"><a href="<?= $footerbase ?>home/serving.php#pemesanan" class="footerlink">cara pemesanan</a></li>
+                    <li class="footeritem"><a href="<?= $footerbase ?>home/serving.php#pengiriman" class="footerlink">pengiriman armada</a></li>
+                    <li class="footeritem"><a href="<?= $footerbase ?>home/serving.php#syarat" class="footerlink">syarat dan ketentuan</a></li>
                 </ul>
             </div>
             <div class="footercol">
                 <div class="footertitle">tentang fivefonders</div>
                 <ul class="footerlist">
                     <li class="footeritem"><a href="<?= $footerbase ?>home/about.php" class="footerlink">tentang kami</a></li>
-                    <li class="footeritem"><a href="<?= $footerbase ?>home/about.php" class="footerlink">tim pengembang</a></li>
+                    <li class="footeritem"><a href="<?= $footerbase ?>home/about.php#tim" class="footerlink">tim pengembang</a></li>
                     <li class="footeritem"><a href="<?= $footerbase ?>home/dashboard.php" class="footerlink">katalog produk</a></li>
-                    <li class="footeritem"><a href="<?= $footerbase ?>home/about.php" class="footerlink">hubungi kami</a></li>
+                    <li class="footeritem"><a href="<?= $footerbase ?>home/serving.php#kontak" class="footerlink">hubungi kami</a></li>
                 </ul>
             </div>
             <div class="footercol">
