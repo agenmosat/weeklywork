@@ -16,27 +16,34 @@ if (file_exists('config/database.php')) {
 }
 ?>
 <div class="topbar">
-    <a href="<?php echo $topbarbase; ?>home/dashboard.php" class="brand">darkfonder<span class="branddot">.</span>net</a>
+    <a href="<?php echo $topbarbase; ?>home/dashboard.php" class="brand">fivefonders<span class="branddot">.</span>net</a>
     <form action="<?php echo $topbarbase; ?>home/dashboard.php" method="get" class="searchbox">
-        <input type="text" name="q" placeholder="search building materials..." class="searchinput" value="<?php echo htmlspecialchars($topbarquery); ?>">
-        <button type="submit" class="searchbtn">search</button>
+        <input type="text" name="q" placeholder="cari bahan bangunan..." class="searchinput" value="<?php echo htmlspecialchars($topbarquery); ?>">
+        <button type="submit" class="searchbtn">cari</button>
     </form>
     <div class="topnav">
-        <a href="<?php echo $topbarbase; ?>home/dashboard.php" class="navlink">store</a>
+        <a href="<?php echo $topbarbase; ?>home/dashboard.php" class="navlink">katalog</a>
+        <a href="<?php echo $topbarbase; ?>home/about.php" class="navlink">tentang</a>
         <?php if (isset($_SESSION['role']) && $_SESSION['role'] === "admin"): ?>
             <a href="<?php echo $topbarbase; ?>admin/admin.php" class="navlink">admin</a>
         <?php elseif (isset($_SESSION['role']) && $_SESSION['role'] === "cashier"): ?>
             <a href="<?php echo $topbarbase; ?>admin/cashier/cashier.php" class="navlink">cashier</a>
         <?php endif; ?>
-        <a href="<?php echo $topbarbase; ?>home/cart.php" class="navlink cartlink">cart <span class="cartcount"><?php echo $topbarcartcount; ?></span></a>
+        <a href="<?php echo $topbarbase; ?>home/cart.php" class="navlink cartlink">keranjang <span class="cartcount"><?php echo $topbarcartcount; ?></span></a>
         <?php if (isset($_SESSION['user'])): ?>
-            <span class="userbadge"><?php echo htmlspecialchars($_SESSION['user']); ?></span>
+            <?php $topuser = is_array($_SESSION['user']) ? ($_SESSION['user']['username'] ?? 'user') : $_SESSION['user']; ?>
+            <span class="userbadge"><?php echo htmlspecialchars($topuser); ?></span>
+            <form method="post" action="<?php echo $topbarbase . 'logout.php'; ?>" class="logoutform">
+                <button type="submit" class="logoutbtn">keluar</button>
+            </form>
+        <?php else: ?>
+            <span class="userbadge">tamu</span>
+            <a href="<?php echo $topbarbase; ?>index.php?login=1" class="navlink">masuk</a>
         <?php endif; ?>
-        <a href="<?php echo $topbarbase; ?>logout.php" class="navlink">logout</a>
         <div class="themeswitcher">
             <select id="themepick" class="themeselect" onchange="switchtheme(this.value)" aria-label="theme">
-                <option value="themelight">light</option>
-                <option value="themedark">dark</option>
+                <option value="themelight">terang</option>
+                <option value="themedark">gelap</option>
             </select>
         </div>
     </div>

@@ -1,10 +1,10 @@
 <?php
 require_once __DIR__ . '/../includes/session.php';
 require_once __DIR__ . '/../includes/items.php';
-require_once __DIR__ . '/../includes/transaksi_helper.php';
+require_once __DIR__ . '/../includes/transaksihelper.php';
 
 if (!isset($_SESSION['user'])) {
-    header("Location: ../index.php");
+    header("Location: ../index.php?login=1");
     exit();
 }
 
@@ -35,16 +35,9 @@ if ($subtotal <= 0) {
     header("Location: cart.php");
     exit();
 }
+$pagetitle = "metode pembayaran - fivefonders.net";
+require __DIR__ . '/../partials/header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>payment - darkfonder.net</title>
-    <link rel="stylesheet" href="../assets/style.css?v=3">
-</head>
-<body class="marketpage themelight">
 
     <?php require __DIR__ . '/../partials/topbar.php'; ?>
 
@@ -52,8 +45,8 @@ if ($subtotal <= 0) {
         <?php require __DIR__ . '/../partials/sidebar.php'; ?>
 
         <div class="content">
-            <a href="checkout.php" class="backlink">&laquo; back to checkout</a>
-            <div class="heading">payment gateway [escrow deposit]</div>
+            <a href="checkout.php" class="backlink">&laquo; kembali ke checkout</a>
+            <div class="heading">pembayaran pesanan</div>
 
             <form action="invoice.php" method="post" class="formbox">
                 <?= csrf_field(); ?>
@@ -68,58 +61,55 @@ if ($subtotal <= 0) {
 
                 <div class="paybox">
                     <div class="receiptnotice">
-                        dispatch target: <strong><?php echo htmlspecialchars($name); ?></strong>, <?php echo htmlspecialchars($address); ?>, <?php echo htmlspecialchars($city); ?>
+                        tujuan pengiriman: <strong><?php echo htmlspecialchars($name); ?></strong>, <?php echo htmlspecialchars($address); ?>, <?php echo htmlspecialchars($city); ?>
                     </div>
 
-                    <div class="sidetitle">select settlement method</div>
+                    <div class="sidetitle">pilih metode pembayaran</div>
 
                     <div class="paymethod">
                         <label>
-                            <input type="radio" name="method" value="crypto escrow" checked> anonymous crypto escrow (xmr monero / btc bitcoin)
+                            <input type="radio" name="method" value="bank transfer" checked> transfer bank (bca / mandiri / bri / bni)
                         </label>
                     </div>
 
                     <div class="paymethod">
                         <label>
-                            <input type="radio" name="method" value="credit card"> credit or debit card
+                            <input type="radio" name="method" value="cash on delivery"> bayar di tempat (cod / tunai saat barang sampai)
+                        </label>
+                    </div>
+
+                    <div class="paymethod">
+                        <label>
+                            <input type="radio" name="method" value="qris"> qris / e-wallet (gopay, ovo, dana, shopeepay)
+                        </label>
+                    </div>
+
+                    <div class="paymethod">
+                        <label>
+                            <input type="radio" name="method" value="credit card"> kartu kredit / debit
                         </label>
                         <div class="cardinputs">
                             <div class="formrow">
-                                <label class="formlabel">card number</label>
+                                <label class="formlabel">nomor kartu</label>
                                 <input type="text" class="forminput" value="4111 2222 3333 4444">
                             </div>
                             <div class="formrow">
-                                <label class="formlabel">expiry date</label>
+                                <label class="formlabel">masa berlaku</label>
                                 <input type="text" class="forminput" value="12/28">
                             </div>
                             <div class="formrow">
-                                <label class="formlabel">security code cvv</label>
+                                <label class="formlabel">kode cvv</label>
                                 <input type="text" class="forminput" value="123">
                             </div>
                         </div>
                     </div>
 
-                    <div class="paymethod">
-                        <label>
-                            <input type="radio" name="method" value="bank transfer"> wire transfer
-                        </label>
-                    </div>
+                    <div class="summarytotal">total pembayaran: Rp <?php echo number_format($total, 0, ',', '.'); ?></div>
 
-                    <div class="paymethod">
-                        <label>
-                            <input type="radio" name="method" value="cash on delivery"> dead drop cash delivery
-                        </label>
-                    </div>
-
-                    <div class="summarytotal">amount to pay: $<?php echo number_format($total, 2); ?></div>
-
-                    <button type="submit" class="buybtn">confirm and pay $<?php echo number_format($total, 2); ?></button>
+                    <button type="submit" class="buybtn">konfirmasi pesanan Rp <?php echo number_format($total, 0, ',', '.'); ?></button>
                 </div>
             </form>
         </div>
     </div>
 
-<script src="../assets/main.js"></script>
-
-</body>
-</html>
+<?php require __DIR__ . '/../partials/footer.php'; ?>

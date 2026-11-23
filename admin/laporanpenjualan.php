@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/guard.php';
 require_once __DIR__ . '/../config/database.php';
-require_once __DIR__ . '/../includes/transaksi_helper.php';
+require_once __DIR__ . '/../includes/transaksihelper.php';
 
 init_transaksi_tables($koneksi);
 
@@ -43,28 +43,14 @@ if ($query) {
     <?php require __DIR__ . '/../partials/topbar.php'; ?>
 
     <div class="layout">
-        <div class="sidebar">
-            <div class="sidetitle">admin menu</div>
-            <a href="admin.php" class="sidelink">dashboard</a>
-            <a href="product/product.php" class="sidelink">product</a>
-            <a href="cashier/cashier.php" class="sidelink">cashier</a>
-            <a href="supplier/supplier.php" class="sidelink">supplier</a>
-            <a href="penjualan/penjualan.php" class="sidelink">sales</a>
-            <a href="pembelian/pembelian.php" class="sidelink">purchases</a>
-            <a href="checklist.php" class="sidelink">checklist</a>
-            <div class="sidetitle">reports</div>
-            <a href="laporan_penjualan.php" class="sidelink">sales report</a>
-            <a href="laporan_pembelian.php" class="sidelink">purchase report</a>
-            <a href="laporan_stok.php" class="sidelink">stock report</a>
-            <a href="laporan_laba.php" class="sidelink">profit report</a>
-        </div>
+        <?php require __DIR__ . '/../partials/sidebaradmin.php'; ?>
 
         <div class="content">
             <div class="heading">sales summary report</div>
 
             <div class="emptybox">
                 <div class="filterbox">
-                    <form method="get" action="laporan_penjualan.php" class="filterform">
+                    <form method="get" action="laporanpenjualan.php" class="filterform">
                         <label for="tglmulai" class="filterlabel">start date</label>
                         <input type="date" id="tglmulai" name="tgl_mulai" class="forminput dateinput" value="<?= htmlspecialchars($tgl_mulai) ?>">
                         <label for="tglakhir" class="filterlabel">end date</label>

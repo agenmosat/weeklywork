@@ -37,18 +37,8 @@ $pesan = [
 
     <?php require __DIR__ . '/../../partials/topbar.php'; ?>
 
-
     <div class="layout">
-        <div class="sidebar">
-            <div class="sidetitle">admin menu</div>
-            <a href="../admin.php" class="sidelink">dashboard</a>
-            <a href="product.php" class="sidelink">product</a>
-            <a href="../cashier/cashier.php" class="sidelink">cashier</a>
-            <a href="../supplier/supplier.php" class="sidelink">supplier</a>
-            <a href="../penjualan/penjualan.php" class="sidelink">sales</a>
-            <a href="../pembelian/pembelian.php" class="sidelink">purchases</a>
-            <a href="../checklist.php" class="sidelink">checklist</a>
-        </div>
+        <?php require __DIR__ . '/../../partials/sidebaradmin.php'; ?>
 
         <div class="content">
             <div class="heading">crud product</div>
@@ -74,6 +64,10 @@ $pesan = [
                         <th class="cartcell">name</th>
                         <th class="cartcell">price</th>
                         <th class="cartcell">stock</th>
+                        <th class="cartcell">unit</th>
+                        <th class="cartcell">location</th>
+                        <th class="cartcell">rating</th>
+                        <th class="cartcell">sold</th>
                         <th class="cartcell">category</th>
                         <th class="cartcell">action</th>
                     </tr>
@@ -87,6 +81,10 @@ $pesan = [
                         <td class="cartcell"><?= htmlspecialchars($p['name']) ?></td>
                         <td class="cartcell"><?= htmlspecialchars(number_format((float) $p['price'], 2)) ?></td>
                         <td class="cartcell"><?= (int) $p['stock'] ?></td>
+                        <td class="cartcell"><?= htmlspecialchars($p['unit'] ?? 'buah') ?></td>
+                        <td class="cartcell"><?= htmlspecialchars($p['lokasi'] ?? 'Surabaya') ?></td>
+                        <td class="cartcell">&#9733; <?= htmlspecialchars($p['rating'] ?? '4.9') ?></td>
+                        <td class="cartcell"><?= (int) ($p['terjual'] ?? 0) ?></td>
                         <td class="cartcell"><?= htmlspecialchars($p['category']) ?></td>
                         <td class="cartcell">
                             <div class="actionrow">
