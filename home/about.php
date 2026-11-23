@@ -8,35 +8,40 @@ $members = [
         'word' => '"pls kodingkan dulu le"',
         'role' => 'project manager & techinal writer',
         'desc' => 'mengkoordinasikan pengerjaan proyek dan integrasi sistem',
-        'image' => '../images/team/nell.webp'
+        'image' => '../images/team/nell.webp',
+        'github' => 'https://github.com/NyrfHello'
     ],
     [
         'name' => 'Gery',
         'word' => '"mengapa kalian ke branch saya"',
         'role' => 'programmer & system analyst',
         'desc' => 'mengembangkan arsitektur backend dan basis data',
-        'image' => '../images/team/gery.webp'
+        'image' => '../images/team/gery.webp',
+        'github' => 'https://github.com/Gery-Elvan-Prasetyo'
     ],
     [
         'name' => 'Alfredo',
         'word' => '"kalo salah tinggal undo"',
         'role' => 'database manager & devops',
         'desc' => 'mengembangkan fungsionalitas dan logika database',
-        'image' => '../images/team/alredo.webp'
+        'image' => '../images/team/alredo.webp',
+        'github' => 'https://github.com/anotheroom1'
     ],
     [
         'name' => 'Fahri',
         'word' => '"mass we token antum taro mana"',
         'role' => 'qa tester & ui/ux designer',
         'desc' => 'menguji kualitas proyek dan memberitahu ketepatan',
-        'image' => '../images/team/fahri.webp'
+        'image' => '../images/team/fahri.webp',
+        'github' => 'https://github.com/frospan110-dev'
     ],
     [
         'name' => 'Dinda',
         'word' => '"ini gimana caranya dah"',
         'role' => 'programmer & ui/ux designer',
         'desc' => 'mengembangkan tata letak halaman dan dokumentasi',
-        'image' => '../images/team/dinda.webp'
+        'image' => '../images/team/dinda.webp',
+        'github' => 'https://github.com/dinda2009'
     ]
 ];
 
@@ -60,11 +65,11 @@ require __DIR__ . '/../partials/header.php';
                 </div>
             </div>
 
-            <div class="heading">tim pengembang</div>
+            <div class="heading" id="tim">tim pengembang</div>
 
             <div class="teamgrid">
                 <?php foreach ($members as $m): ?>
-                    <div class="teamcard">
+                    <a href="<?php echo htmlspecialchars($m['github']); ?>" target="_blank" rel="noopener noreferrer" class="teamcard">
                         <div class="photoframe">
                             <img src="<?php echo htmlspecialchars($m['image']); ?>" alt="<?php echo htmlspecialchars($m['name']); ?>" class="memberphoto" onerror="this.src='../images/no-image.webp'">
                         </div>
@@ -72,7 +77,7 @@ require __DIR__ . '/../partials/header.php';
                         <div class="memberword"><?php echo htmlspecialchars($m['word']); ?></div>
                         <div class="memberrole"><?php echo htmlspecialchars($m['role']); ?></div>
                         <div class="memberdesc"><?php echo htmlspecialchars($m['desc']); ?></div>
-                    </div>
+                    </a>
                 <?php endforeach; ?>
             </div>
         </div>
