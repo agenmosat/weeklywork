@@ -54,13 +54,13 @@ function markactivelinks() {
 }
 
 function initHeroBanner() {
-    var slider = document.getElementById("heroBanner");
+    var slider = document.getElementById("herobanner") || document.getElementById("heroBanner");
     if (!slider) return;
 
-    var slides = slider.querySelectorAll(".herobanner-slide");
-    var dots = slider.querySelectorAll(".banner-dot");
-    var prevBtn = document.getElementById("bannerPrev");
-    var nextBtn = document.getElementById("bannerNext");
+    var slides = slider.querySelectorAll(".bannerslide, .herobanner-slide");
+    var dots = slider.querySelectorAll(".bannerdot, .banner-dot");
+    var prevBtn = document.getElementById("bannerprev") || document.getElementById("bannerPrev");
+    var nextBtn = document.getElementById("bannernext") || document.getElementById("bannerNext");
     if (!slides || slides.length === 0) return;
 
     var currentIndex = 0;
@@ -76,16 +76,20 @@ function initHeroBanner() {
 
         slides.forEach(function (slide, i) {
             if (i === currentIndex) {
+                slide.classList.add("active");
                 slide.classList.add("is-active");
             } else {
+                slide.classList.remove("active");
                 slide.classList.remove("is-active");
             }
         });
 
         dots.forEach(function (dot, i) {
             if (i === currentIndex) {
+                dot.classList.add("active");
                 dot.classList.add("is-active");
             } else {
+                dot.classList.remove("active");
                 dot.classList.remove("is-active");
             }
         });
@@ -143,6 +147,25 @@ function initHeroBanner() {
 
     showSlide(0);
     startAutoPlay();
+}
+
+function showmoreitems() {
+    var hiddenitems = document.querySelectorAll(".grid .item.loadmorehidden");
+    var batch = 14;
+    for (var i = 0; i < batch && i < hiddenitems.length; i++) {
+        hiddenitems[i].classList.remove("loadmorehidden");
+    }
+    var remaining = document.querySelectorAll(".grid .item.loadmorehidden");
+    if (remaining.length === 0) {
+        var btn = document.getElementById("loadmorebtn");
+        var info = document.getElementById("loadmoreinfo");
+        if (btn) {
+            btn.style.display = "none";
+        }
+        if (info) {
+            info.style.display = "block";
+        }
+    }
 }
 
 if (document.readyState === "loading") {
