@@ -18,18 +18,24 @@
     - ctrl + c (matiin php)
     - sudo /opt/lampp/lampp stop (matiin xampp (nuxnux)) 
 
-# jadi gini le
+# alur work kita
+## aturan universal
+- mau push main harus pull-request dan tunggu persetujuan devops (alfred)
+- kalo buat branch baru apus kalo udah ga kepake 
+- boleh dan bebas di assist tapi wajib paham kodenya 
+- cek hasil kerja satu sama lain dan beritahu opini2 kalian
+
 ## aturan branch
 - main buat deployment ke website
 - kerja buat development kode
 - backup untuk failsafe kalo main rusak
 - 3 itu aja, sisanya bebas
 
-## aturan contrib
+## aturan contribute
 - kalo pake ai dipikir  mas (suruh baca INSTRUCTION.md)
 - commit ga boleh ga mikir
-- jangan asal push ke main apalagi force
-- kalo mau push ke main setidaknya denger asmr dulu (di brannch lain udah aman (stabil))
+- jangan asal push apalagi force
+- kalo mau push ke main setidaknya denger mommy asmr dulu (di branch lain udah aman (stabil))
 - wajib pull sebelum ngoding
 - jangan komentar di kodenya langsung
 - pastikan cek branch saat ini
@@ -38,4 +44,4 @@
 
 ## tugas
 - liat di todo.md
-- inisiatif 
+- inisiatif  
