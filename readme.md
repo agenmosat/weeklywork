@@ -44,4 +44,4 @@
 
 ## tugas
 - liat di todo.md
-- inisiatif 
+- inisiatif  
