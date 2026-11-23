@@ -39,6 +39,7 @@ if (file_exists('config/database.php')) {
         <?php else: ?>
             <span class="userbadge">tamu</span>
             <a href="<?php echo $topbarbase; ?>index.php?login=1" class="navlink">masuk</a>
+            <a href="<?php echo $topbarbase; ?>signup.php" class="navlink">daftar</a>
         <?php endif; ?>
         <div class="themeswitcher">
             <select id="themepick" class="themeselect" onchange="switchtheme(this.value)" aria-label="theme">

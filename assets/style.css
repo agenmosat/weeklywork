@@ -178,7 +178,11 @@ body.themedark .error { background-color: #3B1F1F; }
     font-weight: 700;
     cursor: pointer;
     font-family: var(--font);
-    transition: background-color 0.15s ease, transform 0.1s ease; /* Tambahan transisi */
+    transition: background-color 0.15s ease, transform 0.1s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .enterbtn:active {
@@ -1762,5 +1766,56 @@ body.themedark .quickitem:hover {
     font-size: 12px;
     color: var(--textmute);
     line-height: 1.6;
+}
+
+.captchawrap {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.captchaimg {
+    height: 44px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--borderstrong);
+    cursor: pointer;
+}
+
+.captchainput {
+    flex: 1;
+}
+
+.btncenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.cardrow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+    gap: 10px;
+}
+
+.cardfoot {
+    text-align: right;
+    font-size: 13px;
+    color: var(--textdim);
+    margin-left: auto;
+}
+
+.cardlink {
+    color: var(--linkcolor);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.cardlink:hover {
+    color: var(--linkhover);
+    text-decoration: underline;
 }
 
