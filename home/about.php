@@ -22,7 +22,7 @@ $members = [
         'word' => '"kalo salah tinggal undo"',
         'role' => 'database manager & devops',
         'desc' => 'mengembangkan fungsionalitas dan logika database',
-        'image' => '../images/team/alred.webp'
+        'image' => '../images/team/alredo.webp'
     ],
     [
         'name' => 'Fahri',

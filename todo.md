@@ -6,7 +6,7 @@
     4. harganya tolong mikir mas (status : done)
 
 2. yang ini issues dari kita2 (tambahin aja kalo ada) :v
-    1. uinya yang darkmode masih terlalu kasar (by n, status : issued)
+    1. uinya yang darkmode masih terlalu kasar (by n, status : ongoing)
     2. page pembayarannya masih make yang jual senjata (by n, status : done)
 
 3. issues dari ai :/ (fixed oleh pm (no ai karna ez))
