@@ -8,12 +8,6 @@ config/token.php
 cookies.txt
 .env*
 
-# hasil export database
-*.sql
-!schema.sql
-!config/schema.sql
-!toko.sql
-
 # file editor dan sistem operasi
 .vscode/
 .idea/
