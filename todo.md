@@ -22,3 +22,27 @@
     10. rapikan sidebar kategori biar ga cuma dump 23 list abjad panjang (status : done)
     11. tambahkan info toko lokal dan social proof (lokasi kota, rating, terjual) (status : done)
     12. alur sewa/beli alat berat (crane/excavator) aneh kalo masuk cart belanja biasa bareng bata (status : done)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+error: max_attempt
+success

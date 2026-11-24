@@ -112,6 +112,15 @@ a:hover { color: var(--linkhover); text-decoration: none; }
 
 .subtitle { font-size: 15px; color: var(--textdim); margin-bottom: 20px; }
 
+.infomessage {
+  color: #0366d6;
+  background: #f1f8ff;
+  border-color: #9ACAFB;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 14px;
+}
+
 .error {
     color: var(--danger);
     font-size: 15px;

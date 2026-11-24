@@ -5,6 +5,7 @@ require_once __DIR__ . '/config/database.php';
 $attempts_key = 'login_attempts';
 $now = time();
 $message = "";
+$error = "";
 
 if (isset($_SESSION['user'])) {
     if (isset($_SESSION['role']) && $_SESSION['role'] = "admin") {
@@ -40,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['enter']) || isset($_
     csrf_verify();
     if ($attempt_data['count'] >= $max_attempts) {
         $remaining = ceil(($lockout_seconds - ($now - $attempt_data['last'])) / 60);
-        $message = "Terlalu banyak percobaan login. Silakan tunggu " . $remaining . " menit.";
+        $error = "Terlalu banyak percobaan login. Silakan tunggu " . $remaining . " menit.";
     } else {
         $username = trim($_POST['username'] ?? $_POST['token'] ?? '');
         $password = (string)($_POST['password'] ?? $_POST['token'] ?? '');
@@ -118,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['enter']) || isset($_
             }
             $_SESSION[$attempts_key]['count']++;
             $_SESSION[$attempts_key]['last'] = $now;
-            $message = "nama pengguna atau kata sandi salah";
+            $error = "nama pengguna atau kata sandi salah";
         }
     }
 }
@@ -143,8 +144,12 @@ if (isset($_GET['logout'])) {
         <div class="title">masuk</div>
         <div class="subtitle">masuk ke akun anda</div>
 
+        <?php if ($error != ""): ?>
+            <div class="error"><?php echo htmlspecialchars($error); ?></div>
+        <?php endif; ?>
+
         <?php if ($message != ""): ?>
-            <div class="error"><?php echo htmlspecialchars($message); ?></div>
+            <div class="infomessage"><?php echo htmlspecialchars($message); ?></div>
         <?php endif; ?>
 
         <form action="" method="post" class="form">
