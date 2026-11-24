@@ -1,12 +1,5 @@
 <?php
 require_once __DIR__ . '/includes/session.php';
-
-if (file_exists(__DIR__ . '/token.php')) {
-    require_once __DIR__ . '/token.php';
-} elseif (file_exists(__DIR__ . '/token.example.php')) {
-    require_once __DIR__ . '/token.example.php';
-}
-
 require_once __DIR__ . '/config/database.php';
 
 $attempts_key = 'login_attempts';

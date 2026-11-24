@@ -12,15 +12,15 @@ concurrency:
 
 jobs:
   web-deploy:
-    name: 🚀 Sync to Hosting via FTP
+    name: Sync to Hosting via FTP
     runs-on: ubuntu-latest
     steps:
-      - name: 🚚 Checkout Repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 2
 
-      - name: 🔐 Generate config/database.php from Secrets
+      - name: Generate config/database.php from Secrets
         run: |
           cat > config/database.php <<'PHP'
           <?php
@@ -44,7 +44,7 @@ jobs:
           }
           PHP
 
-      - name: 📤 Upload Files to InfinityFree
+      - name: Upload Files to InfinityFree
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -62,10 +62,7 @@ jobs:
             ignore/**
             .ignore/**
             cookies.txt
-            db.php
-            token.php
             config/database.example.php
-            token.example.php
             *.sql
             preview.sh
             package.json
