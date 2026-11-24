@@ -1,10 +1,10 @@
 <?php
 http_response_code(404);
-require_once __DIR__ . '/includes/session.php';
+require_once __DIR__ . '/../includes/session.php';
 
 $pagetitle = "404 - halaman tidak ditemukan | fivefonders.net";
-require __DIR__ . '/partials/header.php';
-require __DIR__ . '/partials/topbar.php';
+require __DIR__ . '/../partials/header.php';
+require __DIR__ . '/../partials/topbar.php';
 ?>
 
 <div class="errorsection">
@@ -27,29 +27,29 @@ require __DIR__ . '/partials/topbar.php';
             maaf, halaman yang anda tuju tidak ditemukan atau sedang dalam proses renovasi. silakan periksa alamat url atau cari bahan bangunan yang anda butuhkan melalui kotak pencarian di bawah.
         </p>
 
-        <form action="home/dashboard.php" method="get" class="errorsearch">
+        <form action="../home/dashboard.php" method="get" class="errorsearch">
             <input type="text" name="q" placeholder="cari semen, bata, besi, alat berat..." class="errorinput" required>
             <button type="submit" class="errorsearchbtn">cari</button>
         </form>
 
         <div class="erroractions">
-            <a href="home/dashboard.php" class="errorbtn">kembali ke katalog</a>
-            <a href="home/serving.php" class="errorbtnsec">pusat bantuan</a>
+            <a href="../home/dashboard.php" class="errorbtn">kembali ke katalog</a>
+            <a href="../home/serving.php" class="errorbtnsec">pusat bantuan</a>
         </div>
 
         <div class="errorquick">
             <div class="errorquicktitle">tautan yang mungkin membantu:</div>
             <div class="errorquicklinks">
-                <a href="home/dashboard.php?cat=Semen" class="errorquickitem">semen &amp; mortar</a>
-                <a href="home/dashboard.php?cat=Bata" class="errorquickitem">bata &amp; batako</a>
-                <a href="home/dashboard.php?cat=Besi+%26+Baja" class="errorquickitem">besi &amp; baja</a>
-                <a href="home/cart.php" class="errorquickitem">keranjang</a>
-                <a href="home/about.php" class="errorquickitem">tentang kami</a>
+                <a href="../home/dashboard.php?cat=Semen" class="errorquickitem">semen &amp; mortar</a>
+                <a href="../home/dashboard.php?cat=Bata" class="errorquickitem">bata &amp; batako</a>
+                <a href="../home/dashboard.php?cat=Besi+%26+Baja" class="errorquickitem">besi &amp; baja</a>
+                <a href="../home/cart.php" class="errorquickitem">keranjang</a>
+                <a href="../home/about.php" class="errorquickitem">tentang kami</a>
             </div>
         </div>
     </div>
 </div>
 
 <?php
-require __DIR__ . '/partials/footer.php';
+require __DIR__ . '/../partials/footer.php';
 ?>
