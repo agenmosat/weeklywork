@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__ . '/guard.php';
-require_once __DIR__ . '/../config/database.php';
-require_once __DIR__ . '/../includes/transaksihelper.php';
+require_once __DIR__ . '/../guard.php';
+require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '/../../home/includes/transaksihelper.php';
 
 init_transaksi_tables($koneksi);
 
@@ -43,14 +43,14 @@ $profit_margin = $total_sales > 0 ? ($gross_profit / $total_sales) * 100 : 0.0;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>profit report - darkfonder.net</title>
-    <link rel="stylesheet" href="../assets/style.css?v=3">
+    <link rel="stylesheet" href="../../assets/style.css?v=3">
 </head>
 <body class="marketpage themelight">
 
-    <?php require __DIR__ . '/../partials/topbar.php'; ?>
+    <?php require __DIR__ . '/../../home/partials/topbar.php'; ?>
 
     <div class="layout">
-        <?php require __DIR__ . '/../partials/sidebaradmin.php'; ?>
+        <?php require __DIR__ . '/../../home/partials/sidebaradmin.php'; ?>
 
         <div class="content">
             <div class="heading">gross profit report</div>

@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../includes/gateway.php';
+require_once __DIR__ . '/../home/includes/gateway.php';
 
 header('Content-Type: application/json');
 

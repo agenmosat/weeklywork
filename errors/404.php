@@ -1,10 +1,10 @@
 <?php
 http_response_code(404);
-require_once __DIR__ . '/../includes/session.php';
+require_once __DIR__ . '/../home/includes/session.php';
 
 $pagetitle = "404 - halaman tidak ditemukan | fivefonders.net";
-require __DIR__ . '/../partials/header.php';
-require __DIR__ . '/../partials/topbar.php';
+require __DIR__ . '/../home/partials/header.php';
+require __DIR__ . '/../home/partials/topbar.php';
 ?>
 
 <div class="errorsection">
@@ -51,5 +51,5 @@ require __DIR__ . '/../partials/topbar.php';
 </div>
 
 <?php
-require __DIR__ . '/../partials/footer.php';
+require __DIR__ . '/../home/partials/footer.php';
 ?>

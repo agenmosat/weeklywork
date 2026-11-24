@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__ . '/../includes/session.php';
+require_once __DIR__ . '/../home/includes/session.php';
 require_once __DIR__ . '/../config/database.php';
-require_once __DIR__ . '/../includes/csrf.php';
+require_once __DIR__ . '/../home/includes/csrf.php';
 
 if (isset($_SESSION['user'])) {
     header("Location: ../home/dashboard.php");

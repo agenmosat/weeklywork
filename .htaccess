@@ -5,6 +5,8 @@ RewriteCond %{HTTPS} off
 RewriteCond %{HTTP:X-Forwarded-Proto} !https
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
+RewriteRule ^images/(.*)$ home/images/$1 [L]
+
 # Nonaktifkan directory browsing (opsional, untuk keamanan)
 Options -Indexes
 

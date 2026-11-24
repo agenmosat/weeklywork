@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../includes/session.php';
-require_once __DIR__ . '/../includes/items.php';
+require_once __DIR__ . '/includes/session.php';
+require_once __DIR__ . '/includes/items.php';
 
 
 if (isset($_GET['logout'])) {
@@ -75,13 +75,13 @@ if ($result) {
     }
 }
 $pagetitle = "katalog bahan bangunan - fivefonders.net";
-require __DIR__ . '/../partials/header.php';
+require __DIR__ . '/partials/header.php';
 ?>
 
-    <?php require __DIR__ . '/../partials/topbar.php'; ?>
+    <?php require __DIR__ . '/partials/topbar.php'; ?>
 
     <div class="layout">
-        <?php require __DIR__ . '/../partials/sidebar.php'; ?>
+        <?php require __DIR__ . '/partials/sidebar.php'; ?>
 
         <div class="content">
             <?php if ($searchquery === "" && $category === ""): ?>
@@ -244,7 +244,7 @@ require __DIR__ . '/../partials/header.php';
                     ?>
                         <div class="item <?php echo $ishidden ? 'loadmorehidden' : ''; ?>">
                             <div class="imagebox">
-                                <img src="../<?php echo htmlspecialchars($p['image']); ?>" alt="<?php echo htmlspecialchars($p['name']); ?>" class="productimage" onerror="this.src='../images/no-image.webp'">
+                                <img src="<?php echo htmlspecialchars($p['image']); ?>" alt="<?php echo htmlspecialchars($p['name']); ?>" class="productimage" onerror="this.src='images/no-image.webp'">
                             </div>
                             <a href="product.php?id=<?php echo urlen($p['id']); ?>" class="itemname"><?php echo htmlspecialchars($p['name']); ?></a>
                             <div class="itemprice">Rp <?php echo number_format($p['price'], 0, ',', '.'); ?><?php echo $isalatberat ? ' <span class="unitlabel">/ unit</span>' : ''; ?></div>
@@ -279,4 +279,4 @@ require __DIR__ . '/../partials/header.php';
         </div>
     </div>
 
-<?php require __DIR__ . '/../partials/footer.php'; ?>
+<?php require __DIR__ . '/partials/footer.php'; ?>

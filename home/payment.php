@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__ . '/../includes/session.php';
-require_once __DIR__ . '/../includes/items.php';
-require_once __DIR__ . '/../includes/transaksihelper.php';
+require_once __DIR__ . '/includes/session.php';
+require_once __DIR__ . '/includes/items.php';
+require_once __DIR__ . '/includes/transaksihelper.php';
 
 if (!isset($_SESSION['user'])) {
     header("Location: ../index.php?login=1");
@@ -36,13 +36,13 @@ if ($subtotal <= 0) {
     exit();
 }
 $pagetitle = "metode pembayaran - fivefonders.net";
-require __DIR__ . '/../partials/header.php';
+require __DIR__ . '/partials/header.php';
 ?>
 
-    <?php require __DIR__ . '/../partials/topbar.php'; ?>
+    <?php require __DIR__ . '/partials/topbar.php'; ?>
 
     <div class="layout">
-        <?php require __DIR__ . '/../partials/sidebar.php'; ?>
+        <?php require __DIR__ . '/partials/sidebar.php'; ?>
 
         <div class="content">
             <a href="checkout.php" class="backlink">&laquo; kembali ke checkout</a>
@@ -112,4 +112,4 @@ require __DIR__ . '/../partials/header.php';
         </div>
     </div>
 
-<?php require __DIR__ . '/../partials/footer.php'; ?>
+<?php require __DIR__ . '/partials/footer.php'; ?>
