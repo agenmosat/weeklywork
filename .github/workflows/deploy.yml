@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 concurrency:
   group: production-deploy
@@ -18,14 +19,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 2
-
-      - name: 🔑 Generate token.php from Secrets
-        run: |
-          cat > token.php <<'PHP'
-          <?php
-          const ADMIN_TOKEN = '${{ secrets.TOKEN }}';
-          const USER_TOKEN = '${{ secrets.USER_TOKEN }}';
-          PHP
 
       - name: 🔐 Generate config/database.php from Secrets
         run: |
@@ -67,7 +60,10 @@ jobs:
             **/.git*/**
             .github/**
             ignore/**
+            .ignore/**
             cookies.txt
+            db.php
+            token.php
             config/database.example.php
             token.example.php
             *.sql
@@ -78,4 +74,6 @@ jobs:
             README.md
             readme.md
             instruction.md
+            todo.md
+            .php-cs-fixer*
             public/**
