@@ -174,7 +174,7 @@ if (isset($_GET['logout'])) {
                     </select>
                 </div>
                 <div class="cardfoot" style="text-align:right;margin-left:auto">
-                    belum ada akun? <a href="signup.php" class="cardlink">daftar disini</a>
+                    belum ada akun? <a href="auth/signup.php" class="cardlink">daftar disini</a>
                 </div>
             </div>
         </form>

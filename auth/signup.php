@@ -1,10 +1,10 @@
 <?php
-require_once __DIR__ . '/includes/session.php';
-require_once __DIR__ . '/config/database.php';
-require_once __DIR__ . '/includes/csrf.php';
+require_once __DIR__ . '/../includes/session.php';
+require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../includes/csrf.php';
 
 if (isset($_SESSION['user'])) {
-    header("Location: home/dashboard.php");
+    header("Location: ../home/dashboard.php");
     exit();
 }
 
@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $_SESSION['username'] = $username;
                         $_SESSION['role'] = 'kasir';
                         $_SESSION['id_pengguna'] = $newid;
-                        header("Location: home/dashboard.php");
+                        header("Location: ../home/dashboard.php");
                         exit();
                     }
                 }
@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>daftar</title>
-    <link rel="stylesheet" href="assets/style.css?v=5">
+    <link rel="stylesheet" href="../assets/style.css?v=5">
 </head>
 <body class="page themelight">
 
@@ -103,14 +103,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <div class="field">
                 <div class="captchawrap">
-                    <img src="captcha.php" alt="captcha" class="captchaimg" onclick="this.src='captcha.php?r='+Math.random()" title="klik untuk ganti captcha">
+                    <img src="../api/captcha.php" alt="captcha" class="captchaimg" onclick="this.src='../api/captcha.php?r='+Math.random()" title="klik untuk ganti captcha">
                     <input type="text" name="captcha" class="tokeninput captchainput" placeholder="kode captcha" required autocomplete="off">
                 </div>
             </div>
             <div class="btncenter" style="display:flex;justify-content:center;margin-top:20px">
                 <button type="submit" class="enterbtn">daftar</button>
             </div>
-            <a href="home/dashboard.php" class="sidelink" style="margin-top:14px;text-align:center;display:block">&laquo; lanjutkan sebagai tamu</a>
+            <a href="../home/dashboard.php" class="sidelink" style="margin-top:14px;text-align:center;display:block">&laquo; lanjutkan sebagai tamu</a>
             <div class="cardrow" style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">
                 <div class="themeswitcher">
                     <span class="themelabel">tema</span>
@@ -120,13 +120,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </select>
                 </div>
                 <div class="cardfoot" style="text-align:right;margin-left:auto">
-                    sudah punya akun? <a href="index.php?login=1" class="cardlink">masuk disini</a>
+                    sudah punya akun? <a href="../index.php?login=1" class="cardlink">masuk disini</a>
                 </div>
             </div>
         </form>
     </div>
 
-<script src="assets/main.js"></script>
+<script src="../assets/main.js"></script>
 
 </body>
 </html>

@@ -33,13 +33,13 @@ if (file_exists('config/database.php')) {
         <?php if (isset($_SESSION['user'])): ?>
             <?php $topuser = is_array($_SESSION['user']) ? ($_SESSION['user']['username'] ?? 'user') : $_SESSION['user']; ?>
             <span class="userbadge"><?php echo htmlspecialchars($topuser); ?></span>
-            <form method="post" action="<?php echo $topbarbase . 'logout.php'; ?>" class="logoutform">
+            <form method="post" action="<?php echo $topbarbase . 'auth/logout.php'; ?>" class="logoutform">
                 <button type="submit" class="logoutbtn">keluar</button>
             </form>
         <?php else: ?>
             <span class="userbadge">tamu</span>
             <a href="<?php echo $topbarbase; ?>index.php?login=1" class="navlink">masuk</a>
-            <a href="<?php echo $topbarbase; ?>signup.php" class="navlink">daftar</a>
+            <a href="<?php echo $topbarbase; ?>auth/signup.php" class="navlink">daftar</a>
         <?php endif; ?>
         <div class="themeswitcher">
             <select id="themepick" class="themeselect" onchange="switchtheme(this.value)" aria-label="theme">
