@@ -242,11 +242,11 @@ require __DIR__ . '/partials/header.php';
                         $ishidden = ($itemidx >= $initiallimit);
                         $itemidx++;
                     ?>
-                        <div class="item <?php echo $ishidden ? 'loadmorehidden' : ''; ?>">
+                        <a href="product.php?id=<?php echo urlen($p['id']); ?>" class="item <?php echo $ishidden ? 'loadmorehidden' : ''; ?>">
                             <div class="imagebox">
                                 <img src="<?php echo htmlspecialchars($p['image']); ?>" alt="<?php echo htmlspecialchars($p['name']); ?>" class="productimage" onerror="this.src='images/no-image.webp'">
                             </div>
-                            <a href="product.php?id=<?php echo urlen($p['id']); ?>" class="itemname"><?php echo htmlspecialchars($p['name']); ?></a>
+                            <div class="itemname"><?php echo htmlspecialchars($p['name']); ?></div>
                             <div class="itemprice">Rp <?php echo number_format($p['price'], 0, ',', '.'); ?><?php echo $isalatberat ? ' <span class="unitlabel">/ unit</span>' : ''; ?></div>
                             <div class="itemmeta">
                                 <span class="itemcity"><?php echo htmlspecialchars($p['lokasi']); ?></span> &bull; 
@@ -256,12 +256,12 @@ require __DIR__ . '/partials/header.php';
                             <div class="detaildesc"><?php echo $isalatberat ? 'unit sewa siap operasi' : 'stok: ' . $p['stock'] . ' ' . htmlspecialchars($p['unit']); ?></div>
                             <div class="itemactions">
                                 <?php if ($isalatberat): ?>
-                                    <a href="product.php?id=<?php echo urlen($p['id']); ?>" class="buybtn">ajukan sewa</a>
+                                    <span class="buybtn">ajukan sewa</span>
                                 <?php else: ?>
-                                    <a href="cart.php?add=<?php echo urlen($p['id']); ?>" class="buybtn">+ keranjang</a>
+                                    <span class="buybtn">+ keranjang</span>
                                 <?php endif; ?>
                             </div>
-                        </div>
+                        </a>
                     <?php endforeach; ?>
                 </div>
 
