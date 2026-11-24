@@ -19,13 +19,13 @@ if ($checktable && mysqli_num_rows($checktable) > 0) {
     }
 }
 $pagetitle = "admin - darkfonder.net";
-require __DIR__ . '/../partials/header.php';
+require __DIR__ . '/../home/partials/header.php';
 ?>
 
-    <?php require __DIR__ . '/../partials/topbar.php'; ?>
+    <?php require __DIR__ . '/../home/partials/topbar.php'; ?>
 
     <div class="layout">
-        <?php require __DIR__ . '/../partials/sidebaradmin.php'; ?>
+        <?php require __DIR__ . '/../home/partials/sidebaradmin.php'; ?>
 
         <div class="content">
             <div class="heading">admin dashboard</div>
@@ -66,4 +66,4 @@ require __DIR__ . '/../partials/header.php';
         </div>
     </div>
 
-<?php require __DIR__ . '/../partials/footer.php'; ?>
+<?php require __DIR__ . '/../home/partials/footer.php'; ?>

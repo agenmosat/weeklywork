@@ -1,17 +1,11 @@
 <?php
-require_once __DIR__ . '/includes/session.php';
-
-if (file_exists(__DIR__ . '/token.php')) {
-    require_once __DIR__ . '/token.php';
-} elseif (file_exists(__DIR__ . '/token.example.php')) {
-    require_once __DIR__ . '/token.example.php';
-}
-
+require_once __DIR__ . '/home/includes/session.php';
 require_once __DIR__ . '/config/database.php';
 
 $attempts_key = 'login_attempts';
 $now = time();
 $message = "";
+$error = "";
 
 if (isset($_SESSION['user'])) {
     if (isset($_SESSION['role']) && $_SESSION['role'] = "admin") {
@@ -28,11 +22,11 @@ if (!isset($_GET['login']) && !isset($_GET['status']) && !isset($_GET['timeout']
 }
 
 if (isset($_GET['timeout'])) {
-    $message = "session expired, please login again";
+    $message = "sesi berakhir, silakan masuk kembali";
 } elseif (isset($_GET['status']) && $_GET['status'] === 'logout') {
-    $message = "logged out successfully";
+    $message = "berhasil keluar";
 } elseif (isset($_GET['redirect']) && $_GET['redirect'] === 'checkout') {
-    $message = "please login to continue with your purchase";
+    $message = "silakan masuk untuk melanjutkan pembelian";
 }
 
 $max_attempts = 5;
@@ -47,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['enter']) || isset($_
     csrf_verify();
     if ($attempt_data['count'] >= $max_attempts) {
         $remaining = ceil(($lockout_seconds - ($now - $attempt_data['last'])) / 60);
-        $message = "Terlalu banyak percobaan login. Silakan tunggu " . $remaining . " menit.";
+        $error = "Terlalu banyak percobaan login. Silakan tunggu " . $remaining . " menit.";
     } else {
         $username = trim($_POST['username'] ?? $_POST['token'] ?? '');
         $password = (string)($_POST['password'] ?? $_POST['token'] ?? '');
@@ -125,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['enter']) || isset($_
             }
             $_SESSION[$attempts_key]['count']++;
             $_SESSION[$attempts_key]['last'] = $now;
-            $message = "Username or password incorrect";
+            $error = "nama pengguna atau kata sandi salah";
         }
     }
 }
@@ -141,39 +135,48 @@ if (isset($_GET['logout'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>secret</title>
-    <link rel="stylesheet" href="assets/style.css?v=3">
+    <title>masuk</title>
+    <link rel="stylesheet" href="assets/style.css?v=5">
 </head>
 <body class="page themelight">
 
     <div class="card">
-        <div class="title">access restricted</div>
-        <div class="subtitle">input token to decrypt session</div>
+        <div class="title">masuk</div>
+        <div class="subtitle">masuk ke akun anda</div>
+
+        <?php if ($error != ""): ?>
+            <div class="error"><?php echo htmlspecialchars($error); ?></div>
+        <?php endif; ?>
 
         <?php if ($message != ""): ?>
-            <div class="error"><?php echo htmlspecialchars($message); ?></div>
+            <div class="infomessage"><?php echo htmlspecialchars($message); ?></div>
         <?php endif; ?>
 
         <form action="" method="post" class="form">
             <?= csrf_field(); ?>
             <div class="field">
-                <input type="text" name="username" id="username" class="tokeninput" placeholder="username" required>
+                <input type="text" name="username" id="username" class="tokeninput" placeholder="nama pengguna" required>
             </div>
             <div class="field">
-                <input type="password" name="password" id="token" class="tokeninput" placeholder="password" required>
+                <input type="password" name="password" id="token" class="tokeninput" placeholder="kata sandi" required>
                 <button type="button" id="togglebtn" class="togglebtn" onclick="toggleshow()">?</button>
             </div>
-            <div class="btnwrap">
-                <button type="submit" name="enter" class="enterbtn">enter</button>
+            <div class="btncenter" style="display:flex;justify-content:center;margin-top:20px">
+                <button type="submit" name="enter" class="enterbtn">masuk</button>
+            </div>
+            <a href="home/dashboard.php" class="sidelink" style="margin-top:14px;text-align:center;display:block">&laquo; lanjutkan sebagai tamu</a>
+            <div class="cardrow" style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">
                 <div class="themeswitcher">
-                    <span class="themelabel">theme</span>
+                    <span class="themelabel">tema</span>
                     <select id="themepick" class="themeselect" onchange="switchtheme(this.value)">
-                        <option value="themelight">light</option>
-                        <option value="themedark">dark</option>
+                        <option value="themelight">terang</option>
+                        <option value="themedark">gelap</option>
                     </select>
                 </div>
+                <div class="cardfoot" style="text-align:right;margin-left:auto">
+                    belum ada akun? <a href="auth/signup.php" class="cardlink">daftar disini</a>
+                </div>
             </div>
-            <a href="home/dashboard.php" class="sidelink" style="margin-top:14px;text-align:center;display:block">&laquo; continue as guest</a>
         </form>
     </div>
 

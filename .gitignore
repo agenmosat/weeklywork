@@ -2,15 +2,11 @@
 config/database.php
 
 token.php
+config/token.php
 
 # file sensitif dan sampah lokal
 cookies.txt
 .env*
-
-# hasil export database
-*.sql
-!schema.sql
-!toko.sql
 
 # file editor dan sistem operasi
 .vscode/

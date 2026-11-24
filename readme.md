@@ -29,7 +29,8 @@
 - main buat deployment ke website
 - kerja buat development kode
 - backup untuk failsafe kalo main rusak
-- 3 itu aja, sisanya bebas
+- explain itu branch menjelaskan kode
+- anything bebas lah
 
 ## aturan contribute
 - kalo pake ai dipikir  mas (suruh baca INSTRUCTION.md)

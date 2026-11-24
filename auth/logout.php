@@ -9,10 +9,10 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once __DIR__ . '/includes/csrf.php';
+require_once __DIR__ . '/../home/includes/csrf.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header("Location: index.php");
+    header("Location: ../index.php");
     exit;
 }
 
@@ -29,5 +29,5 @@ if (ini_get("session.use_cookies")) {
 session_regenerate_id(true);
 session_destroy();
 
-header("Location: index.php?status=logout");
+header("Location: ../index.php?status=logout");
 exit;

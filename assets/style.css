@@ -112,6 +112,15 @@ a:hover { color: var(--linkhover); text-decoration: none; }
 
 .subtitle { font-size: 15px; color: var(--textdim); margin-bottom: 20px; }
 
+.infomessage {
+  color: #0366d6;
+  background: #f1f8ff;
+  border-color: #9ACAFB;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 14px;
+}
+
 .error {
     color: var(--danger);
     font-size: 15px;
@@ -178,7 +187,11 @@ body.themedark .error { background-color: #3B1F1F; }
     font-weight: 700;
     cursor: pointer;
     font-family: var(--font);
-    transition: background-color 0.15s ease, transform 0.1s ease; /* Tambahan transisi */
+    transition: background-color 0.15s ease, transform 0.1s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .enterbtn:active {
@@ -1591,13 +1604,24 @@ body.themedark .quickitem:hover {
     align-items: center;
     justify-content: center;
     z-index: 5;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease, background-color 0.15s ease;
+}
+
+.bannermain:hover .bannerprev,
+.bannermain:hover .bannernext,
+.bannerbox:hover .bannerprev,
+.bannerbox:hover .bannernext {
     opacity: 0.9;
+    visibility: visible;
 }
 
 .bannerprev:hover,
 .bannernext:hover {
     background-color: var(--accent);
     color: #111111;
+    opacity: 1;
 }
 
 .bannerprev {
@@ -1751,5 +1775,242 @@ body.themedark .quickitem:hover {
     font-size: 12px;
     color: var(--textmute);
     line-height: 1.6;
+}
+
+.captchawrap {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.captchaimg {
+    height: 44px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--borderstrong);
+    cursor: pointer;
+}
+
+.captchainput {
+    flex: 1;
+}
+
+.btncenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.cardrow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+    gap: 10px;
+}
+
+.cardfoot {
+    text-align: right;
+    font-size: 13px;
+    color: var(--textdim);
+    margin-left: auto;
+}
+
+.cardlink {
+    color: var(--linkcolor);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.cardlink:hover {
+    color: var(--linkhover);
+    text-decoration: underline;
+}
+
+.errorsection {
+    min-height: calc(100vh - 140px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 16px;
+}
+
+.errorcontainer {
+    max-width: 620px;
+    width: 100%;
+    background-color: var(--bgcard);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 40px 32px;
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+
+.errorgraphic {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.errorbadge {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 4px 12px;
+    background-color: var(--bgsoft2);
+    border: 1px solid var(--borderstrong);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accentdark);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.errorcode {
+    font-size: 72px;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--accent);
+    margin: 8px 0;
+    letter-spacing: -2px;
+}
+
+.errortitle {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--textmain);
+    margin: 0 0 12px 0;
+}
+
+.errortext {
+    font-size: 14px;
+    color: var(--textdim);
+    line-height: 1.6;
+    margin: 0 0 24px 0;
+}
+
+.errorsearch {
+    display: flex;
+    max-width: 440px;
+    margin: 0 auto 24px auto;
+    gap: 8px;
+}
+
+.errorinput {
+    flex: 1;
+    padding: 10px 14px;
+    background-color: var(--bginput);
+    border: 1px solid var(--borderstrong);
+    border-radius: var(--radius-sm);
+    color: var(--textmain);
+    font-size: 14px;
+    outline: none;
+    font-family: var(--font);
+}
+
+.errorinput:focus {
+    border-color: var(--accent);
+}
+
+.errorsearchbtn {
+    background-color: var(--accent);
+    color: #111111;
+    border: 1px solid var(--accentdark);
+    border-radius: var(--radius-sm);
+    padding: 10px 18px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.errorsearchbtn:hover {
+    background-color: var(--accentdark);
+}
+
+.erroractions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+}
+
+.errorbtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--btnbg);
+    border: 1px solid var(--btnborder);
+    color: var(--btntext);
+    padding: 10px 22px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: 14px;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+}
+
+.errorbtn:hover {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+.errorbtnsec {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--btnsecondary);
+    border: 1px solid var(--btnsecondaryborder);
+    color: var(--textmain);
+    padding: 10px 22px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+}
+
+.errorbtnsec:hover {
+    background-color: var(--bgsoft2);
+}
+
+.errorquick {
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+}
+
+.errorquicktitle {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--textmute);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+
+.errorquicklinks {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.errorquickitem {
+    font-size: 13px;
+    color: var(--linkcolor);
+    text-decoration: none;
+    background-color: var(--bgsoft);
+    border: 1px solid var(--border);
+    padding: 5px 12px;
+    border-radius: 16px;
+    transition: all 0.15s ease;
+}
+
+.errorquickitem:hover {
+    color: var(--linkhover);
+    border-color: var(--accent);
+    background-color: var(--bgsoft2);
 }
 

@@ -33,7 +33,7 @@ if (!$koneksi) {
 
 $chk_prod = @mysqli_query($koneksi, "SHOW TABLES LIKE 'products'");
 if ($chk_prod && mysqli_num_rows($chk_prod) === 0) {
-    $schemafile = __DIR__ . '/../schema.sql';
+    $schemafile = file_exists(__DIR__ . '/schema.sql') ? __DIR__ . '/schema.sql' : __DIR__ . '/../schema.sql';
     if (file_exists($schemafile)) {
         $sql = file_get_contents($schemafile);
         if ($sql !== false && @mysqli_multi_query($koneksi, $sql)) {

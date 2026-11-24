@@ -1,8 +1,8 @@
 <?php
-require_once __DIR__ . '/../includes/session.php';
-require_once __DIR__ . '/../includes/items.php';
-require_once __DIR__ . '/../includes/gateway.php';
-require_once __DIR__ . '/../includes/transaksihelper.php';
+require_once __DIR__ . '/includes/session.php';
+require_once __DIR__ . '/includes/items.php';
+require_once __DIR__ . '/includes/gateway.php';
+require_once __DIR__ . '/includes/transaksihelper.php';
 
 if (!isset($_SESSION['user'])) {
     header("Location: ../index.php?login=1");
@@ -65,13 +65,13 @@ if ($source === "cart") {
     unset($_SESSION['cart']);
 }
 $pagetitle = "nota pesanan - fivefonders.net";
-require __DIR__ . '/../partials/header.php';
+require __DIR__ . '/partials/header.php';
 ?>
 
-    <?php require __DIR__ . '/../partials/topbar.php'; ?>
+    <?php require __DIR__ . '/partials/topbar.php'; ?>
 
     <div class="layout">
-        <?php require __DIR__ . '/../partials/sidebar.php'; ?>
+        <?php require __DIR__ . '/partials/sidebar.php'; ?>
 
         <div class="content">
             <div class="receiptbox">
@@ -139,4 +139,4 @@ require __DIR__ . '/../partials/header.php';
         </div>
     </div>
 
-<?php require __DIR__ . '/../partials/footer.php'; ?>
+<?php require __DIR__ . '/partials/footer.php'; ?>

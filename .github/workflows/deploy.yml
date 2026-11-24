@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 concurrency:
   group: production-deploy
@@ -11,23 +12,15 @@ concurrency:
 
 jobs:
   web-deploy:
-    name: 🚀 Sync to Hosting via FTP
+    name: Sync to Hosting via FTP
     runs-on: ubuntu-latest
     steps:
-      - name: 🚚 Checkout Repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 2
 
-      - name: 🔑 Generate token.php from Secrets
-        run: |
-          cat > token.php <<'PHP'
-          <?php
-          const ADMIN_TOKEN = '${{ secrets.TOKEN }}';
-          const USER_TOKEN = '${{ secrets.USER_TOKEN }}';
-          PHP
-
-      - name: 🔐 Generate config/database.php from Secrets
+      - name: Generate config/database.php from Secrets
         run: |
           cat > config/database.php <<'PHP'
           <?php
@@ -51,7 +44,7 @@ jobs:
           }
           PHP
 
-      - name: 📤 Upload Files to InfinityFree
+      - name: Upload Files to InfinityFree
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -67,9 +60,9 @@ jobs:
             **/.git*/**
             .github/**
             ignore/**
+            .ignore/**
             cookies.txt
             config/database.example.php
-            token.example.php
             *.sql
             preview.sh
             package.json
@@ -78,4 +71,6 @@ jobs:
             README.md
             readme.md
             instruction.md
+            todo.md
+            .php-cs-fixer*
             public/**

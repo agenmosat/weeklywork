@@ -40,10 +40,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body class="marketpage themelight">
 
-    <?php require __DIR__ . '/../../partials/topbar.php'; ?>
+    <?php require __DIR__ . '/../../home/partials/topbar.php'; ?>
 
     <div class="layout">
-        <?php require __DIR__ . '/../../partials/sidebaradmin.php'; ?>
+        <?php require __DIR__ . '/../../home/partials/sidebaradmin.php'; ?>
 
         <div class="content">
             <div class="heading">crud supplier - add</div>

@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../includes/session.php';
+require_once __DIR__ . '/../home/includes/session.php';
 if (!isset($_SESSION['user'])) {
     $target = file_exists('index.php') ? 'index.php' : (file_exists('../index.php') ? '../index.php' : '../../index.php');
     header('Location: ' . $target . '?login=1');

@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (isset($_FILES['imagefile']) && $_FILES['imagefile']['error'] === UPLOAD_ERR_OK) {
         $filename = basename($_FILES['imagefile']['name']);
-        $targetdir = __DIR__ . '/../../images/';
+        $targetdir = __DIR__ . '/../../home/images/';
         $targetfile = $targetdir . $filename;
         if (move_uploaded_file($_FILES['imagefile']['tmp_name'], $targetfile)) {
             $image = 'images/' . $filename;
@@ -83,10 +83,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body class="marketpage themelight">
 
-    <?php require __DIR__ . '/../../partials/topbar.php'; ?>
+    <?php require __DIR__ . '/../../home/partials/topbar.php'; ?>
 
     <div class="layout">
-        <?php require __DIR__ . '/../../partials/sidebaradmin.php'; ?>
+        <?php require __DIR__ . '/../../home/partials/sidebaradmin.php'; ?>
 
         <div class="content">
             <div class="heading">crud product - add</div>

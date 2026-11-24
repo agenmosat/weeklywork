@@ -12,10 +12,10 @@ $store = file_exists('admin.php') ? '../home/dashboard.php' : '../../home/dashbo
     <a href="<?= $adm ?>pembelian/pembelian.php" class="sidelink">purchases</a>
     <a href="<?= $adm ?>checklist.php" class="sidelink">checklist</a>
     <div class="sidetitle">reports</div>
-    <a href="<?= $adm ?>laporanpenjualan.php" class="sidelink">sales report</a>
-    <a href="<?= $adm ?>laporanpembelian.php" class="sidelink">purchase report</a>
-    <a href="<?= $adm ?>laporanstok.php" class="sidelink">stock report</a>
-    <a href="<?= $adm ?>laporanlaba.php" class="sidelink">profit report</a>
+    <a href="<?= $adm ?>laporan/laporanpenjualan.php" class="sidelink">sales report</a>
+    <a href="<?= $adm ?>laporan/laporanpembelian.php" class="sidelink">purchase report</a>
+    <a href="<?= $adm ?>laporan/laporanstok.php" class="sidelink">stock report</a>
+    <a href="<?= $adm ?>laporan/laporanlaba.php" class="sidelink">profit report</a>
     <div class="sidetitle">account</div>
     <a href="<?= $store ?>" class="sidelink">view store</a>
 </div>
