@@ -1,6 +1,9 @@
 <?php
 require_once __DIR__ . '/../guard.php';
 require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '/../../home/includes/transaksihelper.php';
+
+init_transaksi_tables($koneksi);
 
 $id_kasir = (int) ($_GET['id_kasir'] ?? 0);
 $error = '';
@@ -30,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (!in_array($status, ['aktif', 'nonaktif'], true)) {
         $error = 'status harus aktif atau nonaktif.';
     } else {
-        $stmt = mysqli_prepare($koneksi, 'UPDATE kasir SET nama_kasir = ?, status = ?, tanggal_keluar = ? WHERE id_kasir = ?');
+        $stmt = mysqli_prepare($koneksi, 'UPDATE cashiers SET nama_kasir = ?, status = ?, tanggal_keluar = ? WHERE id_kasir = ?');
         if ($stmt) {
             mysqli_stmt_bind_param($stmt, 'sssi', $nama_kasir, $status, $tanggal_keluar, $id_kasir);
             if (mysqli_stmt_execute($stmt)) {
@@ -41,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'gagal mengubah kasir.';
     }
 } else {
-    $stmt = mysqli_prepare($koneksi, 'SELECT id_kasir, nama_kasir, status, tanggal_keluar FROM kasir WHERE id_kasir = ?');
+    $stmt = mysqli_prepare($koneksi, 'SELECT id_kasir, nama_kasir, status, tanggal_keluar FROM cashiers WHERE id_kasir = ?');
     $row = null;
     if ($stmt) {
         mysqli_stmt_bind_param($stmt, 'i', $id_kasir);

@@ -1,6 +1,9 @@
 <?php
 require_once __DIR__ . '/guard.php';
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../home/includes/transaksihelper.php';
+
+init_transaksi_tables($koneksi);
 
 if (isset($_GET['logout'])) {
     session_destroy();
@@ -9,9 +12,9 @@ if (isset($_GET['logout'])) {
 }
 
 $orders = [];
-$checktable = mysqli_query($koneksi, "SHOW TABLES LIKE 'pesanan'");
+$checktable = mysqli_query($koneksi, "SHOW TABLES LIKE 'orders'");
 if ($checktable && mysqli_num_rows($checktable) > 0) {
-    $orderres = mysqli_query($koneksi, "SELECT id, nomor_pesanan, nama_pembeli, total, metode_pembayaran, status_pembayaran, tanggal FROM pesanan ORDER BY id DESC LIMIT 10");
+    $orderres = mysqli_query($koneksi, "SELECT id, nomor_pesanan, nama_pembeli, total, metode_pembayaran, status_pembayaran, tanggal FROM orders ORDER BY id DESC LIMIT 10");
     if ($orderres) {
         while ($orow = mysqli_fetch_assoc($orderres)) {
             $orders[] = $orow;

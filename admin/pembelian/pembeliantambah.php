@@ -8,7 +8,7 @@ init_transaksi_tables($koneksi);
 
 $error = '';
 
-$supplier_res = mysqli_query($koneksi, 'SELECT id_supplier, nama_supplier, kota FROM supplier ORDER BY nama_supplier ASC');
+$supplier_res = mysqli_query($koneksi, 'SELECT id_supplier, nama_supplier, kota FROM suppliers ORDER BY nama_supplier ASC');
 $supplier_list = [];
 if ($supplier_res) {
     while ($s = mysqli_fetch_assoc($supplier_res)) {
@@ -71,8 +71,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!empty($items)) {
             mysqli_begin_transaction($koneksi);
             try {
-                $no = buat_nomor($koneksi, 'PB', 'pembelian', 'nomor_transaksi');
-                mysqli_query($koneksi, "INSERT INTO pembelian (nomor_transaksi, id_supplier, total, status) VALUES ('$no', $id_supplier, $grand_total, 'selesai')");
+                $no = buat_nomor($koneksi, 'PB', 'purchases', 'nomor_transaksi');
+                mysqli_query($koneksi, "INSERT INTO purchases (nomor_transaksi, id_supplier, total, status) VALUES ('$no', $id_supplier, $grand_total, 'selesai')");
                 $id_pembelian = (int)mysqli_insert_id($koneksi);
 
                 foreach ($items as $it) {
@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $qty = (int)$it['qty'];
                     $hrg = (float)$it['harga_beli'];
                     $sub = (float)$it['subtotal'];
-                    mysqli_query($koneksi, "INSERT INTO pembelian_detail (id_pembelian, id_product, harga_beli, qty, subtotal) VALUES ($id_pembelian, $pid, $hrg, $qty, $sub)");
+                    mysqli_query($koneksi, "INSERT INTO purchase_details (id_pembelian, id_product, harga_beli, qty, subtotal) VALUES ($id_pembelian, $pid, $hrg, $qty, $sub)");
                     catat_mutasi_stok($koneksi, $pid, $qty, 0, null, $no, 'Pembelian ' . $no);
                 }
 

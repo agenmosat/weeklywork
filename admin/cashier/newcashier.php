@@ -1,6 +1,9 @@
 <?php
 require_once __DIR__ . '/../guard.php';
 require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '/../../home/includes/transaksihelper.php';
+
+init_transaksi_tables($koneksi);
 
 $error = '';
 $nama_kasir = '';
@@ -18,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (!in_array($status, ['aktif', 'nonaktif'], true)) {
         $error = 'status harus aktif atau nonaktif.';
     } else {
-        $stmt = mysqli_prepare($koneksi, 'INSERT INTO kasir (nama_kasir, status) VALUES (?, ?)');
+        $stmt = mysqli_prepare($koneksi, 'INSERT INTO cashiers (nama_kasir, status) VALUES (?, ?)');
         if ($stmt) {
             mysqli_stmt_bind_param($stmt, 'ss', $nama_kasir, $status);
             if (mysqli_stmt_execute($stmt)) {

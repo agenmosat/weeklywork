@@ -1,6 +1,9 @@
 <?php
 require_once __DIR__ . '/../guard.php';
 require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '/../../home/includes/transaksihelper.php';
+
+init_transaksi_tables($koneksi);
 
 $error = '';
 $nama_supplier = '';
@@ -18,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (mb_strlen($kota) > 30) {
         $error = 'kota maksimal 30 karakter.';
     } else {
-        $stmt = mysqli_prepare($koneksi, 'INSERT INTO supplier (nama_supplier, kota) VALUES (?, ?)');
+        $stmt = mysqli_prepare($koneksi, 'INSERT INTO suppliers (nama_supplier, kota) VALUES (?, ?)');
         if ($stmt) {
             mysqli_stmt_bind_param($stmt, 'ss', $nama_supplier, $kota);
             if (mysqli_stmt_execute($stmt)) {

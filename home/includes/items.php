@@ -53,7 +53,7 @@ if ($result) {
             "lokasi" => !empty($row['lokasi']) ? $row['lokasi'] : "Surabaya",
             "rating" => isset($row['rating']) ? (float)$row['rating'] : 4.9,
             "terjual" => isset($row['terjual']) ? (int)$row['terjual'] : 0,
-            "category" => $row['category'],
+            "category" => $row['category'] ?? '',
             "image" => $img,
             "desc" => $row['description'],
         ];

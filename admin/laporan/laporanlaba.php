@@ -14,7 +14,7 @@ if ($tgl_mulai > $tgl_akhir) {
     $tgl_akhir = $temp;
 }
 
-$q_sales = mysqli_query($koneksi, "SELECT * FROM penjualan WHERE DATE(tanggal) BETWEEN '$tgl_mulai' AND '$tgl_akhir' AND status != 'batal'");
+$q_sales = mysqli_query($koneksi, "SELECT * FROM sales WHERE DATE(tanggal) BETWEEN '$tgl_mulai' AND '$tgl_akhir' AND status != 'batal'");
 $total_sales = 0;
 $count_sales = 0;
 if ($q_sales) {
@@ -24,7 +24,7 @@ if ($q_sales) {
     }
 }
 
-$q_cost = mysqli_query($koneksi, "SELECT * FROM pembelian WHERE DATE(tanggal) BETWEEN '$tgl_mulai' AND '$tgl_akhir' AND status != 'batal'");
+$q_cost = mysqli_query($koneksi, "SELECT * FROM purchases WHERE DATE(tanggal) BETWEEN '$tgl_mulai' AND '$tgl_akhir' AND status != 'batal'");
 $total_cost = 0;
 $count_cost = 0;
 if ($q_cost) {

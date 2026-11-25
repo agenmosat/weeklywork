@@ -1,19 +1,22 @@
 <?php
 require_once __DIR__ . '/../guard.php';
 require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '/../../home/includes/transaksihelper.php';
+
+init_transaksi_tables($koneksi);
 
 $cari = trim($_GET['cari'] ?? '');
 if ($cari !== '') {
-    $stmt = mysqli_prepare($koneksi, 'SELECT id_kasir, nama_kasir, status, tanggal_keluar FROM kasir WHERE nama_kasir LIKE CONCAT("%", ?, "%") ORDER BY id_kasir');
+    $stmt = mysqli_prepare($koneksi, 'SELECT id_kasir, nama_kasir, status, tanggal_keluar FROM cashiers WHERE nama_kasir LIKE CONCAT("%", ?, "%") ORDER BY id_kasir');
     if ($stmt) {
         mysqli_stmt_bind_param($stmt, 's', $cari);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
     } else {
-        $result = mysqli_query($koneksi, 'SELECT id_kasir, nama_kasir, status, tanggal_keluar FROM kasir ORDER BY id_kasir');
+        $result = mysqli_query($koneksi, 'SELECT id_kasir, nama_kasir, status, tanggal_keluar FROM cashiers ORDER BY id_kasir');
     }
 } else {
-    $result = mysqli_query($koneksi, 'SELECT id_kasir, nama_kasir, status, tanggal_keluar FROM kasir ORDER BY id_kasir');
+    $result = mysqli_query($koneksi, 'SELECT id_kasir, nama_kasir, status, tanggal_keluar FROM cashiers ORDER BY id_kasir');
 }
 
 $pesan = ['tambah' => 'kasir berhasil ditambahkan.', 'edit' => 'kasir berhasil diubah.', 'hapus' => 'kasir berhasil diubah statusnya.'][$_GET['status'] ?? ''] ?? '';

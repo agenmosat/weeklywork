@@ -1,9 +1,13 @@
 DROP TABLE IF EXISTS stock_movements;
 DROP TABLE IF EXISTS sale_details;
 DROP TABLE IF EXISTS sales;
+DROP TABLE IF EXISTS purchase_details;
+DROP TABLE IF EXISTS purchases;
+DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS products;
 DROP TABLE IF EXISTS categories;
-DROP TABLE IF EXISTS customers;
+DROP TABLE IF EXISTS suppliers;
+DROP TABLE IF EXISTS cashiers;
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE IF NOT EXISTS users (
@@ -11,7 +15,7 @@ CREATE TABLE IF NOT EXISTS users (
   username VARCHAR(30)  NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL,
   name VARCHAR(50)  NOT NULL,
-  role ENUM('admin','kasir') DEFAULT 'kasir',
+  role ENUM('admin','kasir','cashier','user') DEFAULT 'kasir',
   id_kasir INT NULL,
   status ENUM('aktif','nonaktif') DEFAULT 'aktif',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -26,62 +30,94 @@ CREATE TABLE categories (
 
 CREATE TABLE products (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    category_id INT,
-    code VARCHAR(50) NOT NULL UNIQUE,
+    category_id INT NULL,
+    category VARCHAR(50) NOT NULL DEFAULT '',
+    code VARCHAR(50) NULL,
     name VARCHAR(150) NOT NULL,
     description TEXT,
     unit VARCHAR(50) NOT NULL,
-    price DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    price DECIMAL(15,2) NOT NULL DEFAULT 0.00,
     stock INT NOT NULL DEFAULT 0,
     minimum_stock INT NOT NULL DEFAULT 0,
-    image VARCHAR(255) DEFAULT 'image/no-image.webp',
+    lokasi VARCHAR(50) DEFAULT 'Surabaya',
+    rating DECIMAL(2,1) DEFAULT 4.9,
+    terjual INT DEFAULT 0,
+    image VARCHAR(255) DEFAULT 'images/no-image.webp',
     status VARCHAR(50) NOT NULL DEFAULT 'active',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
-);
-
-CREATE TABLE customers (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    phone VARCHAR(20),
-    address TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE sales (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    customer_id INT,
-    user_id INT,
-    invoice_number VARCHAR(50) NOT NULL UNIQUE,
-    sale_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    total DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-    payment_status VARCHAR(50) NOT NULL DEFAULT 'pending',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE SET NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+    id_penjualan INT AUTO_INCREMENT PRIMARY KEY,
+    nomor_transaksi VARCHAR(50) NOT NULL UNIQUE,
+    tanggal DATETIME DEFAULT CURRENT_TIMESTAMP,
+    nama_pelanggan VARCHAR(100) NOT NULL,
+    total DECIMAL(15,2) NOT NULL DEFAULT 0.00,
+    status VARCHAR(20) NOT NULL DEFAULT 'selesai'
 );
 
 CREATE TABLE sale_details (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    sale_id INT NOT NULL,
-    product_id INT NOT NULL,
-    quantity INT NOT NULL,
-    price DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-    subtotal DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-    FOREIGN KEY (sale_id) REFERENCES sales(id) ON DELETE CASCADE,
-    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+    id_detail INT AUTO_INCREMENT PRIMARY KEY,
+    id_penjualan INT NOT NULL,
+    id_product INT NOT NULL,
+    harga DECIMAL(15,2) NOT NULL,
+    qty INT NOT NULL,
+    subtotal DECIMAL(15,2) NOT NULL
+);
+
+CREATE TABLE purchases (
+    id_pembelian INT AUTO_INCREMENT PRIMARY KEY,
+    nomor_transaksi VARCHAR(50) NOT NULL UNIQUE,
+    tanggal DATETIME DEFAULT CURRENT_TIMESTAMP,
+    id_supplier INT NOT NULL,
+    total DECIMAL(15,2) NOT NULL DEFAULT 0.00,
+    status VARCHAR(20) NOT NULL DEFAULT 'selesai'
+);
+
+CREATE TABLE purchase_details (
+    id_detail INT AUTO_INCREMENT PRIMARY KEY,
+    id_pembelian INT NOT NULL,
+    id_product INT NOT NULL,
+    harga_beli DECIMAL(15,2) NOT NULL,
+    qty INT NOT NULL,
+    subtotal DECIMAL(15,2) NOT NULL
 );
 
 CREATE TABLE stock_movements (
+    id_stok INT AUTO_INCREMENT PRIMARY KEY,
+    id_product INT NOT NULL,
+    tanggal DATETIME NOT NULL,
+    jumlah_masuk INT NOT NULL DEFAULT 0,
+    jumlah_keluar INT NOT NULL DEFAULT 0,
+    saldo_awal INT NOT NULL DEFAULT 0,
+    saldo_akhir INT NOT NULL DEFAULT 0,
+    no_penjualan VARCHAR(50) NULL,
+    no_pembelian VARCHAR(50) NULL,
+    keterangan VARCHAR(255) NULL
+);
+
+CREATE TABLE orders (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    product_id INT NOT NULL,
-    type VARCHAR(50) NOT NULL,
-    quantity INT NOT NULL,
-    description TEXT,
-    user_id INT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+    nomor_pesanan VARCHAR(50) NOT NULL,
+    nama_pembeli VARCHAR(100) NOT NULL,
+    alamat TEXT NOT NULL,
+    total DECIMAL(15,2) NOT NULL,
+    metode_pembayaran VARCHAR(50) NOT NULL,
+    status_pembayaran VARCHAR(50) NOT NULL,
+    tanggal DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE cashiers (
+    id_kasir INT AUTO_INCREMENT PRIMARY KEY,
+    nama_kasir VARCHAR(50) UNIQUE NOT NULL,
+    status ENUM('aktif','nonaktif') DEFAULT 'aktif',
+    tanggal_keluar DATE DEFAULT NULL
+);
+
+CREATE TABLE suppliers (
+    id_supplier INT AUTO_INCREMENT PRIMARY KEY,
+    nama_supplier VARCHAR(50) UNIQUE NOT NULL,
+    kota VARCHAR(30) DEFAULT NULL
 );
 
 INSERT INTO users (username, password, name, role, id_kasir, status)
@@ -181,6 +217,4 @@ INSERT INTO products (category_id, code, name, description, unit, price, stock, 
 (23, 'GEN-001', 'Genset 50 KVA', 'Generator listrik darurat 50 kva', 'Unit', 110000000.00, 3, 1, '../home/images/alat/genset50kva.webp', 'active'),
 (23, 'GEN-002', 'Genset 100 KVA', 'Generator listrik industri 100 kva', 'Unit', 1950000000.00, 2, 1, '../home/images/alat/genset100kva.webp', 'active');
 
-INSERT INTO customers (name, phone, address) VALUES
-('Pelanggan Umum', '081234567890', 'Jl. Merdeka No. 1'),
-('Budi Santoso', '081298765432', 'Jl. Sudirman No. 45');
+UPDATE products p JOIN categories c ON p.category_id = c.id SET p.category = c.name WHERE p.category = '';

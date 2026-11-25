@@ -5,7 +5,7 @@ require_once __DIR__ . '/../home/includes/transaksihelper.php';
 
 init_transaksi_tables($koneksi);
 
-$tables = ['products', 'kasir', 'supplier', 'pesanan', 'penjualan', 'penjualan_detail', 'pembelian', 'pembelian_detail'];
+$tables = ['products', 'cashiers', 'suppliers', 'orders', 'sales', 'sale_details', 'purchases', 'purchase_details', 'stock_movements'];
 $status_tables = [];
 
 foreach ($tables as $t) {

@@ -8,3 +8,5 @@
 7. "i'm still a junior dev, do i understand this?"
 8. don't read ignore folder
 9. repeat if one of the 9 rules is not fulfilled
+10. dont make a SINGLE commit
+12. always git pull before modify a code

@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['enter']) || isset($_
                 }
                 exit();
             } elseif (isset($koneksi) && $koneksi && $username !== '') {
-                $stmt = mysqli_prepare($koneksi, "SELECT id_kasir, nama_kasir FROM kasir WHERE nama_kasir = ? AND status = 'aktif' LIMIT 1");
+                $stmt = mysqli_prepare($koneksi, "SELECT id_kasir, nama_kasir FROM cashiers WHERE nama_kasir = ? AND status = 'aktif' LIMIT 1");
                 if ($stmt) {
                     mysqli_stmt_bind_param($stmt, "s", $username);
                     mysqli_stmt_execute($stmt);

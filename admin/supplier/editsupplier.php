@@ -1,6 +1,9 @@
 <?php
 require_once __DIR__ . '/../guard.php';
 require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '/../../home/includes/transaksihelper.php';
+
+init_transaksi_tables($koneksi);
 
 $id_supplier = (int) ($_GET['id_supplier'] ?? 0);
 $error = '';
@@ -25,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (mb_strlen($kota) > 30) {
         $error = 'kota maksimal 30 karakter.';
     } else {
-        $stmt = mysqli_prepare($koneksi, 'UPDATE supplier SET nama_supplier = ?, kota = ? WHERE id_supplier = ?');
+        $stmt = mysqli_prepare($koneksi, 'UPDATE suppliers SET nama_supplier = ?, kota = ? WHERE id_supplier = ?');
         if ($stmt) {
             mysqli_stmt_bind_param($stmt, 'ssi', $nama_supplier, $kota, $id_supplier);
             if (mysqli_stmt_execute($stmt)) {
@@ -36,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'gagal mengubah supplier.';
     }
 } else {
-    $stmt = mysqli_prepare($koneksi, 'SELECT id_supplier, nama_supplier, kota FROM supplier WHERE id_supplier = ?');
+    $stmt = mysqli_prepare($koneksi, 'SELECT id_supplier, nama_supplier, kota FROM suppliers WHERE id_supplier = ?');
     $row = null;
     if ($stmt) {
         mysqli_stmt_bind_param($stmt, 'i', $id_supplier);

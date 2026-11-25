@@ -55,7 +55,7 @@ foreach ($purchaseditems as $item) {
 }
 
 $fulladdress = $address . ", " . $city;
-$stmtpesanan = mysqli_prepare($koneksi, "INSERT INTO pesanan (nomor_pesanan, nama_pembeli, alamat, total, metode_pembayaran, status_pembayaran) VALUES (?, ?, ?, ?, ?, ?)");
+$stmtpesanan = mysqli_prepare($koneksi, "INSERT INTO orders (nomor_pesanan, nama_pembeli, alamat, total, metode_pembayaran, status_pembayaran) VALUES (?, ?, ?, ?, ?, ?)");
 if ($stmtpesanan) {
     mysqli_stmt_bind_param($stmtpesanan, "sssdss", $ordernumber, $name, $fulladdress, $total, $method, $statuspembayaran);
     mysqli_stmt_execute($stmtpesanan);
