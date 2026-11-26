@@ -40,12 +40,6 @@ if (file_exists('config/database.php')) {
             <span class="userbadge">tamu</span>
             <a href="<?php echo $topbarbase; ?>index.php?login=1" class="navlink">masuk</a>
             <a href="<?php echo $topbarbase; ?>auth/signup.php" class="navlink">daftar</a>
-        <?php endif; ?>
-        <div class="themeswitcher">
-            <select id="themepick" class="themeselect" onchange="switchtheme(this.value)" aria-label="theme">
-                <option value="themelight">terang</option>
-                <option value="themedark">gelap</option>
-            </select>
-        </div>
+        <?php endif; ?> 
     </div>
 </div>
