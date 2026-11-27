@@ -24,7 +24,7 @@ $members = [
         'word' => '"kalo salah tinggal undo"',
         'role' => 'database manager & devops',
         'desc' => 'mengembangkan fungsionalitas dan logika database',
-        'image' => 'images/team/alredo.webp',
+        'image' => 'images/team/alfredo.webp',
         'github' => 'https://github.com/anotheroom1'
     ],
     [
