@@ -22,7 +22,7 @@ if (empty($sidecategories) && isset($products)) {
     }
 }
 
-$alatberat = ['Excavator', 'Crane', 'Bulldozer', 'Wheel Loader', 'Forklift', 'Dump Truck', 'Concrete Mixer', 'Compactor', 'Motor Grader', 'Asphalt Paver', 'Concrete Pump', 'Genset'];
+$alatberat = ['Excavator', 'Crane', 'Bulldozer', 'Wheel Loader', 'Forklift', 'Dump Truck', 'Concrete Mixer', 'Compactor', 'Motor Grader', 'Asphalt Paver', 'Concrete Pump', 'Genset', 'Alat Berat & Scaffolding'];
 $catbahan = [];
 $catalat = [];
 foreach ($sidecategories as $c) {
@@ -31,6 +31,10 @@ foreach ($sidecategories as $c) {
     } else {
         $catbahan[] = $c;
     }
+}
+if (empty($catalat)) {
+    $catalat = $alatberat;
+    sort($catalat);
 }
 ?>
 <div class="sidebar sidebarkatalog">

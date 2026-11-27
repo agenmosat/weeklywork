@@ -68,8 +68,11 @@ $pesan = [
                     <tr class="cartrow">
                         <td class="cartcell"><?= (int) $p['id'] ?></td>
                         <td class="cartcell">
-                            <?php $imgpath = !empty($p['image']) ? $p['image'] : 'images/glock17.png'; ?>
-                            <img src="../../<?= htmlspecialchars($imgpath) ?>" alt="<?= htmlspecialchars($p['name']) ?>" style="width:40px;height:40px;object-fit:cover;">
+                            <?php
+                            $imgpath = !empty($p['image']) ? $p['image'] : 'images/no-image.webp';
+                            $imgsrc = preg_match('#^https?://#', $imgpath) ? $imgpath : '../../home/' . $imgpath;
+                            ?>
+                            <img src="<?= htmlspecialchars($imgsrc) ?>" alt="<?= htmlspecialchars($p['name']) ?>" loading="lazy" onerror="this.src='../../home/images/no-image.webp'" style="width:40px;height:40px;object-fit:cover;">
                         </td>
                         <td class="cartcell"><?= htmlspecialchars($p['name']) ?></td>
                         <td class="cartcell"><?= htmlspecialchars(number_format((float) $p['price'], 2)) ?></td>
