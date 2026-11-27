@@ -33,27 +33,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (!in_array($status, ['aktif', 'nonaktif'], true)) {
         $error = 'status harus aktif atau nonaktif.';
     } else {
-        $stmt = mysqli_prepare($koneksi, 'UPDATE cashiers SET nama_kasir = ?, status = ?, tanggal_keluar = ? WHERE id_kasir = ?');
-        if ($stmt) {
-            mysqli_stmt_bind_param($stmt, 'sssi', $nama_kasir, $status, $tanggal_keluar, $id_kasir);
-            if (mysqli_stmt_execute($stmt)) {
-                header('Location: cashier.php?status=edit');
-                exit;
-            }
+        if (mysqli_execute_query($koneksi, 'UPDATE cashiers SET nama_kasir = ?, status = ?, tanggal_keluar = ? WHERE id_kasir = ?', [$nama_kasir, $status, $tanggal_keluar, $id_kasir])) {
+            header('Location: cashier.php?status=edit');
+            exit;
         }
         $error = 'gagal mengubah kasir.';
     }
 } else {
-    $stmt = mysqli_prepare($koneksi, 'SELECT id_kasir, nama_kasir, status, tanggal_keluar FROM cashiers WHERE id_kasir = ?');
-    $row = null;
-    if ($stmt) {
-        mysqli_stmt_bind_param($stmt, 'i', $id_kasir);
-        mysqli_stmt_execute($stmt);
-        $res = mysqli_stmt_get_result($stmt);
-        if ($res) {
-            $row = mysqli_fetch_assoc($res);
-        }
-    }
+    $res = mysqli_execute_query($koneksi, 'SELECT id_kasir, nama_kasir, status, tanggal_keluar FROM cashiers WHERE id_kasir = ?', [$id_kasir]);
+    $row = $res ? mysqli_fetch_assoc($res) : null;
     if (!$row) {
         header('Location: cashier.php');
         exit;

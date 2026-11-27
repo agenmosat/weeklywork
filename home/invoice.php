@@ -47,19 +47,11 @@ $ispaid = ($method !== "cash on delivery" && $gatewaysuccess);
 $statuspembayaran = $ispaid ? "lunas" : ($method === "cash on delivery" ? "menunggu cod" : "belum lunas");
 
 foreach ($purchaseditems as $item) {
-    $stmtstock = mysqli_prepare($koneksi, "UPDATE products SET stock = GREATEST(0, stock - ?), terjual = terjual + ? WHERE id = ?");
-    if ($stmtstock) {
-        mysqli_stmt_bind_param($stmtstock, "iii", $item['qty'], $item['qty'], $item['id']);
-        mysqli_stmt_execute($stmtstock);
-    }
+    mysqli_execute_query($koneksi, "UPDATE products SET stock = GREATEST(0, stock - ?), terjual = terjual + ? WHERE id = ?", [(int)$item['qty'], (int)$item['qty'], (int)$item['id']]);
 }
 
 $fulladdress = $address . ", " . $city;
-$stmtpesanan = mysqli_prepare($koneksi, "INSERT INTO orders (nomor_pesanan, nama_pembeli, alamat, total, metode_pembayaran, status_pembayaran) VALUES (?, ?, ?, ?, ?, ?)");
-if ($stmtpesanan) {
-    mysqli_stmt_bind_param($stmtpesanan, "sssdss", $ordernumber, $name, $fulladdress, $total, $method, $statuspembayaran);
-    mysqli_stmt_execute($stmtpesanan);
-}
+mysqli_execute_query($koneksi, "INSERT INTO orders (nomor_pesanan, nama_pembeli, alamat, total, metode_pembayaran, status_pembayaran) VALUES (?, ?, ?, ?, ?, ?)", [$ordernumber, $name, $fulladdress, (float)$total, $method, $statuspembayaran]);
 
 if ($source === "cart") {
     unset($_SESSION['cart']);

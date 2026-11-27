@@ -28,27 +28,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (mb_strlen($kota) > 30) {
         $error = 'kota maksimal 30 karakter.';
     } else {
-        $stmt = mysqli_prepare($koneksi, 'UPDATE suppliers SET nama_supplier = ?, kota = ? WHERE id_supplier = ?');
-        if ($stmt) {
-            mysqli_stmt_bind_param($stmt, 'ssi', $nama_supplier, $kota, $id_supplier);
-            if (mysqli_stmt_execute($stmt)) {
-                header('Location: supplier.php?status=edit');
-                exit;
-            }
+        if (mysqli_execute_query($koneksi, 'UPDATE suppliers SET nama_supplier = ?, kota = ? WHERE id_supplier = ?', [$nama_supplier, $kota, $id_supplier])) {
+            header('Location: supplier.php?status=edit');
+            exit;
         }
         $error = 'gagal mengubah supplier.';
     }
 } else {
-    $stmt = mysqli_prepare($koneksi, 'SELECT id_supplier, nama_supplier, kota FROM suppliers WHERE id_supplier = ?');
-    $row = null;
-    if ($stmt) {
-        mysqli_stmt_bind_param($stmt, 'i', $id_supplier);
-        mysqli_stmt_execute($stmt);
-        $res = mysqli_stmt_get_result($stmt);
-        if ($res) {
-            $row = mysqli_fetch_assoc($res);
-        }
-    }
+    $res = mysqli_execute_query($koneksi, 'SELECT id_supplier, nama_supplier, kota FROM suppliers WHERE id_supplier = ?', [$id_supplier]);
+    $row = $res ? mysqli_fetch_assoc($res) : null;
     if (!$row) {
         header('Location: supplier.php');
         exit;

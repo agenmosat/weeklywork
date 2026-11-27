@@ -7,14 +7,7 @@ init_transaksi_tables($koneksi);
 
 $cari = trim($_GET['cari'] ?? '');
 if ($cari !== '') {
-    $stmt = mysqli_prepare($koneksi, 'SELECT id_supplier, nama_supplier, kota FROM suppliers WHERE nama_supplier LIKE CONCAT("%", ?, "%") OR kota LIKE CONCAT("%", ?, "%") ORDER BY id_supplier');
-    if ($stmt) {
-        mysqli_stmt_bind_param($stmt, 'ss', $cari, $cari);
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
-    } else {
-        $result = mysqli_query($koneksi, 'SELECT id_supplier, nama_supplier, kota FROM suppliers ORDER BY id_supplier');
-    }
+    $result = mysqli_execute_query($koneksi, 'SELECT id_supplier, nama_supplier, kota FROM suppliers WHERE nama_supplier LIKE CONCAT("%", ?, "%") OR kota LIKE CONCAT("%", ?, "%") ORDER BY id_supplier', [$cari, $cari]);
 } else {
     $result = mysqli_query($koneksi, 'SELECT id_supplier, nama_supplier, kota FROM suppliers ORDER BY id_supplier');
 }

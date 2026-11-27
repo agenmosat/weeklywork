@@ -21,13 +21,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (mb_strlen($kota) > 30) {
         $error = 'kota maksimal 30 karakter.';
     } else {
-        $stmt = mysqli_prepare($koneksi, 'INSERT INTO suppliers (nama_supplier, kota) VALUES (?, ?)');
-        if ($stmt) {
-            mysqli_stmt_bind_param($stmt, 'ss', $nama_supplier, $kota);
-            if (mysqli_stmt_execute($stmt)) {
-                header('Location: supplier.php?status=tambah');
-                exit;
-            }
+        if (mysqli_execute_query($koneksi, 'INSERT INTO suppliers (nama_supplier, kota) VALUES (?, ?)', [$nama_supplier, $kota])) {
+            header('Location: supplier.php?status=tambah');
+            exit;
         }
         $error = 'gagal menyimpan supplier.';
     }

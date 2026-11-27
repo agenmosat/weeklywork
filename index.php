@@ -47,31 +47,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['enter']) || isset($_
         $password = (string)($_POST['password'] ?? $_POST['token'] ?? '');
         $login_ok = false;
         if (isset($koneksi) && $koneksi && $username !== '') {
-    $stmt = mysqli_prepare($koneksi, "SELECT id, username, password, name, role FROM users WHERE username = ? LIMIT 1");
-    if ($stmt) {
-        mysqli_stmt_bind_param($stmt, "s", $username);
-        mysqli_stmt_execute($stmt);
-        $res = mysqli_stmt_get_result($stmt);
-        if ($row = mysqli_fetch_assoc($res)) {
-            if (password_verify($password, $row['password'])) {
-                $login_ok = true;
-                if (isset($_SESSION[$attempts_key])) {
-                    unset($_SESSION[$attempts_key]);
+            $res = mysqli_execute_query($koneksi, "SELECT id, username, password, name, role FROM users WHERE username = ? LIMIT 1", [$username]);
+            if ($res && ($row = mysqli_fetch_assoc($res))) {
+                if (password_verify($password, $row['password'])) {
+                    $login_ok = true;
+                    if (isset($_SESSION[$attempts_key])) {
+                        unset($_SESSION[$attempts_key]);
+                    }
+                    $_SESSION['user'] = $row['username'];
+                    $_SESSION['username'] = $row['username'];
+                    $_SESSION['role'] = $row['role'];
+                    $_SESSION['id_pengguna'] = (int)$row['id'];
+                    if ($row['role'] === 'admin') {
+                        header("Location: admin/admin.php");
+                    } else {
+                        header("Location: home/dashboard.php");
+                    }
+                    exit();
                 }
-                $_SESSION['user'] = $row['username'];
-                $_SESSION['username'] = $row['username'];
-                $_SESSION['role'] = $row['role'];
-                $_SESSION['id_pengguna'] = (int)$row['id'];
-                if ($row['role'] === 'admin') {
-                    header("Location: admin/admin.php");
-                } else {
-                    header("Location: home/dashboard.php");
-                }
-                exit();
             }
         }
-    }
-}
 
         if (!$login_ok) {
             if (defined('ADMIN_TOKEN') && ADMIN_TOKEN !== "" && ($username === ADMIN_TOKEN || $password === ADMIN_TOKEN)) {
@@ -95,20 +90,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['enter']) || isset($_
                 }
                 exit();
             } elseif (isset($koneksi) && $koneksi && $username !== '') {
-                $stmt = mysqli_prepare($koneksi, "SELECT id_kasir, nama_kasir FROM cashiers WHERE nama_kasir = ? AND status = 'aktif' LIMIT 1");
-                if ($stmt) {
-                    mysqli_stmt_bind_param($stmt, "s", $username);
-                    mysqli_stmt_execute($stmt);
-                    $res = mysqli_stmt_get_result($stmt);
-                    if ($row = mysqli_fetch_assoc($res)) {
-                        $login_ok = true;
-                        unset($_SESSION[$attempts_key]);
-                        $_SESSION['user'] = $row['nama_kasir'];
-                        $_SESSION['role'] = "cashier";
-                        $_SESSION['id_kasir'] = (int)$row['id_kasir'];
-                        header("Location: home/dashboard.php");
-                        exit();
-                    }
+                $res = mysqli_execute_query($koneksi, "SELECT id_kasir, nama_kasir FROM cashiers WHERE nama_kasir = ? AND status = 'aktif' LIMIT 1", [$username]);
+                if ($res && ($row = mysqli_fetch_assoc($res))) {
+                    $login_ok = true;
+                    unset($_SESSION[$attempts_key]);
+                    $_SESSION['user'] = $row['nama_kasir'];
+                    $_SESSION['role'] = "cashier";
+                    $_SESSION['id_kasir'] = (int)$row['id_kasir'];
+                    header("Location: home/dashboard.php");
+                    exit();
                 }
             }
         }

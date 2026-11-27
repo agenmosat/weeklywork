@@ -11,21 +11,15 @@ if ($id <= 0) {
     exit;
 }
 
-$stmt = mysqli_prepare($koneksi, 'SELECT p.id_pembelian, p.nomor_transaksi, p.tanggal, p.total, s.nama_supplier, s.kota FROM purchases p LEFT JOIN suppliers s ON p.id_supplier = s.id_supplier WHERE p.id_pembelian = ?');
-mysqli_stmt_bind_param($stmt, 'i', $id);
-mysqli_stmt_execute($stmt);
-$res = mysqli_stmt_get_result($stmt);
-$transaksi = mysqli_fetch_assoc($res);
+$res = mysqli_execute_query($koneksi, 'SELECT p.id_pembelian, p.nomor_transaksi, p.tanggal, p.total, s.nama_supplier, s.kota FROM purchases p LEFT JOIN suppliers s ON p.id_supplier = s.id_supplier WHERE p.id_pembelian = ?', [$id]);
+$transaksi = $res ? mysqli_fetch_assoc($res) : null;
 
 if (!$transaksi) {
     header('Location: pembelian.php');
     exit;
 }
 
-$stmtdet = mysqli_prepare($koneksi, 'SELECT d.id_detail, d.harga_beli, d.qty, d.subtotal, p.name AS nama_produk FROM purchase_details d LEFT JOIN products p ON d.id_product = p.id WHERE d.id_pembelian = ?');
-mysqli_stmt_bind_param($stmtdet, 'i', $id);
-mysqli_stmt_execute($stmtdet);
-$items = mysqli_stmt_get_result($stmtdet);
+$items = mysqli_execute_query($koneksi, 'SELECT d.id_detail, d.harga_beli, d.qty, d.subtotal, p.name AS nama_produk FROM purchase_details d LEFT JOIN products p ON d.id_product = p.id WHERE d.id_pembelian = ?', [$id]);
 ?>
 <!DOCTYPE html>
 <html lang="en">

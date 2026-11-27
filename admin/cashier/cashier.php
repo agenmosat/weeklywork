@@ -7,14 +7,7 @@ init_transaksi_tables($koneksi);
 
 $cari = trim($_GET['cari'] ?? '');
 if ($cari !== '') {
-    $stmt = mysqli_prepare($koneksi, 'SELECT id_kasir, nama_kasir, status, tanggal_keluar FROM cashiers WHERE nama_kasir LIKE CONCAT("%", ?, "%") ORDER BY id_kasir');
-    if ($stmt) {
-        mysqli_stmt_bind_param($stmt, 's', $cari);
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
-    } else {
-        $result = mysqli_query($koneksi, 'SELECT id_kasir, nama_kasir, status, tanggal_keluar FROM cashiers ORDER BY id_kasir');
-    }
+    $result = mysqli_execute_query($koneksi, 'SELECT id_kasir, nama_kasir, status, tanggal_keluar FROM cashiers WHERE nama_kasir LIKE CONCAT("%", ?, "%") ORDER BY id_kasir', [$cari]);
 } else {
     $result = mysqli_query($koneksi, 'SELECT id_kasir, nama_kasir, status, tanggal_keluar FROM cashiers ORDER BY id_kasir');
 }
