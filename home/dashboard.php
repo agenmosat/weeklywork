@@ -228,7 +228,7 @@ require __DIR__ . '/partials/header.php';
                     <?php 
                     $alatberatlist = ['Excavator', 'Crane', 'Bulldozer', 'Wheel Loader', 'Forklift', 'Dump Truck', 'Concrete Mixer', 'Compactor', 'Motor Grader', 'Asphalt Paver', 'Concrete Pump', 'Genset'];
                     $itemidx = 0;
-                    $initiallimit = 14;
+                    $initiallimit = 35;
                     foreach ($filtered as $p): 
                         $isalatberat = in_array($p['category'], $alatberatlist);
                         $ishidden = ($itemidx >= $initiallimit);
