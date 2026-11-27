@@ -43,28 +43,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (strlen($password) < 4) {
         $message = "password minimal 4 karakter";
     } else {
-        $stmt = mysqli_prepare($koneksi, "SELECT id FROM users WHERE username = ? LIMIT 1");
-        if ($stmt) {
-            mysqli_stmt_bind_param($stmt, "s", $username);
-            mysqli_stmt_execute($stmt);
-            $res = mysqli_stmt_get_result($stmt);
+        $res = mysqli_execute_query($koneksi, "SELECT id FROM users WHERE username = ? LIMIT 1", [$username]);
+        if ($res) {
             if (mysqli_fetch_assoc($res)) {
                 $message = "username sudah digunakan";
             } else {
                 $hashed = password_hash($password, PASSWORD_DEFAULT);
-                $ins = mysqli_prepare($koneksi, "INSERT INTO users (username, password, name, role, status) VALUES (?, ?, ?, 'kasir', 'aktif')");
-                if ($ins) {
-                    mysqli_stmt_bind_param($ins, "sss", $username, $hashed, $username);
-                    if (mysqli_stmt_execute($ins)) {
-                        $newid = (int)mysqli_insert_id($koneksi);
-                        unset($_SESSION['captchacode']);
-                        $_SESSION['user'] = $username;
-                        $_SESSION['username'] = $username;
-                        $_SESSION['role'] = 'kasir';
-                        $_SESSION['id_pengguna'] = $newid;
-                        header("Location: ../home/dashboard.php");
-                        exit();
-                    }
+                if (mysqli_execute_query($koneksi, "INSERT INTO users (username, password, name, role, status) VALUES (?, ?, ?, 'kasir', 'aktif')", [$username, $hashed, $username])) {
+                    $newid = (int)mysqli_insert_id($koneksi);
+                    unset($_SESSION['captchacode']);
+                    $_SESSION['user'] = $username;
+                    $_SESSION['username'] = $username;
+                    $_SESSION['role'] = 'kasir';
+                    $_SESSION['id_pengguna'] = $newid;
+                    header("Location: ../home/dashboard.php");
+                    exit();
                 }
                 $message = "gagal mendaftar akun";
             }

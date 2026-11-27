@@ -33,7 +33,7 @@ if (!$koneksi) {
 
 $chk_prod = @mysqli_query($koneksi, "SHOW TABLES LIKE 'products'");
 if ($chk_prod && mysqli_num_rows($chk_prod) === 0) {
-    $schemafile = file_exists(__DIR__ . '/schema.sql') ? __DIR__ . '/schema.sql' : __DIR__ . '/../schema.sql';
+    $schemafile = file_exists(__DIR__ . '/schema.sql') ? __DIR__ . '/schema.sql' : (file_exists(__DIR__ . '/../database/schema.sql') ? __DIR__ . '/../database/schema.sql' : __DIR__ . '/../schema.sql');
     if (file_exists($schemafile)) {
         $sql = file_get_contents($schemafile);
         if ($sql !== false && @mysqli_multi_query($koneksi, $sql)) {
@@ -47,5 +47,15 @@ if ($chk_prod && mysqli_num_rows($chk_prod) === 0) {
         @mysqli_query($koneksi, "ALTER TABLE products ADD COLUMN lokasi VARCHAR(50) DEFAULT 'Surabaya'");
         @mysqli_query($koneksi, "ALTER TABLE products ADD COLUMN rating DECIMAL(2,1) DEFAULT 4.9");
         @mysqli_query($koneksi, "ALTER TABLE products ADD COLUMN terjual INT DEFAULT 0");
+    }
+    $chk_cat = @mysqli_query($koneksi, "SHOW COLUMNS FROM products LIKE 'category'");
+    if ($chk_cat && mysqli_num_rows($chk_cat) === 0) {
+        @mysqli_query($koneksi, "ALTER TABLE products ADD COLUMN category VARCHAR(50) NOT NULL DEFAULT ''");
+    }
+    @mysqli_query($koneksi, "ALTER TABLE products MODIFY code VARCHAR(50) NULL");
+    $chk_catid = @mysqli_query($koneksi, "SHOW COLUMNS FROM products LIKE 'category_id'");
+    $chk_cattbl = @mysqli_query($koneksi, "SHOW TABLES LIKE 'categories'");
+    if ($chk_catid && mysqli_num_rows($chk_catid) > 0 && $chk_cattbl && mysqli_num_rows($chk_cattbl) > 0) {
+        @mysqli_query($koneksi, "UPDATE products p JOIN categories c ON p.category_id = c.id SET p.category = c.name WHERE p.category = '' OR p.category IS NULL");
     }
 }

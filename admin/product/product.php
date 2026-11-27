@@ -4,14 +4,7 @@ require_once __DIR__ . '/../../config/database.php';
 
 $cari = trim($_GET['cari'] ?? '');
 if ($cari !== '') {
-    $stmt = mysqli_prepare($koneksi, 'SELECT * FROM products WHERE name LIKE CONCAT("%", ?, "%") OR category LIKE CONCAT("%", ?, "%") OR description LIKE CONCAT("%", ?, "%") ORDER BY id');
-    if ($stmt) {
-        mysqli_stmt_bind_param($stmt, 'sss', $cari, $cari, $cari);
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
-    } else {
-        $result = mysqli_query($koneksi, 'SELECT * FROM products ORDER BY id');
-    }
+    $result = mysqli_execute_query($koneksi, 'SELECT * FROM products WHERE name LIKE CONCAT("%", ?, "%") OR category LIKE CONCAT("%", ?, "%") OR description LIKE CONCAT("%", ?, "%") ORDER BY id', [$cari, $cari, $cari]);
 } else {
     $result = mysqli_query($koneksi, 'SELECT * FROM products ORDER BY id');
 }

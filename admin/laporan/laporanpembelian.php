@@ -14,7 +14,7 @@ if ($tgl_mulai > $tgl_akhir) {
     $tgl_akhir = $temp;
 }
 
-$query = mysqli_query($koneksi, "SELECT p.*, s.nama_supplier, s.kota FROM pembelian p LEFT JOIN supplier s ON p.id_supplier = s.id_supplier WHERE DATE(p.tanggal) BETWEEN '$tgl_mulai' AND '$tgl_akhir' ORDER BY p.tanggal DESC");
+$query = mysqli_query($koneksi, "SELECT p.*, s.nama_supplier, s.kota FROM purchases p LEFT JOIN suppliers s ON p.id_supplier = s.id_supplier WHERE DATE(p.tanggal) BETWEEN '$tgl_mulai' AND '$tgl_akhir' ORDER BY p.tanggal DESC");
 
 $total_pengeluaran = 0;
 $total_transaksi = 0;

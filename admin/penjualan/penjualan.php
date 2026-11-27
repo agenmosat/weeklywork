@@ -7,19 +7,16 @@ require_once __DIR__ . '/../../home/includes/transaksihelper.php';
 init_transaksi_tables($koneksi);
 
 $cari = trim($_GET['cari'] ?? '');
-$chk_st = mysqli_query($koneksi, "SHOW COLUMNS FROM penjualan LIKE 'status'");
+$chk_st = mysqli_query($koneksi, "SHOW COLUMNS FROM sales LIKE 'status'");
 $cols = ($chk_st && mysqli_num_rows($chk_st) > 0)
     ? 'id_penjualan, nomor_transaksi, tanggal, nama_pelanggan, total, status'
     : 'id_penjualan, nomor_transaksi, tanggal, nama_pelanggan, total';
 
 if ($cari !== '') {
-    $stmt = mysqli_prepare($koneksi, "SELECT $cols FROM penjualan WHERE nomor_transaksi LIKE ? OR nama_pelanggan LIKE ? ORDER BY id_penjualan DESC");
     $searchterm = "%" . $cari . "%";
-    mysqli_stmt_bind_param($stmt, 'ss', $searchterm, $searchterm);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
+    $result = mysqli_execute_query($koneksi, "SELECT $cols FROM sales WHERE nomor_transaksi LIKE ? OR nama_pelanggan LIKE ? ORDER BY id_penjualan DESC", [$searchterm, $searchterm]);
 } else {
-    $result = mysqli_query($koneksi, "SELECT $cols FROM penjualan ORDER BY id_penjualan DESC");
+    $result = mysqli_query($koneksi, "SELECT $cols FROM sales ORDER BY id_penjualan DESC");
 }
 
 $pesan = [

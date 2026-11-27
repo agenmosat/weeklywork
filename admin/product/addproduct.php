@@ -56,18 +56,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             mysqli_query($koneksi, "ALTER TABLE products ADD COLUMN image VARCHAR(255) DEFAULT 'images/glock17.png'");
         }
 
-        $stmt = mysqli_prepare($koneksi, 'INSERT INTO products (name, price, stock, unit, lokasi, rating, terjual, category, description, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
-        if ($stmt) {
-            $f_price = (float) $price;
-            $i_stock = (int) $stock;
-            $f_rating = (float) $rating;
-            $i_terjual = (int) $terjual;
-            mysqli_stmt_bind_param($stmt, 'sdisdsisss', $name, $f_price, $i_stock, $unit, $lokasi, $f_rating, $i_terjual, $category, $description, $image);
-            $ok = mysqli_stmt_execute($stmt);
-            if ($ok) {
-                header('Location: product.php?status=tambah');
-                exit;
-            }
+        $f_price = (float) $price;
+        $i_stock = (int) $stock;
+        $f_rating = (float) $rating;
+        $i_terjual = (int) $terjual;
+        if (mysqli_execute_query($koneksi, 'INSERT INTO products (name, price, stock, unit, lokasi, rating, terjual, category, description, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [$name, $f_price, $i_stock, $unit, $lokasi, $f_rating, $i_terjual, $category, $description, $image])) {
+            header('Location: product.php?status=tambah');
+            exit;
         }
         $error = 'gagal menyimpan produk.';
     }

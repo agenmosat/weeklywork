@@ -33,7 +33,7 @@ foreach ($sidecategories as $c) {
     }
 }
 ?>
-<div class="sidebar">
+<div class="sidebar sidebarkatalog">
     <div class="sidetitle">katalog utama</div>
     <a href="dashboard.php" class="sidelink">semua produk</a>
 

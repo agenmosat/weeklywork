@@ -63,31 +63,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             mysqli_query($koneksi, "ALTER TABLE products ADD COLUMN image VARCHAR(255) DEFAULT 'images/glock17.png'");
         }
 
-        $stmt = mysqli_prepare($koneksi, 'UPDATE products SET name = ?, price = ?, stock = ?, unit = ?, lokasi = ?, rating = ?, terjual = ?, category = ?, description = ?, image = ? WHERE id = ?');
-        if ($stmt) {
-            $f_price = (float) $price;
-            $i_stock = (int) $stock;
-            $f_rating = (float) $rating;
-            $i_terjual = (int) $terjual;
-            mysqli_stmt_bind_param($stmt, 'sdisdsisssi', $name, $f_price, $i_stock, $unit, $lokasi, $f_rating, $i_terjual, $category, $description, $image, $id);
-            if (mysqli_stmt_execute($stmt)) {
-                header('Location: product.php?status=edit');
-                exit;
-            }
+        $f_price = (float) $price;
+        $i_stock = (int) $stock;
+        $f_rating = (float) $rating;
+        $i_terjual = (int) $terjual;
+        if (mysqli_execute_query($koneksi, 'UPDATE products SET name = ?, price = ?, stock = ?, unit = ?, lokasi = ?, rating = ?, terjual = ?, category = ?, description = ?, image = ? WHERE id = ?', [$name, $f_price, $i_stock, $unit, $lokasi, $f_rating, $i_terjual, $category, $description, $image, $id])) {
+            header('Location: product.php?status=edit');
+            exit;
         }
         $error = 'gagal mengubah produk.';
     }
 } else {
-    $stmt = mysqli_prepare($koneksi, 'SELECT * FROM products WHERE id = ?');
-    $row = null;
-    if ($stmt) {
-        mysqli_stmt_bind_param($stmt, 'i', $id);
-        mysqli_stmt_execute($stmt);
-        $res = mysqli_stmt_get_result($stmt);
-        if ($res) {
-            $row = mysqli_fetch_assoc($res);
-        }
-    }
+    $res = mysqli_execute_query($koneksi, 'SELECT * FROM products WHERE id = ?', [$id]);
+    $row = $res ? mysqli_fetch_assoc($res) : null;
     if (!$row) {
         header('Location: product.php');
         exit;

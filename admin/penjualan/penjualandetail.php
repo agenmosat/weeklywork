@@ -11,21 +11,15 @@ if ($id <= 0) {
     exit;
 }
 
-$stmt = mysqli_prepare($koneksi, 'SELECT id_penjualan, nomor_transaksi, tanggal, nama_pelanggan, total FROM penjualan WHERE id_penjualan = ?');
-mysqli_stmt_bind_param($stmt, 'i', $id);
-mysqli_stmt_execute($stmt);
-$res = mysqli_stmt_get_result($stmt);
-$transaksi = mysqli_fetch_assoc($res);
+$res = mysqli_execute_query($koneksi, 'SELECT id_penjualan, nomor_transaksi, tanggal, nama_pelanggan, total FROM sales WHERE id_penjualan = ?', [$id]);
+$transaksi = $res ? mysqli_fetch_assoc($res) : null;
 
 if (!$transaksi) {
     header('Location: penjualan.php');
     exit;
 }
 
-$stmtdet = mysqli_prepare($koneksi, 'SELECT d.id_detail, d.harga, d.qty, d.subtotal, p.name AS nama_produk FROM penjualan_detail d LEFT JOIN products p ON d.id_product = p.id WHERE d.id_penjualan = ?');
-mysqli_stmt_bind_param($stmtdet, 'i', $id);
-mysqli_stmt_execute($stmtdet);
-$items = mysqli_stmt_get_result($stmtdet);
+$items = mysqli_execute_query($koneksi, 'SELECT d.id_detail, d.harga, d.qty, d.subtotal, p.name AS nama_produk FROM sale_details d LEFT JOIN products p ON d.id_product = p.id WHERE d.id_penjualan = ?', [$id]);
 ?>
 <!DOCTYPE html>
 <html lang="en">

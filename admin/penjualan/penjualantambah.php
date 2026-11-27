@@ -73,9 +73,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($stock_ok && !empty($items)) {
             mysqli_begin_transaction($koneksi);
             try {
-                $no = buat_nomor($koneksi, 'PJ', 'penjualan', 'nomor_transaksi');
+                $no = buat_nomor($koneksi, 'PJ', 'sales', 'nomor_transaksi');
                 $nama_esc = mysqli_real_escape_string($koneksi, $nama_pelanggan);
-                mysqli_query($koneksi, "INSERT INTO penjualan (nomor_transaksi, nama_pelanggan, total, status) VALUES ('$no', '$nama_esc', $grand_total, 'selesai')");
+                mysqli_query($koneksi, "INSERT INTO sales (nomor_transaksi, nama_pelanggan, total, status) VALUES ('$no', '$nama_esc', $grand_total, 'selesai')");
                 $id_penjualan = (int)mysqli_insert_id($koneksi);
 
                 foreach ($items as $it) {
@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $qty = (int)$it['qty'];
                     $hrg = (float)$it['harga'];
                     $sub = (float)$it['subtotal'];
-                    mysqli_query($koneksi, "INSERT INTO penjualan_detail (id_penjualan, id_product, harga, qty, subtotal) VALUES ($id_penjualan, $pid, $hrg, $qty, $sub)");
+                    mysqli_query($koneksi, "INSERT INTO sale_details (id_penjualan, id_product, harga, qty, subtotal) VALUES ($id_penjualan, $pid, $hrg, $qty, $sub)");
                     catat_mutasi_stok($koneksi, $pid, 0, $qty, $no, null, 'Penjualan ' . $no);
                 }
 

@@ -14,7 +14,7 @@ if ($tgl_mulai > $tgl_akhir) {
     $tgl_akhir = $temp;
 }
 
-$query = mysqli_query($koneksi, "SELECT * FROM penjualan WHERE DATE(tanggal) BETWEEN '$tgl_mulai' AND '$tgl_akhir' ORDER BY tanggal DESC");
+$query = mysqli_query($koneksi, "SELECT * FROM sales WHERE DATE(tanggal) BETWEEN '$tgl_mulai' AND '$tgl_akhir' ORDER BY tanggal DESC");
 
 $total_pendapatan = 0;
 $total_transaksi = 0;

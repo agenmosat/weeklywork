@@ -7,19 +7,16 @@ require_once __DIR__ . '/../../home/includes/transaksihelper.php';
 init_transaksi_tables($koneksi);
 
 $cari = trim($_GET['cari'] ?? '');
-$chk_st = mysqli_query($koneksi, "SHOW COLUMNS FROM pembelian LIKE 'status'");
+$chk_st = mysqli_query($koneksi, "SHOW COLUMNS FROM purchases LIKE 'status'");
 $cols = ($chk_st && mysqli_num_rows($chk_st) > 0)
     ? 'p.id_pembelian, p.nomor_transaksi, p.tanggal, p.total, p.status, s.nama_supplier'
     : 'p.id_pembelian, p.nomor_transaksi, p.tanggal, p.total, s.nama_supplier';
 
 if ($cari !== '') {
-    $stmt = mysqli_prepare($koneksi, "SELECT $cols FROM pembelian p LEFT JOIN supplier s ON p.id_supplier = s.id_supplier WHERE p.nomor_transaksi LIKE ? OR s.nama_supplier LIKE ? ORDER BY p.id_pembelian DESC");
     $searchterm = "%" . $cari . "%";
-    mysqli_stmt_bind_param($stmt, 'ss', $searchterm, $searchterm);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
+    $result = mysqli_execute_query($koneksi, "SELECT $cols FROM purchases p LEFT JOIN suppliers s ON p.id_supplier = s.id_supplier WHERE p.nomor_transaksi LIKE ? OR s.nama_supplier LIKE ? ORDER BY p.id_pembelian DESC", [$searchterm, $searchterm]);
 } else {
-    $result = mysqli_query($koneksi, "SELECT $cols FROM pembelian p LEFT JOIN supplier s ON p.id_supplier = s.id_supplier ORDER BY p.id_pembelian DESC");
+    $result = mysqli_query($koneksi, "SELECT $cols FROM purchases p LEFT JOIN suppliers s ON p.id_supplier = s.id_supplier ORDER BY p.id_pembelian DESC");
 }
 
 $pesan = [

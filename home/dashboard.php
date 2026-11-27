@@ -35,21 +35,13 @@ if ($sort === "low") {
 
 $datasql = "SELECT * FROM products" . $wherestr . $orderstr;
 
+$result = false;
 if ($searchquery !== "" && $category !== "") {
-    $stmt = mysqli_prepare($koneksi, $datasql);
-    mysqli_stmt_bind_param($stmt, "sss", $searchterm, $searchterm, $category);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
+    $result = mysqli_execute_query($koneksi, $datasql, [$searchterm, $searchterm, $category]);
 } elseif ($searchquery !== "") {
-    $stmt = mysqli_prepare($koneksi, $datasql);
-    mysqli_stmt_bind_param($stmt, "ss", $searchterm, $searchterm);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
+    $result = mysqli_execute_query($koneksi, $datasql, [$searchterm, $searchterm]);
 } elseif ($category !== "") {
-    $stmt = mysqli_prepare($koneksi, $datasql);
-    mysqli_stmt_bind_param($stmt, "s", $category);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
+    $result = mysqli_execute_query($koneksi, $datasql, [$category]);
 } else {
     $result = mysqli_query($koneksi, $datasql);
 }
@@ -68,7 +60,7 @@ if ($result) {
             "lokasi" => !empty($row['lokasi']) ? $row['lokasi'] : "Surabaya",
             "rating" => isset($row['rating']) ? (float)$row['rating'] : 4.9,
             "terjual" => isset($row['terjual']) ? (int)$row['terjual'] : 0,
-            "category" => $row['category'],
+            "category" => $row['category'] ?? '',
             "image" => $img,
             "desc" => $row['description']
         ];

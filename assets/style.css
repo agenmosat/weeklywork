@@ -1028,6 +1028,7 @@ body.themedark .card { border: 1px solid var(--border); box-shadow: var(--shadow
 @media (max-width: 900px) {
     .layout { flex-direction: column; padding: 14px; gap: 14px; }
     .sidebar { width: 100%; position: static; display: flex; flex-wrap: wrap; gap: 4px; }
+    .sidebar.sidebarkatalog { display: none; }
     .sidebar .sidetitle { width: 100%; margin-top: 12px; }
     .sidebar .sidelink { width: auto; }
     .grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
