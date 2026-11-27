@@ -151,7 +151,7 @@ function initHeroBanner() {
 
 function showmoreitems() {
     var hiddenitems = document.querySelectorAll(".grid .item.loadmorehidden");
-    var batch = 14;
+    var batch = 35;
     for (var i = 0; i < batch && i < hiddenitems.length; i++) {
         hiddenitems[i].classList.remove("loadmorehidden");
     }

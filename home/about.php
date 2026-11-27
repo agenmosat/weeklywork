@@ -21,7 +21,7 @@ $members = [
     ],
     [
         'name' => 'Alfredo',
-        'word' => '"kalo salah tinggal undo"',
+        'word' => '"ini tolong dianukan dulu ini apanamanya"',
         'role' => 'database manager & devops',
         'desc' => 'mengembangkan fungsionalitas dan logika database',
         'image' => 'images/team/alfredo.webp',

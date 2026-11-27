@@ -228,7 +228,7 @@ require __DIR__ . '/partials/header.php';
                     <?php 
                     $alatberatlist = ['Excavator', 'Crane', 'Bulldozer', 'Wheel Loader', 'Forklift', 'Dump Truck', 'Concrete Mixer', 'Compactor', 'Motor Grader', 'Asphalt Paver', 'Concrete Pump', 'Genset'];
                     $itemidx = 0;
-                    $initiallimit = 14;
+                    $initiallimit = 35;
                     foreach ($filtered as $p): 
                         $isalatberat = in_array($p['category'], $alatberatlist);
                         $ishidden = ($itemidx >= $initiallimit);
@@ -236,7 +236,7 @@ require __DIR__ . '/partials/header.php';
                     ?>
                         <a href="product.php?id=<?php echo urlen($p['id']); ?>" class="item <?php echo $ishidden ? 'loadmorehidden' : ''; ?>">
                             <div class="imagebox">
-                                <img src="<?php echo htmlspecialchars($p['image']); ?>" alt="<?php echo htmlspecialchars($p['name']); ?>" class="productimage" onerror="this.src='images/no-image.webp'">
+                                <img src="<?php echo htmlspecialchars($p['image']); ?>" alt="<?php echo htmlspecialchars($p['name']); ?>" class="productimage" loading="lazy" onerror="this.src='images/no-image.webp'">
                             </div>
                             <div class="itemname"><?php echo htmlspecialchars($p['name']); ?></div>
                             <div class="itemprice">Rp <?php echo number_format($p['price'], 0, ',', '.'); ?><?php echo $isalatberat ? ' <span class="unitlabel">/ unit</span>' : ''; ?></div>
